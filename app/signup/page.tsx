@@ -5,8 +5,6 @@ import {
     DropdownMenu,
     DropdownMenuContent,
     DropdownMenuItem,
-    DropdownMenuLabel,
-    DropdownMenuSeparator,
     DropdownMenuTrigger,
   } from "@/components/ui/dropdown-menu"
 import React from 'react'
@@ -20,9 +18,9 @@ const Signup = () => {
         <div className='h-[90vh] rounded opacity-55 bg-[#F2F2F2] text-[#121417] w-[400px] mx-10'>
             Carousel
         </div>
-        <div className='w-[75%]'>
+        <div className='w-[75vw]'>
             <div className='w-full flex justify-center'>
-                <div className='flex flex-col items-center gap-y-4'>
+                <div className='flex flex-col items-center gap-y-4 w-[40%]'>
                     <h1 className='text-xl mb-4'>NexLearn</h1>
                     <h2 className='text-2xl py-2'>Sign Up</h2>
                     <div className='flex flex-col w-full gap-y-2 my-1'>
@@ -72,7 +70,7 @@ const Signup = () => {
                         <p>----</p>
                     </div>
                     <Button className='w-full my-1 py-6' variant={'outline'}>
-                        Continue with Google
+                        Google
                     </Button>
                 </div>
             </div>
