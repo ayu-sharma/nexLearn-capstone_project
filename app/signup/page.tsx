@@ -1,3 +1,5 @@
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
 import React from 'react'
 
 const Signup = () => {
@@ -13,17 +15,17 @@ const Signup = () => {
                     <h2>Sign Up</h2>
                     <div className='flex flex-col w-full'>
                         <p>Email</p>
-                        <input type="text"/>
+                        <Input />
                     </div>
                     <div className='flex flex-col w-full'>
                         <p>Password</p>
-                        <input type="text" />
+                        <Input />
                     </div>
                     <div className='flex flex-col w-full'>
                         <p>Confirm Password</p>
-                        <input type="text" />
+                        <Input type='password'/>
                     </div>
-                    <div className='flex flex-col items-start'>
+                    <div className='flex flex-col items-start w-full'>
                         <p className='text-start'>Select your role</p>
                         <select name="role" id="role">
                             <option value="student">Student</option>
@@ -34,9 +36,9 @@ const Signup = () => {
                         <input type="checkbox" name="agree" id="agree" />
                         I agree to abide by Terms of Service and Privacy Policy
                     </div>
-                    <button>
+                    <Button className='w-full'>
                         Continue
-                    </button>
+                    </Button>
                     <div className='flex items-center'>
                         <p>Already have an account?</p>
                         <div>Login</div>
@@ -46,7 +48,9 @@ const Signup = () => {
                         <p>or Sign up with</p>
                         <p>----</p>
                     </div>
-                    <button>Continue with Google</button>
+                    <Button className='w-full' variant={'outline'}>
+                        Continue with Google
+                    </Button>
                 </div>
             </div>
         </div>
