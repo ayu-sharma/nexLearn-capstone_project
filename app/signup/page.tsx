@@ -1,10 +1,14 @@
+import { ModeToggle } from '@/components/ModeToggle'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import React from 'react'
 
 const Signup = () => {
   return (
-    <div className='h-screen flex items-center justify-center w-full'>
+    <div className='relative h-screen flex items-center justify-center w-full'>
+        <div className='absolute top-10 right-10'>
+            <ModeToggle />
+        </div>
         <div className='h-[90vh] rounded opacity-55 bg-[#F2F2F2] text-[#121417] w-[400px] mx-10'>
             Carousel
         </div>
@@ -36,7 +40,7 @@ const Signup = () => {
                         <input type="checkbox" name="agree" id="agree" />
                         I agree to abide by Terms of Service and Privacy Policy
                     </div>
-                    <Button className='w-full'>
+                    <Button variant={'custom'} className='w-full'>
                         Continue
                     </Button>
                     <div className='flex items-center'>
