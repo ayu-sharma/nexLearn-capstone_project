@@ -1,5 +1,5 @@
 1. Add carousel on Sign up and login pages (ayush)
 2. Make forms responsive (ayush)
-3. Add user auth functionality (akshat)
+3. Add user auth functionality (akshat) (route.ts)
 ----
 4. Make layout of home page
