@@ -3,6 +3,8 @@ import localFont from "next/font/local";
 import { Plus_Jakarta_Sans } from 'next/font/google';
 import "./globals.css";
 
+
+
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
   variable: "--font-geist-sans",

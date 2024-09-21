@@ -8,15 +8,20 @@ import {
     DropdownMenuTrigger,
   } from "@/components/ui/dropdown-menu"
 import React from 'react'
+import Carousal from '@/components/Carousal'
 
 const Signup = () => {
+    const images = [ { src: '/Images/signup_1_light.svg', alt: '1' },
+        { src: '/Images/signup_2_light.svg', alt: '2' },
+        { src: '/Images/signup_3_light.svg', alt: '3' },]
+    
   return (
     <div className='relative h-screen flex items-center justify-center w-full'>
         <div className='absolute top-10 right-10'>
             <ModeToggle />
         </div>
         <div className='h-[90vh] rounded opacity-55 bg-[#F2F2F2] text-[#121417] w-[400px] mx-10'>
-            Carousel
+            <Carousal images={images}/>
         </div>
         <div className='w-[75vw]'>
             <div className='w-full flex justify-center'>
