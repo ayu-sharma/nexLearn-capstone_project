@@ -20,7 +20,7 @@ const Signup = () => {
         <div className='absolute top-10 right-10'>
             <ModeToggle />
         </div>
-        <div className='h-[90vh] rounded opacity-55 bg-[#F2F2F2] text-[#121417] w-[400px] mx-10'>
+        <div className='h-[90vh] rounded w-[400px] mx-10'>
             <Carousal images={images}/>
         </div>
         <div className='w-[75vw]'>
@@ -42,13 +42,14 @@ const Signup = () => {
                     </div>
                     <div className='flex flex-col items-start w-full gap-y-2 my-1'>
                         <p className='text-start text-sm'>Select your role</p>
-                        {/* <select name="role" id="role">
-                            <option value="student">Student</option>
-                            <option value="educator">Educator</option>
-                        </select> */}
                         <DropdownMenu>
                             <DropdownMenuTrigger>
-                                <p className='text-sm py-2 px-4 border-[0.75px] rounded'>Role</p>
+                                <p className='flex items-center text-sm py-2 px-4 border-[0.75px] rounded'>
+                                    Role
+                                    <svg className="ml-2 w-4 h-4 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                                        <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m8 10 4 4 4-4"/>
+                                    </svg>
+                                </p>
                             </DropdownMenuTrigger>
                             <DropdownMenuContent>
                                 <DropdownMenuItem>Student</DropdownMenuItem>
