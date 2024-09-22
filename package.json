@@ -26,22 +26,22 @@
     "lucide-react": "^0.441.0",
     "next": "14.2.11",
     "next-themes": "^0.3.0",
-    "react": "^18",
+    "react": "^18.3.1",
     "react-bootstrap": "^2.10.4",
-    "react-dom": "^18",
+    "react-dom": "^18.3.1",
     "tailwind-merge": "^2.5.2",
     "tailwindcss-animate": "^1.0.7",
     "zod": "^3.23.8"
   },
   "devDependencies": {
     "@types/node": "^20",
-    "@types/react": "^18",
-    "@types/react-dom": "^18",
+    "@types/react": "^18.3.8",
+    "@types/react-dom": "^18.3.0",
     "eslint": "^8",
     "eslint-config-next": "14.2.11",
     "postcss": "^8",
     "prisma": "^5.19.1",
     "tailwindcss": "^3.4.1",
-    "typescript": "^5"
+    "typescript": "^5.6.2"
   }
 }

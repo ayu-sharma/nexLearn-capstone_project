@@ -14,15 +14,12 @@ import Carousal from '@/components/Carousal'
 import { SignupInput } from '@/helpers/zod';
 import { useRouter } from 'next/navigation';
 import axios from "axios"
+import Signup_carousal from '@/components/ui/Signup_carousal';
 
 const Signup = () => {
     const router = useRouter();
 
-    const images = [ 
-        { src: '/Images/signup_1_light.svg', alt: '1' },
-        { src: '/Images/signup_2_light.svg', alt: '2' },
-        { src: '/Images/signup_3_light.svg', alt: '3' }
-    ]
+
     
     const [formInputs, setFormInputs] = useState<SignupInput>({
         email: "",
@@ -68,8 +65,8 @@ const Signup = () => {
         <div className='absolute top-10 right-10'>
             <ModeToggle />
         </div>
-        <div className='h-[90vh] rounded w-[400px] mx-10'>
-            <Carousal images={images}/>
+        <div>
+        <Signup_carousal />
         </div>
         <div className='w-[75vw]'>
             <div className='w-full flex justify-center'>
