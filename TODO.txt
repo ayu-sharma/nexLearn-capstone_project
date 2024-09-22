@@ -4,6 +4,6 @@
 ----
 4. Make layout of home page
 
-// ADD CONFIRM PASSWORD functionality
+// ADD CONFIRM PASSWORD functionality DONE
 // Fix the role selector
 // Connect routes to the forms
