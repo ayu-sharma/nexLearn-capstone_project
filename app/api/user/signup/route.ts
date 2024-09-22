@@ -1,6 +1,6 @@
-// install prisma
-// write user schema
-// add zod type validation
+// install prisma DONE
+// write user schema DONE
+// add zod type validation 
 // create POST route
 // test on postman
 // hash password using bcrypt
