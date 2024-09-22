@@ -1,9 +1,29 @@
+"use client";
+
 import { ModeToggle } from '@/components/ModeToggle'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import React from 'react'
+import React, { useState, useEffect } from 'react'
+import { LoginInput } from '@/helpers/zod'
+import { useRouter } from 'next/navigation'
+import axios from "axios"
 
-const Signup = () => {
+const Login = () => {
+    const router = useRouter();
+    const [formInputs, setFormInputs] = useState<LoginInput>({
+        email: "",
+        password: ""
+    });
+
+    const handleLogin = async () => {
+        try {
+            const response = await axios.post('http://localhost:3000/api/user/login', formInputs);
+            localStorage.setItem("token", response.data.jwt);
+            router.push('/');
+        } catch (error) {
+            console.error("Failed to login: ", error);
+        }
+    };
   return (
     <div className='relative h-screen flex items-center justify-center w-screen'>
         <div className='absolute top-10 right-10'>
@@ -19,13 +39,23 @@ const Signup = () => {
                     <h2 className='text-2xl py-2'>Welcome Back!</h2>
                     <div className='flex flex-col w-full gap-y-2 my-1'>
                         <p className='text-sm'>Email</p>
-                        <Input placeholder='✉️'/>
+                        <Input placeholder='✉️' onChange={(e) => {
+                            setFormInputs(c => ({
+                                ...c,
+                                email: e.target.value
+                            }))
+                        }}/>
                     </div>
                     <div className='flex flex-col w-full gap-y-2 my-1'>
                         <p className='text-sm'>Password</p>
-                        <Input type='password' placeholder='🔓'/>
+                        <Input type='password' placeholder='🔓' onChange={(e) => {
+                            setFormInputs(c => ({
+                                ...c,
+                                password: e.target.value
+                            }))
+                        }}/>
                     </div>
-                    <Button variant={'custom'} className='w-full my-1 py-6'>
+                    <Button variant={'custom'} className='w-full my-1 py-6' onClick={handleLogin}>
                         Continue
                     </Button>
                     <div className='flex items-center my-1 text-sm gap-x-2'>
@@ -47,4 +77,4 @@ const Signup = () => {
   )
 }
 
-export default Signup   
+export default Login   
