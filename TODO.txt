@@ -4,5 +4,6 @@
 ----
 4. Make layout of home page
 
-
-// write basic POST route for login
+// ADD CONFIRM PASSWORD functionality
+// Fix the role selector
+// Connect routes to the forms

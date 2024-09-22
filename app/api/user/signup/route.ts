@@ -12,7 +12,7 @@ export async function POST (request: NextRequest) {
 
         if (!parsedBody.success) {
             return NextResponse.json({
-                error: "Incorrect inputs"
+                error: parsedBody.error.errors[0].message
             }, {
                 status: 400
             });
