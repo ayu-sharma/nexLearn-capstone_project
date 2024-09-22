@@ -50,6 +50,8 @@ export async function POST (request: NextRequest) {
         return NextResponse.json({
             message: "User created successfully",
             jwt: token
+        }, {
+            status: 200
         });
 
     } catch (error: any) {
