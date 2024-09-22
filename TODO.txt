@@ -3,3 +3,13 @@
 3. Add user auth functionality (akshat) (route.ts)
 ----
 4. Make layout of home page
+
+
+// install prisma DONE
+// write user schema DONE
+// add zod type validation DONE
+// create POST route
+// test on postman
+// hash password using bcrypt
+// store in Postgres DONE
+// 
