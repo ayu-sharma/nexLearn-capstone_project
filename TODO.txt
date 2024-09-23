@@ -1,3 +1,4 @@
-1. Fix the role selector -> Add shadcn Select component
+\\
+1. If box unchecked, disable button \\ DONE
 2. Add loaders while function awaits response
 3. checkAuth functions to check if token already exists (reroutes user to auth if token not found)

@@ -18,13 +18,24 @@ import Signup_carousal from '@/components/ui/Signup_carousal';
 
 const Signup = () => {
     const router = useRouter();
-    
+    const [checked, setChecked] = useState(false);
+    const [isButtonDisabled, setIsButtonDisabled] = useState(true);
     const [formInputs, setFormInputs] = useState<SignupInput>({
         email: "",
         password: "",
         confirmPassword: "",
         role: ""
     });
+
+    useEffect(() => {
+        const areInputsFilled = 
+            formInputs.email.trim() !== '' &&
+            formInputs.password.trim() !== '' &&
+            formInputs.confirmPassword.trim() !== '' &&
+            formInputs.role.trim() !== '';
+        
+        setIsButtonDisabled(!(areInputsFilled && checked));
+    }, [formInputs, checked]);
 
     // useEffect(() => {
     //     const checkAuth = async () => {
@@ -117,12 +128,12 @@ const Signup = () => {
                         </Select>
                     </div>
                     <div className='flex items-center gap-x-2 my-1'>
-                        <input type="checkbox" name="agree" id="agree" />
+                        <input type="checkbox" name="agree" id="agree" onChange={(e) => setChecked(e.target.checked)}/>
                         <p className='text-sm'>
                             I agree to abide by Terms of Service and Privacy Policy
                         </p>
                     </div>
-                    <Button variant={'custom'} className='w-full my-1 py-6' onClick={handleSignup}>
+                    <Button variant={'custom'} className='w-full my-1 py-6' onClick={handleSignup} disabled={isButtonDisabled}>
                         Continue
                     </Button>
                     <div className='flex items-center my-1 text-sm gap-x-2'>
