@@ -41,7 +41,7 @@ export async function POST (request: NextRequest) {
             data: {
                 email: reqBody.email,
                 password: hashedPassword,
-                role: "Student"
+                role: reqBody.role
             }
         });
 

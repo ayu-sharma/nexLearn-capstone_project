@@ -18,13 +18,12 @@ import Signup_carousal from '@/components/ui/Signup_carousal';
 
 const Signup = () => {
     const router = useRouter();
-
-
     
     const [formInputs, setFormInputs] = useState<SignupInput>({
         email: "",
         password: "",
-        confirmPassword: ""
+        confirmPassword: "",
+        role: ""
     });
 
     // useEffect(() => {
@@ -102,7 +101,12 @@ const Signup = () => {
                     </div>
                     <div className='flex flex-col items-start w-full gap-y-2 my-1'>
                         <p className='text-start text-sm'>Select your role</p>
-                        <Select>
+                        <Select onValueChange={(value) => {
+                            setFormInputs(c => ({
+                                ...c,
+                                role: value
+                            }))
+                        }}>
                             <SelectTrigger>
                                 <SelectValue placeholder="Role" />
                             </SelectTrigger>
