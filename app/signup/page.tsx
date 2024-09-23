@@ -4,13 +4,13 @@ import { ModeToggle } from '@/components/ModeToggle'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuTrigger,
-  } from "@/components/ui/dropdown-menu"
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+  } from "@/components/ui/select"
 import React, { useState, useEffect } from 'react'
-import Carousal from '@/components/Carousal'
 import { SignupInput } from '@/helpers/zod';
 import { useRouter } from 'next/navigation';
 import axios from "axios"
@@ -102,20 +102,15 @@ const Signup = () => {
                     </div>
                     <div className='flex flex-col items-start w-full gap-y-2 my-1'>
                         <p className='text-start text-sm'>Select your role</p>
-                        <DropdownMenu>
-                            <DropdownMenuTrigger>
-                                <p className='flex items-center text-sm py-2 px-4 border-[0.75px] rounded'>
-                                    Role
-                                    <svg className="ml-2 w-4 h-4 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                                        <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m8 10 4 4 4-4"/>
-                                    </svg>
-                                </p>
-                            </DropdownMenuTrigger>
-                            <DropdownMenuContent>
-                                <DropdownMenuItem>Student</DropdownMenuItem>
-                                <DropdownMenuItem>Educator</DropdownMenuItem>
-                            </DropdownMenuContent>
-                        </DropdownMenu>
+                        <Select>
+                            <SelectTrigger>
+                                <SelectValue placeholder="Role" />
+                            </SelectTrigger>
+                            <SelectContent>
+                                <SelectItem value="student">Student</SelectItem>
+                                <SelectItem value="educator">Educator</SelectItem>
+                            </SelectContent>
+                        </Select>
                     </div>
                     <div className='flex items-center gap-x-2 my-1'>
                         <input type="checkbox" name="agree" id="agree" />
