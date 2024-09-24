@@ -125,10 +125,10 @@ const Login = () => {
                         <p>Don't have an account?</p>
                         <div className='cursor-pointer font-bold' onClick={() => router.push('/signup')}>Sign Up</div>
                     </div>
-                    <div className='flex mt-4 gap-x-4'>
-                        <p>----</p>
-                        <p>or Login with</p>
-                        <p>----</p>
+                    <div className='flex mt-4 items-center gap-x-4 w-full'>
+                        <div className='w-[30%] h-[0.75px] bg-gray-700/10 dark:bg-gray-300/20'/>
+                        <p className='text-sm flex-1 text-center'>or Login with</p>
+                        <div className='w-[30%] h-[0.75px] bg-gray-700/10 dark:bg-gray-300/20'/>
                     </div>
                     <Button className='w-full my-1 py-6' variant={'outline'}>
                         Google
