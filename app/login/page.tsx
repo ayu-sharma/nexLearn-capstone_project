@@ -7,6 +7,7 @@ import React, { useState, useEffect } from 'react'
 import { LoginInput } from '@/helpers/zod'
 import { useRouter } from 'next/navigation'
 import axios from "axios"
+import Carousel from '@/components/Carousel';
 
 const Login = () => {
     const router = useRouter();
@@ -25,12 +26,35 @@ const Login = () => {
         setIsButtonDisabled(!areInputsFilled);
     }, [formInputs]);
 
+    useEffect(() => {
+        const checkAuth = async () => {
+            try {
+                const token = localStorage.getItem("token");
+
+                if (!token) {
+                    router.push('/login');
+                }
+
+                await axios.get('http://localhost:3000/api/user/me', {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                });
+                router.push('/home');
+            } catch (error) {
+                console.error('Error finding token: ', error);
+            }
+        }
+
+        checkAuth();
+    }, []);
+
     const handleLogin = async () => {
         setIsLoading(true);
         try {
             const response = await axios.post('http://localhost:3000/api/user/login', formInputs);
             localStorage.setItem("token", response.data.jwt);
-            router.push('/');
+            router.push('/home');
         } catch (error) {
             console.error("Failed to login: ", error);
         } finally {
@@ -42,8 +66,8 @@ const Login = () => {
         <div className='absolute top-10 right-10'>
             <ModeToggle />
         </div>
-        <div className='h-[90vh] rounded opacity-55 bg-[#F2F2F2] text-[#121417] w-[400px] mx-10'>
-            Carousel
+        <div className='h-[90vh] rounded w-[400px] mx-10'>
+            <Carousel />
         </div>
         <div className='w-[75vw]'>
             <div className='w-full flex justify-center'>

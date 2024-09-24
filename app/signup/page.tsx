@@ -38,35 +38,35 @@ const Signup = () => {
         setIsButtonDisabled(!(areInputsFilled && checked));
     }, [formInputs, checked]);
 
-    // useEffect(() => {
-    //     const checkAuth = async () => {
-    //         try {
-    //             const token = localStorage.getItem("token");
+    useEffect(() => {
+        const checkAuth = async () => {
+            try {
+                const token = localStorage.getItem("token");
 
-    //             if (!token) {
-    //                 router.push('/signup');
-    //             }
+                if (!token) {
+                    router.push('/signup');
+                }
 
-    //             await axios.get('http://localhost:3000/api/user/me', {
-    //                 headers: {
-    //                     Authorization: `Bearer ${token}`
-    //                 }
-    //             });
-    //             router.push('/');
-    //         } catch (error) {
-    //             console.error('Error finding token: ', error);
-    //         }
-    //     }
+                await axios.get('http://localhost:3000/api/user/me', {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                });
+                router.push('/home');
+            } catch (error) {
+                console.error('Error finding token: ', error);
+            }
+        }
 
-    //     checkAuth();
-    // }, []);
+        checkAuth();
+    }, []);
 
     const handleSignup = async () => {
         setIsLoading(true);
         try {
             const response = await axios.post('http://localhost:3000/api/user/signup', formInputs);
             localStorage.setItem("token", response.data.jwt);
-            router.push('/');
+            router.push('/home');
         } catch (error) {
             console.error("Failed to sign up: ", error);
         } finally {
