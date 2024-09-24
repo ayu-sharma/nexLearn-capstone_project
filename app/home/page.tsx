@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation';
 import Sidebar from '@/components/Sidebar';
 import { ModeToggle } from '@/components/ModeToggle';
@@ -11,6 +11,7 @@ import Username from '@/components/Username';
 const HomePage = () => {
   
   const router = useRouter();
+  const [selectedGroup, setSelectedGroup] = useState('Dashboard');
 
   useEffect(() => {
     const checkAuth = async () => {
@@ -42,9 +43,9 @@ const HomePage = () => {
           <ModeToggle />
         </div>
       </div>
-      <Sidebar />
+      <Sidebar selectedGroup={selectedGroup} onSelectGroup={setSelectedGroup}/>
       <div className='mt-6 mx-10 text-2xl p-2 font-semibold'>
-        Top bar
+        {selectedGroup}
       </div>
     </div>
   )

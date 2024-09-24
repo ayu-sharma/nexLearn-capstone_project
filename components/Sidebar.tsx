@@ -6,10 +6,14 @@ import logoL from "@/public/images/sidebarL.svg";
 import logoD from "@/public/images/sidebarD.svg";
 import { useRouter } from 'next/navigation';
 
-const Sidebar = () => {
+interface SidebarProps {
+    selectedGroup: string;
+    onSelectGroup: (group: string) => void;
+}
+
+const Sidebar = ({ selectedGroup, onSelectGroup }: SidebarProps) => {
     const router = useRouter();
     const [isDarkMode, setIsDarkMode] = useState(false);
-    const [selectedGroup, setSelectedGroup] = useState('Dashboard');
 
     useEffect(() => {
         const checkDarkMode = () => {
@@ -22,10 +26,6 @@ const Sidebar = () => {
 
         return () => observer.disconnect(); 
     }, []);
-
-    const handleGroupClick = (group: string) => {
-        setSelectedGroup(group);
-    };
 
     const handleLogout = () => {
         localStorage.removeItem("token");
@@ -42,7 +42,7 @@ const Sidebar = () => {
                         className={`flex items-center gap-x-2 p-2 rounded-md cursor-pointer transition hover:bg-white/10 dark:hover:bg-black/10 ${
                             selectedGroup === 'Dashboard' ? 'text-[#7981FF]' : 'text-[#F2F2F2] dark:text-[#121417]'
                         }`}
-                        onClick={() => handleGroupClick('Dashboard')}
+                        onClick={() => onSelectGroup('Dashboard')}
                     >
                         <svg className={`w-5 h-5 ${selectedGroup === 'Dashboard' ? 'text-[#7981FF]' : 'text-[#F2F2F2] dark:text-[#121417]'}`} aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
                             <path fillRule="evenodd" d="M4.857 3A1.857 1.857 0 0 0 3 4.857v4.286C3 10.169 3.831 11 4.857 11h4.286A1.857 1.857 0 0 0 11 9.143V4.857A1.857 1.857 0 0 0 9.143 3H4.857Zm10 0A1.857 1.857 0 0 0 13 4.857v4.286c0 1.026.831 1.857 1.857 1.857h4.286A1.857 1.857 0 0 0 21 9.143V4.857A1.857 1.857 0 0 0 19.143 3h-4.286Zm-10 10A1.857 1.857 0 0 0 3 14.857v4.286C3 20.169 3.831 21 4.857 21h4.286A1.857 1.857 0 0 0 11 19.143v-4.286A1.857 1.857 0 0 0 9.143 13H4.857Zm10 0A1.857 1.857 0 0 0 13 14.857v4.286c0 1.026.831 1.857 1.857 1.857h4.286A1.857 1.857 0 0 0 21 19.143v-4.286A1.857 1.857 0 0 0 19.143 13h-4.286Z" clip-rule="evenodd"/>
@@ -53,7 +53,7 @@ const Sidebar = () => {
                         className={`flex items-center gap-x-2 p-2 rounded-md cursor-pointer transition hover:bg-white/10 dark:hover:bg-black/10 ${
                             selectedGroup === 'Library' ? 'text-[#7981FF]' : 'text-[#F2F2F2] dark:text-[#121417]'
                         }`}
-                        onClick={() => handleGroupClick('Library')}
+                        onClick={() => onSelectGroup('Library')}
                     >
                         <svg className={`w-5 h-5 ${selectedGroup === 'Library' ? 'text-[#7981FF]' : 'text-[#F2F2F2] dark:text-[#121417]'}`} aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
                             <path fill-rule="evenodd" d="M15 4H9v16h6V4Zm2 16h3a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2h-3v16ZM4 4h3v16H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2Z" clip-rule="evenodd"/>
@@ -64,7 +64,7 @@ const Sidebar = () => {
                         className={`flex items-center gap-x-2 p-2 rounded-md cursor-pointer transition hover:bg-white/10 dark:hover:bg-black/10 ${
                             selectedGroup === 'My Courses' ? 'text-[#7981FF]' : 'text-[#F2F2F2] dark:text-[#121417]'
                         }`}
-                        onClick={() => handleGroupClick('My Courses')}
+                        onClick={() => onSelectGroup('My Courses')}
                     >
                         <svg className={`w-5 h-5 ${selectedGroup === 'My Courses' ? 'text-[#7981FF]' : 'text-[#F2F2F2] dark:text-[#121417]'}`} aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                             <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 4H5a1 1 0 0 0-1 1v14a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1V5a1 1 0 0 0-1-1Zm0 0-4 4m5 0H4m1 0 4-4m1 4 4-4m-4 7v6l4-3-4-3Z"/>
@@ -75,7 +75,7 @@ const Sidebar = () => {
                         className={`flex items-center gap-x-2 p-2 rounded-md cursor-pointer transition hover:bg-white/10 dark:hover:bg-black/10 ${
                             selectedGroup === 'Homework' ? 'text-[#7981FF]' : 'text-[#F2F2F2] dark:text-[#121417]'
                         }`}
-                        onClick={() => handleGroupClick('Homework')}
+                        onClick={() => onSelectGroup('Homework')}
                     >
                         <svg className={`w-5 h-5 ${selectedGroup === 'Homework' ? 'text-[#7981FF]' : 'text-[#F2F2F2] dark:text-[#121417]'}`} aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
                             <path fillRule="evenodd" d="M11.293 3.293a1 1 0 0 1 1.414 0l6 6 2 2a1 1 0 0 1-1.414 1.414L19 12.414V19a2 2 0 0 1-2 2h-3a1 1 0 0 1-1-1v-3h-2v3a1 1 0 0 1-1 1H7a2 2 0 0 1-2-2v-6.586l-.293.293a1 1 0 0 1-1.414-1.414l2-2 6-6Z" clip-rule="evenodd"/>
@@ -86,7 +86,7 @@ const Sidebar = () => {
                         className={`flex items-center gap-x-2 p-2 rounded-md cursor-pointer transition hover:bg-white/10 dark:hover:bg-black/10 ${
                             selectedGroup === 'Schedule' ? 'text-[#7981FF]' : 'text-[#F2F2F2] dark:text-[#121417]'
                         }`}
-                        onClick={() => handleGroupClick('Schedule')}
+                        onClick={() => onSelectGroup('Schedule')}
                     >
                         <svg className={`w-5 h-5 ${selectedGroup === 'Schedule' ? 'text-[#7981FF]' : 'text-[#F2F2F2] dark:text-[#121417]'}`} aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                             <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 10h16m-8-3V4M7 7V4m10 3V4M5 20h14a1 1 0 0 0 1-1V7a1 1 0 0 0-1-1H5a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1Zm3-7h.01v.01H8V13Zm4 0h.01v.01H12V13Zm4 0h.01v.01H16V13Zm-8 4h.01v.01H8V17Zm4 0h.01v.01H12V17Zm4 0h.01v.01H16V17Z"/>
@@ -97,7 +97,7 @@ const Sidebar = () => {
                         className={`flex items-center gap-x-2 p-2 rounded-md cursor-pointer transition hover:bg-white/10 dark:hover:bg-black/10 ${
                             selectedGroup === 'Messages' ? 'text-[#7981FF]' : 'text-[#F2F2F2] dark:text-[#121417]'
                         }`}
-                        onClick={() => handleGroupClick('Messages')}
+                        onClick={() => onSelectGroup('Messages')}
                     >
                         <svg className={`w-5 h-5 ${selectedGroup === 'Messages' ? 'text-[#7981FF]' : 'text-[#F2F2F2] dark:text-[#121417]'}`} aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
                             <path d="M2.038 5.61A2.01 2.01 0 0 0 2 6v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6c0-.12-.01-.238-.03-.352l-.866.65-7.89 6.032a2 2 0 0 1-2.429 0L2.884 6.288l-.846-.677Z"/>
@@ -109,7 +109,7 @@ const Sidebar = () => {
                         className={`flex items-center gap-x-2 p-2 rounded-md cursor-pointer transition hover:bg-white/10 dark:hover:bg-black/10 ${
                             selectedGroup === 'Settings' ? 'text-[#7981FF]' : 'text-[#F2F2F2] dark:text-[#121417]'
                         }`}
-                        onClick={() => handleGroupClick('Settings')}
+                        onClick={() => onSelectGroup('Settings')}
                     >
                         <svg className={`w-5 h-5 ${selectedGroup === 'Settings' ? 'text-[#7981FF]' : 'text-[#F2F2F2] dark:text-[#121417]'}`} aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
                             <path fillRule="evenodd" d="M9.586 2.586A2 2 0 0 1 11 2h2a2 2 0 0 1 2 2v.089l.473.196.063-.063a2.002 2.002 0 0 1 2.828 0l1.414 1.414a2 2 0 0 1 0 2.827l-.063.064.196.473H20a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2h-.089l-.196.473.063.063a2.002 2.002 0 0 1 0 2.828l-1.414 1.414a2 2 0 0 1-2.828 0l-.063-.063-.473.196V20a2 2 0 0 1-2 2h-2a2 2 0 0 1-2-2v-.089l-.473-.196-.063.063a2.002 2.002 0 0 1-2.828 0l-1.414-1.414a2 2 0 0 1 0-2.827l.063-.064L4.089 15H4a2 2 0 0 1-2-2v-2a2 2 0 0 1 2-2h.09l.195-.473-.063-.063a2 2 0 0 1 0-2.828l1.414-1.414a2 2 0 0 1 2.827 0l.064.063L9 4.089V4a2 2 0 0 1 .586-1.414ZM8 12a4 4 0 1 1 8 0 4 4 0 0 1-8 0Z" clip-rule="evenodd"/>
