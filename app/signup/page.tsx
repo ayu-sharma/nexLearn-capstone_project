@@ -9,12 +9,12 @@ import {
     SelectItem,
     SelectTrigger,
     SelectValue,
-  } from "@/components/ui/select"
+} from "@/components/ui/select"
 import React, { useState, useEffect } from 'react'
 import { SignupInput } from '@/helpers/zod';
 import { useRouter } from 'next/navigation';
 import axios from "axios"
-import Signup_carousal from '@/components/ui/Signup_carousal';
+import Carousel from '@/components/Carousel';
 
 const Signup = () => {
     const router = useRouter();
@@ -75,16 +75,16 @@ const Signup = () => {
     };
     
   return (
-    <div className='relative h-screen flex items-center justify-center w-full'>
+    <div className='relative h-screen flex items-center justify-center w-screen'>
         <div className='absolute top-10 right-10'>
             <ModeToggle />
         </div>
-        <div>
-        <Signup_carousal />
+        <div className='hidden md:flex md:mx-10'>
+            <Carousel />
         </div>
-        <div className='w-[75vw]'>
-            <div className='w-full flex justify-center'>
-                <div className='flex flex-col items-center gap-y-4 w-[40%]'>
+        <div className='w-full md:w-[75vw]'>
+            <div className='w-[70%] md:w-full mx-auto flex justify-center'>
+                <div className='flex flex-col items-center gap-y-4 md:w-[40%]'>
                     <h1 className='text-xl mb-4'>NexLearn</h1>
                     <h2 className='text-2xl py-2'>Sign Up</h2>
                     <div className='flex flex-col w-full gap-y-2 my-1'>
