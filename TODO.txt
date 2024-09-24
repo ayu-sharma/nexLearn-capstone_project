@@ -1,4 +1,4 @@
 \\
-1. If box unchecked, disable button \\ DONE
-2. Add loaders while function awaits response \\ DONE
-3. checkAuth functions to check if token already exists (reroutes user to auth if token not found)
+1. check if token already exists (send user to auth if token not found)
+2. finish auth carousel and make it more aesthetic
+3. design home page sidebar and fake courses to show design (add logout button)
