@@ -66,12 +66,12 @@ const Login = () => {
         <div className='absolute top-10 right-10'>
             <ModeToggle />
         </div>
-        <div className='h-[90vh] rounded w-[400px] mx-10'>
+        <div className='hidden md:flex md:mx-10'>
             <Carousel />
         </div>
-        <div className='w-[75vw]'>
+        <div className='w-full md:w-[75vw]'>
             <div className='w-full flex justify-center'>
-                <div className='flex flex-col items-center gap-y-4 w-[40%]'>
+                <div className='flex flex-col items-center gap-y-4 md:w-[40%]'>
                     <h1 className='text-xl mb-4'>NexLearn</h1>
                     <h2 className='text-2xl py-2'>Welcome Back!</h2>
                     <div className='flex flex-col w-full gap-y-2 my-1'>
