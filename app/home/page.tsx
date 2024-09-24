@@ -43,7 +43,7 @@ const HomePage = () => {
         </div>
       </div>
       <Sidebar />
-      <div>
+      <div className='mt-6 mx-10 text-2xl p-2 font-semibold'>
         Top bar
       </div>
     </div>
