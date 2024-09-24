@@ -4,9 +4,10 @@ import React, { useEffect, useState } from 'react'
 import Image from 'next/image';
 import logoL from "@/public/images/sidebarL.svg";
 import logoD from "@/public/images/sidebarD.svg";
+import { useRouter } from 'next/navigation';
 
 const Sidebar = () => {
-
+    const router = useRouter();
     const [isDarkMode, setIsDarkMode] = useState(false);
     useEffect(() => {
         const checkDarkMode = () => {
@@ -20,6 +21,10 @@ const Sidebar = () => {
         return () => observer.disconnect(); 
     }, []);
 
+    const handleLogout = () => {
+        localStorage.removeItem("token");
+        router.push('/login');
+    };
 
   return (
     <div className='h-full px-6 py-8 dark:text-[#121417] text-[#F2F2F2] bg-[#121417] dark:bg-[#F2F2F2] w-[15%] shadow-md rounded-tr-lg rounded-br-lg'>
@@ -79,7 +84,7 @@ const Sidebar = () => {
                     </svg>
                     <p>Help</p>
                 </div>
-                <div className='flex items-center gap-x-2 p-2 rounded-md hover:bg-white/10 dark:hover:bg-black/10 cursor-pointer transition'>
+                <div onClick={handleLogout} className='flex items-center gap-x-2 p-2 rounded-md hover:bg-white/10 dark:hover:bg-black/10 cursor-pointer transition'>
                     <svg className="w-5 h-5 text-[#F2F2F2] dark:text-[#121417]" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                         <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M20 12H8m12 0-4 4m4-4-4-4M9 4H7a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h2"/>
                     </svg>

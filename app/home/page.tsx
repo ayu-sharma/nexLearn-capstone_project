@@ -6,7 +6,6 @@ import Sidebar from '@/components/Sidebar';
 import { ModeToggle } from '@/components/ModeToggle';
 import Searchbar from '@/components/Searchbar';
 import { Button } from '@/components/ui/button';
-import { Bell, BellIcon } from 'lucide-react';
 import Username from '@/components/Username';
 
 const HomePage = () => {
