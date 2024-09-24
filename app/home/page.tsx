@@ -2,6 +2,8 @@
 
 import React, { useEffect } from 'react'
 import { useRouter } from 'next/navigation';
+import Sidebar from '@/components/Sidebar';
+import { ModeToggle } from '@/components/ModeToggle';
 
 const HomePage = () => {
   
@@ -24,8 +26,19 @@ const HomePage = () => {
 }, []);
 
   return (
-    <div className='flex items-center justify-center'>
-      NexLearn
+    <div className='relative h-screen w-screen flex'>
+      <div className='absolute top-10 right-10'>
+        <ModeToggle />
+      </div>
+      <Sidebar />
+      <div>
+        <div>
+          Main
+        </div>
+        <div>
+          Progress
+        </div>
+      </div>
     </div>
   )
 }
