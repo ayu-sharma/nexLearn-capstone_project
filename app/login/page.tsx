@@ -8,6 +8,9 @@ import { LoginInput } from '@/helpers/zod'
 import { useRouter } from 'next/navigation'
 import axios from "axios"
 import Carousel from '@/components/Carousel';
+import Image from 'next/image';
+import logoL from "@/public/images/logol.svg"
+import logoD from "@/public/images/logoD.svg"
 
 const Login = () => {
     const router = useRouter();
@@ -61,6 +64,19 @@ const Login = () => {
             setIsLoading(false);
         }
     };
+
+    const [isDarkMode, setIsDarkMode] = useState(false);
+        useEffect(() => {
+        const checkDarkMode = () => {
+        setIsDarkMode(document.documentElement.classList.contains('dark'));
+        };
+        checkDarkMode(); 
+        const observer = new MutationObserver(checkDarkMode); 
+
+        observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
+
+        return () => observer.disconnect(); 
+    }, []);
   return (
     <div className='relative h-screen flex items-center justify-center w-screen'>
         <div className='absolute top-10 right-10'>
@@ -72,7 +88,11 @@ const Login = () => {
         <div className='w-full md:w-[75vw]'>
             <div className='w-full flex justify-center'>
                 <div className='flex flex-col items-center gap-y-4 md:w-[40%]'>
-                    <h1 className='text-xl mb-4'>NexLearn</h1>
+                    <div className='pb-8'>
+                        <Image 
+                            src={isDarkMode ? logoL : logoD} alt='NexLearn Logo' height={44}
+                        />
+                    </div>
                     <h2 className='text-2xl py-2'>Welcome Back!</h2>
                     <div className='flex flex-col w-full gap-y-2 my-1'>
                         <p className='text-sm'>Email</p>
@@ -97,13 +117,13 @@ const Login = () => {
                             isLoading ? (
                                 <Loader />
                             ) : (
-                                'Continue'
+                                'Login'
                             )
                         }
                     </Button>
                     <div className='flex items-center my-1 text-sm gap-x-2'>
                         <p>Don't have an account?</p>
-                        <div className='cursor-pointer underline' onClick={() => router.push('/signup')}>Sign Up</div>
+                        <div className='cursor-pointer font-bold' onClick={() => router.push('/signup')}>Sign Up</div>
                     </div>
                     <div className='flex mt-4 gap-x-4'>
                         <p>----</p>
