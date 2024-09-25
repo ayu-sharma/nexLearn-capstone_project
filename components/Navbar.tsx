@@ -1,6 +1,4 @@
-// "use Client"
 
-// components/Navbar.js
 import Link from 'next/link';
 
 const Navbar = () => {
@@ -12,16 +10,13 @@ const Navbar = () => {
           <Link href="/">
             <div className="hover:text-[#7981FF] transition-colors">Home</div>
           </Link>
-          <Link href="/about">
-            <div className="hover:text-[#7981FF] transition-colors">Features</div>
-          </Link>
-          <Link href="/contact">
+          <Link href="/">
             <div className="hover:text-[#7981FF] transition-colors">Courses</div>
           </Link>
-          <Link href="/contact">
+          <Link href="/">
             <div className="hover:text-[#7981FF] transition-colors">Pricing</div>
           </Link>
-          <Link href="/contact">
+          <Link href="/">
             <div className="hover:text-[#7981FF] transition-colors">How it Works</div>
           </Link>
         </div>
