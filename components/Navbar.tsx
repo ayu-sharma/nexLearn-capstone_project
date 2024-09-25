@@ -8,18 +8,18 @@ const Navbar = () => {
     <nav className="p-4">
       <div className="container mx-auto flex items-center">
 
-        <div className="flex justify-between text-lg gap-10 space-x-4">
+        <div className="flex justify-between text-lg gap-10 space-x-4 text-[#F2F2F2]">
           <Link href="/">
-            <div className="text-black font-monospace">Home</div>
+            <div className="hover:text-[#7981FF] transition-colors">Home</div>
           </Link>
           <Link href="/about">
-            <div className="text-black font-monospace">Features</div>
+            <div className="hover:text-[#7981FF] transition-colors">Features</div>
           </Link>
           <Link href="/contact">
-            <div className="text-black font-monospace">Courses</div>
+            <div className="hover:text-[#7981FF] transition-colors">Courses</div>
           </Link>
           <Link href="/contact">
-            <div className="text-black font-monospace">How it Works</div>
+            <div className="hover:text-[#7981FF] transition-colors">How it Works</div>
           </Link>
         </div>
 
