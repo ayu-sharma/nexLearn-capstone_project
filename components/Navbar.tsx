@@ -19,6 +19,9 @@ const Navbar = () => {
             <div className="hover:text-[#7981FF] transition-colors">Courses</div>
           </Link>
           <Link href="/contact">
+            <div className="hover:text-[#7981FF] transition-colors">Pricing</div>
+          </Link>
+          <Link href="/contact">
             <div className="hover:text-[#7981FF] transition-colors">How it Works</div>
           </Link>
         </div>
