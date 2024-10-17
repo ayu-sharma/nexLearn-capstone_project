@@ -27,16 +27,14 @@ const Signup = () => {
     const [formInputs, setFormInputs] = useState<SignupInput>({
         email: "",
         password: "",
-        confirmPassword: "",
-        role: ""
+        confirmPassword: ""
     });
 
     useEffect(() => {
         const areInputsFilled = 
             formInputs.email.trim() !== '' &&
             formInputs.password.trim() !== '' &&
-            formInputs.confirmPassword.trim() !== '' &&
-            formInputs.role.trim() !== '';
+            formInputs.confirmPassword.trim() !== ''
         
         setIsButtonDisabled(!(areInputsFilled && checked));
     }, [formInputs, checked]);
@@ -133,23 +131,6 @@ const Signup = () => {
                                 confirmPassword: e.target.value
                             }))
                         }}/>
-                    </div>
-                    <div className='flex flex-col items-start w-full gap-y-2 my-1'>
-                        <p className='text-start text-sm'>Select your role</p>
-                        <Select onValueChange={(value) => {
-                            setFormInputs(c => ({
-                                ...c,
-                                role: value
-                            }))
-                        }}>
-                            <SelectTrigger>
-                                <SelectValue placeholder="Role" />
-                            </SelectTrigger>
-                            <SelectContent>
-                                <SelectItem value="student">Student</SelectItem>
-                                <SelectItem value="educator">Educator</SelectItem>
-                            </SelectContent>
-                        </Select>
                     </div>
                     <div className='flex items-center gap-x-2 my-1'>
                         <input type="checkbox" name="agree" id="agree" onChange={(e) => setChecked(e.target.checked)}/>
