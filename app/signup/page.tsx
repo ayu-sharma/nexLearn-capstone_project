@@ -13,11 +13,12 @@ import {
 import React, { useState, useEffect } from 'react'
 import { SignupInput } from '@/helpers/zod';
 import { useRouter } from 'next/navigation';
-import axios from "axios"
+import axios, { AxiosError } from "axios"
 import Carousel from '@/components/Carousel';
 import Image from 'next/image';
 import logoL from "@/public/images/logol.svg"
 import logoD from "@/public/images/logoD.svg"
+import toast from 'react-hot-toast';
 
 const Signup = () => {
     const router = useRouter();
@@ -61,14 +62,20 @@ const Signup = () => {
 
         checkAuth();
     }, []);
-    // add toaster
+    
     const handleSignup = async () => {
         setIsLoading(true);
         try {
             const response = await axios.post('http://localhost:3000/api/user/signup', formInputs);
             localStorage.setItem("token", response.data.jwt);
+            toast.success('Signup successful');
             router.push('/home');
-        } catch (error) {
+        } catch (error: unknown) {
+            if (error instanceof AxiosError && error.response?.data?.error) {
+                toast.error(error.response.data.error.toString());
+            } else {
+                toast.error('Something went wrong. Please try again.');
+            }
             console.error("Failed to sign up: ", error);
         } finally {
             setIsLoading(false);

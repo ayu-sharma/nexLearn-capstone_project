@@ -6,11 +6,12 @@ import { Input } from '@/components/ui/input'
 import React, { useState, useEffect } from 'react'
 import { LoginInput } from '@/helpers/zod'
 import { useRouter } from 'next/navigation'
-import axios from "axios"
+import axios, { AxiosError } from "axios"
 import Carousel from '@/components/Carousel';
 import Image from 'next/image';
 import logoL from "@/public/images/logol.svg"
 import logoD from "@/public/images/logoD.svg"
+import toast from 'react-hot-toast';
 
 const Login = () => {
     const router = useRouter();
@@ -57,8 +58,14 @@ const Login = () => {
         try {
             const response = await axios.post('http://localhost:3000/api/user/login', formInputs);
             localStorage.setItem("token", response.data.jwt);
+            toast.success('Login successful');
             router.push('/home');
         } catch (error) {
+            if (error instanceof AxiosError && error.response?.data?.error) {
+                toast.error(error.response.data.error.toString());
+            } else {
+                toast.error('Something went wrong. Please try again.');
+            }
             console.error("Failed to login: ", error);
         } finally {
             setIsLoading(false);

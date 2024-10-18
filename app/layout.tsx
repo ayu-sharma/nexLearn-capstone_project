@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import { Plus_Jakarta_Sans } from 'next/font/google';
 import "./globals.css";
+import { Toaster } from "react-hot-toast";
 
 
 
@@ -37,6 +38,7 @@ export default function RootLayout({
       <body
         className={jakarta.className}
       >
+        <Toaster position="bottom-right"/>
         {children}
       </body>
     </html>

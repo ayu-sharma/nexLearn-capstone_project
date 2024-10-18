@@ -12,7 +12,7 @@ export async function POST (request: NextRequest) {
 
         if (!parsedBody.success) {
             return NextResponse.json({
-                error: "Incorrect inputs"
+                error: parsedBody.error.errors[0].message
             }, {
                 status: 400
             });
@@ -27,8 +27,11 @@ export async function POST (request: NextRequest) {
         });
 
         if (!user) {
+            console.log('user not found')
             return NextResponse.json({
                 error: "User not found"
+            }, {
+                status: 400
             });
         }
 
