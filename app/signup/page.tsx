@@ -61,7 +61,7 @@ const Signup = () => {
 
         checkAuth();
     }, []);
-
+    // add toaster
     const handleSignup = async () => {
         setIsLoading(true);
         try {
