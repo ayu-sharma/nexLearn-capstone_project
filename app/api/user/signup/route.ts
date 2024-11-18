@@ -40,6 +40,7 @@ export async function POST (request: NextRequest) {
         const newUser = await db.user.create({
             data: {
                 email: reqBody.email,
+                name: reqBody.name,
                 password: hashedPassword
             }
         });

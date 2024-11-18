@@ -19,6 +19,7 @@ const Signup = () => {
     const [isButtonDisabled, setIsButtonDisabled] = useState(true);
     const [isLoading, setIsLoading] = useState(false);
     const [formInputs, setFormInputs] = useState<SignupInput>({
+        name: "",
         email: "",
         password: "",
         confirmPassword: ""
@@ -105,6 +106,15 @@ const Signup = () => {
                         />
                     </div>
                     <h2 className='text-2xl py-2'>Sign Up</h2>
+                    <div className='flex flex-col w-full gap-y-2 my-1'>
+                        <p className='text-sm'>Name</p>
+                        <Input onChange={(e) => {
+                            setFormInputs(c => ({
+                                ...c,
+                                name: e.target.value
+                            }))
+                        }}/>
+                    </div>
                     <div className='flex flex-col w-full gap-y-2 my-1'>
                         <p className='text-sm'>Email</p>
                         <Input placeholder='✉️' onChange={(e) => {
