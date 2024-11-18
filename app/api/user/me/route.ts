@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { verify } from "jsonwebtoken";
 import { JWT_SECRET } from "@/helpers/constants";
+import { db } from "@/lib/db";
 
 export async function GET(req: NextRequest) {
     const authHeader = req.headers.get('authorization') || '';
@@ -18,9 +19,17 @@ export async function GET(req: NextRequest) {
         const user = verify(token, JWT_SECRET);
 
         if (user) {
+            const userDetails = await db.user.findUnique({
+                where: {
+                    id: (user as any).id
+                }
+            });
+
             return NextResponse.json({
-                userId: (user as any).id
-            })
+                name: userDetails?.name,
+                id: userDetails?.id,
+                email: userDetails?.email
+            });
         } else {
             return new NextResponse(
                 JSON.stringify({
