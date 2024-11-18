@@ -62,7 +62,7 @@ const HomePage = () => {
     <div className='relative h-screen w-screen flex'>
       <RightNav />
       <Sidebar selectedGroup={selectedGroup} onSelectGroup={setSelectedGroup}/>
-      <div className='px-6 py-8 flex flex-col'>
+      <div className='px-6 py-8 flex flex-col w-full'>
         <div className='text-2xl font-semibold mb-8'>
           {selectedGroup}
         </div>
