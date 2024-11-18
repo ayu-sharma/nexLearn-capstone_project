@@ -9,11 +9,13 @@ const DashboardGrid = () => {
         <ActivityGrid />
         <GoalGrid />
       </div>
-      <div>
-        Grid 2
+      <div className='grid grid-cols-3 gap-x-6'>
+        <p>Grid 2.1</p>
+        <p>Grid 2.2</p>
+        <p>Grid 2.3</p>
       </div>
       <div>
-        Grid 3
+        Heatmap
       </div>
     </div>
   )
