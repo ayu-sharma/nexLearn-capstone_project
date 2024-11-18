@@ -5,6 +5,7 @@ import Image from 'next/image';
 import logoL from "@/public/images/sidebarL.svg";
 import logoD from "@/public/images/sidebarD.svg";
 import { useRouter } from 'next/navigation';
+import { Code, NotebookPen } from 'lucide-react';
 
 interface SidebarProps {
     selectedGroup: string;
@@ -73,25 +74,21 @@ const Sidebar = ({ selectedGroup, onSelectGroup }: SidebarProps) => {
                     </div>
                     <div 
                         className={`flex items-center gap-x-2 p-2 rounded-md cursor-pointer transition hover:bg-white/10 dark:hover:bg-black/10 ${
-                            selectedGroup === 'Homework' ? 'text-[#7981FF]' : 'text-[#F2F2F2] dark:text-[#121417]'
+                            selectedGroup === 'Code' ? 'text-[#7981FF]' : 'text-[#F2F2F2] dark:text-[#121417]'
                         }`}
-                        onClick={() => onSelectGroup('Homework')}
+                        onClick={() => onSelectGroup('Code')}
                     >
-                        <svg className={`w-5 h-5 ${selectedGroup === 'Homework' ? 'text-[#7981FF]' : 'text-[#F2F2F2] dark:text-[#121417]'}`} aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
-                            <path fillRule="evenodd" d="M11.293 3.293a1 1 0 0 1 1.414 0l6 6 2 2a1 1 0 0 1-1.414 1.414L19 12.414V19a2 2 0 0 1-2 2h-3a1 1 0 0 1-1-1v-3h-2v3a1 1 0 0 1-1 1H7a2 2 0 0 1-2-2v-6.586l-.293.293a1 1 0 0 1-1.414-1.414l2-2 6-6Z" clip-rule="evenodd"/>
-                        </svg>
-                        <p>Homework</p>
+                        <Code className='w-5 h-5'/>
+                        <p>Code</p>
                     </div>
                     <div 
                         className={`flex items-center gap-x-2 p-2 rounded-md cursor-pointer transition hover:bg-white/10 dark:hover:bg-black/10 ${
-                            selectedGroup === 'Schedule' ? 'text-[#7981FF]' : 'text-[#F2F2F2] dark:text-[#121417]'
+                            selectedGroup === 'Practice' ? 'text-[#7981FF]' : 'text-[#F2F2F2] dark:text-[#121417]'
                         }`}
-                        onClick={() => onSelectGroup('Schedule')}
+                        onClick={() => onSelectGroup('Practice')}
                     >
-                        <svg className={`w-5 h-5 ${selectedGroup === 'Schedule' ? 'text-[#7981FF]' : 'text-[#F2F2F2] dark:text-[#121417]'}`} aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                            <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 10h16m-8-3V4M7 7V4m10 3V4M5 20h14a1 1 0 0 0 1-1V7a1 1 0 0 0-1-1H5a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1Zm3-7h.01v.01H8V13Zm4 0h.01v.01H12V13Zm4 0h.01v.01H16V13Zm-8 4h.01v.01H8V17Zm4 0h.01v.01H12V17Zm4 0h.01v.01H16V17Z"/>
-                        </svg>
-                        <p>Schedule</p>
+                        <NotebookPen className='w-5 h-5'/>
+                        <p>Practice</p>
                     </div>
                     <div 
                         className={`flex items-center gap-x-2 p-2 rounded-md cursor-pointer transition hover:bg-white/10 dark:hover:bg-black/10 ${
