@@ -4,6 +4,7 @@ import ActivityGrid from './activity-grid'
 import DSAGrid from './code-stats-grid'
 import MCQGrid from './mcq-grid'
 import AccuracyGrid from './accuracy-grid'
+import DashboardHeatMap from './heatmap'
 
 const DashboardGrid = () => {
   return (
@@ -17,9 +18,7 @@ const DashboardGrid = () => {
         <MCQGrid />
         <AccuracyGrid />
       </div>
-      <div>
-        Heatmap
-      </div>
+      <DashboardHeatMap />
     </div>
   )
 }

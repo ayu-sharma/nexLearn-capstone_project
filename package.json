@@ -21,6 +21,7 @@
     "@radix-ui/react-slot": "^1.1.0",
     "@types/axios": "^0.14.0",
     "@types/jsonwebtoken": "^9.0.7",
+    "@uiw/react-heat-map": "^2.3.1",
     "axios": "^1.7.7",
     "bcrypt-ts": "^5.0.2",
     "bcryptjs": "^2.4.3",
