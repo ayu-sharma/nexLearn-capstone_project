@@ -1,6 +1,7 @@
 import React from 'react'
 import GoalGrid from './goal-grid'
 import ActivityGrid from './activity-grid'
+import DSAGrid from './code-stats-grid'
 
 const DashboardGrid = () => {
   return (
@@ -10,9 +11,9 @@ const DashboardGrid = () => {
         <GoalGrid />
       </div>
       <div className='grid grid-cols-3 gap-x-6'>
-        <p>Grid 2.1</p>
-        <p>Grid 2.2</p>
-        <p>Grid 2.3</p>
+        <DSAGrid />
+        <p>MCQs solved</p>
+        <p>Accuracy</p>
       </div>
       <div>
         Heatmap
