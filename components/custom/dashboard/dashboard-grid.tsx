@@ -2,6 +2,7 @@ import React from 'react'
 import GoalGrid from './goal-grid'
 import ActivityGrid from './activity-grid'
 import DSAGrid from './code-stats-grid'
+import MCQGrid from './mcq-grid'
 
 const DashboardGrid = () => {
   return (
@@ -12,7 +13,7 @@ const DashboardGrid = () => {
       </div>
       <div className='grid grid-cols-3 gap-x-6'>
         <DSAGrid />
-        <p>MCQs solved</p>
+        <MCQGrid />
         <p>Accuracy</p>
       </div>
       <div>
