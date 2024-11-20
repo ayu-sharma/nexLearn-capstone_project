@@ -5,8 +5,8 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(
     request: NextRequest, 
-    { params }: { params: { courseId: string } 
-}) {
+    { params }: { params: { courseId: string } }
+) {
     try {
         const { courseId } = params;
         console.log(courseId);
