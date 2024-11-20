@@ -26,6 +26,7 @@ model Course {
   id            Int           @id @default(autoincrement())
   title         String
   type          CourseType
+  goal          Goal
   modules       Module[]
   lastViewedAt  DateTime?
   userCourses   UserCourse[]  // Add this field to establish the reverse relation

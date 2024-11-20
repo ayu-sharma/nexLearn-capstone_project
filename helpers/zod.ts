@@ -15,5 +15,12 @@ export const loginInput = z.object({
     password: z.string().min(8)
 });
 
+export const courseSchema = z.object({
+    title: z.string(),
+    type: z.enum(['CODING', 'APTITUDE', 'LANGUAGE_SKILLS']),
+    goal: z.enum(['INTERNSHIP', 'PLACEMENT']),
+});
+
 export type SignupInput = z.infer<typeof signupInput>;
 export type LoginInput = z.infer<typeof loginInput>;
+export type CourseSchema = z.infer<typeof courseSchema>;
