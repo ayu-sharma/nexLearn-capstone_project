@@ -21,6 +21,13 @@ export const courseSchema = z.object({
     goal: z.enum(['INTERNSHIP', 'PLACEMENT']),
 });
 
+export const moduleSchema = z.object({
+    title: z.string(),
+    content: z.string(),
+    videoUrl: z.string().optional(),
+});
+
 export type SignupInput = z.infer<typeof signupInput>;
 export type LoginInput = z.infer<typeof loginInput>;
 export type CourseSchema = z.infer<typeof courseSchema>;
+export type ModuleSchema = z.infer<typeof moduleSchema>;
