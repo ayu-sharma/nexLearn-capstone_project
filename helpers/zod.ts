@@ -17,7 +17,8 @@ export const loginInput = z.object({
 
 export const courseSchema = z.object({
     title: z.string(),
-    type: z.enum(['CODING', 'APTITUDE', 'LANGUAGE_SKILLS']),
+    description: z.string(),
+    type: z.enum(['CODING', 'APTITUDE', 'LANGUAGE']),
     goal: z.enum(['INTERNSHIP', 'PLACEMENT']),
 });
 

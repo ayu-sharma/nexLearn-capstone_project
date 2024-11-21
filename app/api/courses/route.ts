@@ -38,13 +38,14 @@ export async function POST(request: NextRequest) {
             });
         }
 
-        const { title, goal, type } = parsedBody.data;
+        const { title, goal, type, description } = parsedBody.data;
 
         const newCourse = await db.course.create({
             data: {
                 title, 
                 type, 
-                goal
+                goal,
+                description
             },
         });
 

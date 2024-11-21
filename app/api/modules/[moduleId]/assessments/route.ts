@@ -19,7 +19,7 @@ export async function POST(
           });
       
           if (!parsedData.success) {
-            return NextResponse.json({ error: parsedData.error.message }, { status: 400 });
+            return NextResponse.json({ error: parsedData.error }, { status: 400 });
           }
           
         const newAssessment = await db.assessment.create({
