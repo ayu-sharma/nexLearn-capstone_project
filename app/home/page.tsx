@@ -4,7 +4,6 @@ import React, { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation';
 import Sidebar from '@/components/Sidebar';
 import { ModeToggle } from '@/components/ModeToggle';
-import Searchbar from '@/components/Searchbar';
 import { Button } from '@/components/ui/button';
 import Username from '@/components/Username';
 import { Bell } from 'lucide-react';
@@ -37,6 +36,19 @@ const HomePage = () => {
     checkAuth();
 }, []);
 
+useEffect(() => {
+  const savedGroup = localStorage.getItem("selectedGroup");
+  if (savedGroup) {
+    setSelectedGroup(savedGroup);
+  }
+}, []);
+
+// Persist selected group to localStorage whenever it changes
+const handleGroupChange = (newGroup: string) => {
+  setSelectedGroup(newGroup);
+  localStorage.setItem("selectedGroup", newGroup);
+};
+
   const renderComponent = () => {
     switch (selectedGroup) {
       case 'Dashboard':
@@ -61,7 +73,7 @@ const HomePage = () => {
   return (
     <div className='relative h-screen w-screen flex'>
       <RightNav />
-      <Sidebar selectedGroup={selectedGroup} onSelectGroup={setSelectedGroup}/>
+      <Sidebar selectedGroup={selectedGroup} onSelectGroup={handleGroupChange}/>
       <div className='px-6 py-8 flex flex-col w-full'>
         <div className='text-2xl font-semibold mb-8'>
           {selectedGroup}
