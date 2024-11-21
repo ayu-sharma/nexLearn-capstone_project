@@ -23,15 +23,17 @@ model User {
 }
 
 model Course {
-  id            Int           @id @default(autoincrement())
-  title         String
-  type          CourseType
-  goal          Goal
-  modules       Module[]
-  lastViewedAt  DateTime?
-  userCourses   UserCourse[]  // Add this field to establish the reverse relation
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
+  id             Int          @id @default(autoincrement())
+  title          String
+  description    String?
+  type           CourseType
+  goal           Goal
+  modules        Module[]
+  lastViewedAt   DateTime?
+  userCourses    UserCourse[]  // Add this field to establish the reverse relation
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+  correctAnswers Int          @default(0)
 }
 
 model Module {
@@ -51,6 +53,7 @@ model Assessment {
   question    String
   options     String[] // For MCQs
   correctAnswer String // Store correct answers
+  correctAnswersCount Int  @default(0)
   moduleId    Int
   Module      Module @relation(fields: [moduleId], references: [id])
 }
@@ -80,7 +83,7 @@ enum Goal {
 enum CourseType {
   CODING
   APTITUDE
-  LANGUAGE_SKILLS
+  LANGUAGE
 }
 
 enum AssessmentType {
