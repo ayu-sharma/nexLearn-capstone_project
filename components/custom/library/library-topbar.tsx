@@ -4,7 +4,7 @@ import LibraryFilter from './library-filter'
 
 const LibraryTopbar = () => {
   return (
-    <div className='flex items-center gap-x-6'>
+    <div className='flex items-center gap-x-6 mb-8'>
         <Searchbar />
         <LibraryFilter />
     </div>
