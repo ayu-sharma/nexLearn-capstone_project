@@ -1,8 +1,8 @@
 "use client"
 
 import axios from 'axios';
-import { ArrowRight, BookA, Code, DraftingCompass } from 'lucide-react'
-import React, { useEffect, useState } from 'react'
+import { ArrowRight, BookA, Code, DraftingCompass } from 'lucide-react';
+import React, { useEffect, useState } from 'react';
 
 const LibraryGrid = () => {
     const [courses, setCourses] = useState<any[]>([]);
