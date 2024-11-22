@@ -59,7 +59,7 @@ const CourseCard = ({ title, description, type }: CourseCardProps) => {
             <div className='flex w-1/3'>
                 <p className='text-sm font-medium bg-[#7981FF]/20 text-[#7981FF] px-4 py-1 rounded'>{type}</p>
             </div>
-            <div className='absolute bottom-6 right-6 hidden group-hover:flex transition'>
+            <div className='absolute bottom-6 right-6 hidden group-hover:flex transition ease-in-out'>
                 <ArrowRight />
             </div>
         </div>
