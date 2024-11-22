@@ -19,6 +19,7 @@ const HomePage = () => {
   
   const router = useRouter();
   const [selectedGroup, setSelectedGroup] = useState('Dashboard');
+  const [selectedCourseId, setSelectedCourseId] = useState<string | null>(null);
 
   useEffect(() => {
     const checkAuth = async () => {
@@ -54,9 +55,9 @@ const handleGroupChange = (newGroup: string) => {
       case 'Dashboard':
         return <DashboardGrid />;
       case 'Library':
-        return <Library />;
+        return <Library onSelectCourse={handleCourseSelection}/>;
       case 'My Courses':
-        return <CourseView />;
+        return <CourseView courseId={selectedCourseId}/>;
       case 'Code':
         return <CodePage />;
       case 'Practice':
@@ -69,6 +70,11 @@ const handleGroupChange = (newGroup: string) => {
         return <div>Other component</div>;
     }
   }
+
+  const handleCourseSelection = (courseId: string) => {
+    setSelectedCourseId(courseId); // Update selected course ID
+    setSelectedGroup("My Courses"); // Switch to "My Courses" view
+  };
 
   return (
     <div className='relative h-screen w-screen flex'>

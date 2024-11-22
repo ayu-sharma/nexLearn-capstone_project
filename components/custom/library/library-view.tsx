@@ -4,7 +4,11 @@ import React, { useState } from 'react'
 import LibraryTopbar from './library-topbar'
 import LibraryGrid from './library-grid'
 
-const Library = () => {
+interface LibraryProps {
+  onSelectCourse: (courseId: string) => void;
+}
+
+const Library = ({ onSelectCourse }:  LibraryProps) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [filter, setFilter] = useState('All');
   return (
@@ -15,7 +19,7 @@ const Library = () => {
         filter={filter}
         setFilter={setFilter}
       />
-      <LibraryGrid searchTerm={searchTerm} filter={filter}/>
+      <LibraryGrid searchTerm={searchTerm} filter={filter} onCourseSelect={(courseId) => onSelectCourse(courseId)}/>
     </div>
   )
 }

@@ -7,9 +7,10 @@ import React, { useEffect, useState } from 'react';
 interface LibraryGridProps {
     searchTerm: string;
     filter: string;
+    onCourseSelect: (courseId: string) => void;
 }
 
-const LibraryGrid = ({ searchTerm, filter }: LibraryGridProps) => {
+const LibraryGrid = ({ searchTerm, filter, onCourseSelect }: LibraryGridProps) => {
     const [courses, setCourses] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
 
@@ -21,7 +22,7 @@ const LibraryGrid = ({ searchTerm, filter }: LibraryGridProps) => {
           } catch (error) {
             console.error('Error fetching courses:', error);
           } finally {
-            setLoading(true);
+            setLoading(false);
           }
         }
     
@@ -38,7 +39,7 @@ const LibraryGrid = ({ searchTerm, filter }: LibraryGridProps) => {
         {loading 
             ? Array.from({ length: 8 }).map((_, index) => <SkeletonCard key={index} />)
             : filteredCourses.map((course) => (
-                <CourseCard key={course.id} title={course.title} description={course.description} type={course.type} />
+                <CourseCard key={course.id} id={course.id} title={course.title} description={course.description} type={course.type} onClick={() => onCourseSelect(course.id)}/>
               ))
         }
     </div>
@@ -48,12 +49,14 @@ const LibraryGrid = ({ searchTerm, filter }: LibraryGridProps) => {
 export default LibraryGrid
 
 interface CourseCardProps {
+    id: string;
     title: string;
     description: string;
     type: string;
+    onClick: () => void;
 }
 
-const CourseCard = ({ title, description, type }: CourseCardProps) => {
+const CourseCard = ({ id, title, description, type, onClick }: CourseCardProps) => {
     const renderLogo = () => {
         switch(type) {
             case "CODING":
@@ -65,7 +68,7 @@ const CourseCard = ({ title, description, type }: CourseCardProps) => {
         }
     }
     return (
-        <div className='group transition cursor-pointer relative shadow-sm p-6 border rounded-md flex flex-col justify-between gap-y-4 hover:border-neutral-400'>
+        <div onClick={onClick} className='group transition cursor-pointer relative shadow-sm p-6 border rounded-md flex flex-col justify-between gap-y-4 hover:border-neutral-400'>
             <div className='flex flex-col gap-y-4'>
                 <div className='flex items-center'>
                     {renderLogo()}
