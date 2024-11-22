@@ -8,9 +8,9 @@ const CourseView = ({ courseId }: CourseViewProps) => {
   if (!courseId) {
     return <div>No course selected</div>;
   }
-  
+
   return (
-    <div>CourseView</div>
+    <div>{courseId}</div>
   )
 }
 
