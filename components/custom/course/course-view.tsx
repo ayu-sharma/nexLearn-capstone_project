@@ -1,6 +1,7 @@
 "use client";
 
 import axios from 'axios';
+import { BookA, Code, DraftingCompass, File, Video } from 'lucide-react';
 import React, { useEffect, useState } from 'react'
 
 interface CourseViewProps {
@@ -51,30 +52,41 @@ const CourseView = ({ courseId }: CourseViewProps) => {
     return <div>Loading course details...</div>;
   }
 
+  const renderLogo = () => {
+    switch (course.type) {
+      case "CODING":
+        return <Code className='mr-2' />;
+      case "APTITUDE":
+        return <DraftingCompass className='mr-2' />
+      case "LANGUAGE":
+        return <BookA className='mr-2' />
+    }
+  }
+
   return (
-    <div>
-      <h1>{course.title}</h1>
-      <div className="space-y-4">
-          {course.modules.map((module) => (
-            <div
-              key={module.id}
-              className="p-4 border rounded shadow-sm hover:shadow-md transition"
-            >
-              <h3 className="text-xl font-semibold">{module.title}</h3>
-              <p className="text-gray-700">{module.content}</p>
-              {module.videoUrl && (
-                <a
-                  href={module.videoUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-blue-500 underline mt-2 block"
-                >
-                  Watch Video
-                </a>
-              )}
-            </div>
-          ))}
+    <div className='flex flex-col gap-y-6'>
+      <div className='flex flex-col gap-y-2'>
+        <div className='flex items-center'>
+          {renderLogo()}
+          <h1 className='text-2xl font-medium'>{course.title}</h1>
         </div>
+        <p className='font-light'>{course.description}</p>
+      </div>
+      <div className="grid grid-cols-1 gap-6 w-1/4">
+        {course.modules.map((module) => (
+          <div
+            key={module.id}
+            className="flex justify-between items-center p-4 border rounded shadow-sm hover:shadow-md transition"
+          >
+            <div className='flex flex-col gap-2'>
+              <h2>Module {module.id}</h2>
+              <h3 className="text-xl font-semibold">{module.title}</h3>
+            </div>
+            <File />
+            {/* <Video /> */}
+          </div>
+        ))}
+      </div>
     </div>
   )
 }
