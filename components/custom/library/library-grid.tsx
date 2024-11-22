@@ -4,7 +4,12 @@ import axios from 'axios';
 import { ArrowRight, BookA, Code, DraftingCompass } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
 
-const LibraryGrid = () => {
+interface LibraryGridProps {
+    searchTerm: string;
+    filter: string;
+}
+
+const LibraryGrid = ({ searchTerm, filter }: LibraryGridProps) => {
     const [courses, setCourses] = useState<any[]>([]);
 
     useEffect(() => {
@@ -19,9 +24,15 @@ const LibraryGrid = () => {
     
         fetchCourses()
       }, []);
+
+    const filteredCourses = courses.filter((course) => {
+        const matchesSearch = course.title.toLowerCase().includes(searchTerm.toLocaleLowerCase());
+        const matchesFilter = filter === 'All' || course.type.toUpperCase() === filter.toUpperCase();
+        return matchesFilter && matchesSearch;
+    })
   return (
     <div className='grid grid-cols-4 gap-6'>
-        {courses.map((course) => (
+        {filteredCourses.map((course) => (
         <CourseCard key={course.id} title={course.title} description={course.description} type={course.type} />
       ))}
     </div>
