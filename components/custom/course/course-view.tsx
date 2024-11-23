@@ -1,5 +1,6 @@
 "use client";
 
+import { Checkbox } from '@/components/ui/checkbox';
 import axios from 'axios';
 import { BookA, Code, DraftingCompass, File, Video } from 'lucide-react';
 import React, { useEffect, useState } from 'react'
@@ -76,13 +77,16 @@ const CourseView = ({ courseId }: CourseViewProps) => {
         {course.modules.map((module) => (
           <div
             key={module.id}
-            className="flex justify-between items-center p-4 border rounded shadow-sm hover:shadow-md transition"
+            className="flex justify-between items-center p-4 border rounded transition cursor-pointer hover:border-neutral-400"
           >
             <div className='flex flex-col gap-2'>
-              <h2>Module {module.id}</h2>
+              <div className='flex items-center'>
+                <File className='h-5 mr-2' />
+                <h2>Module {module.id}</h2>
+              </div>
               <h3 className="text-xl font-semibold">{module.title}</h3>
             </div>
-            <File />
+            <Checkbox />
             {/* <Video /> */}
           </div>
         ))}
