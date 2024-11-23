@@ -11,11 +11,11 @@ datasource db {
 }
 
 model User {
-  id       Int    @id @default(autoincrement())
+  id       Int       @id @default(autoincrement())
   name     String?
-  email    String @unique
+  email    String    @unique
   password String
-  goal     Goal   @default(PLACEMENT)
+  goal     Goal      @default(PLACEMENT)
   courses  UserCourse[]
   scores   UserScore[]
   createdAt DateTime @default(now())
@@ -37,13 +37,25 @@ model Course {
 }
 
 model Module {
-  id         Int           @id @default(autoincrement())
-  title      String
-  content    String
-  videoUrl   String?
-  courseId   Int
+  id          Int           @id @default(autoincrement())
+  title       String
+  content     Content?
+  videoUrl    String?
+  completed   Boolean       @default(false)
+  courseId    Int
   assessments Assessment[]
-  Course     Course @relation(fields: [courseId], references: [id])
+  Course      Course        @relation(fields: [courseId], references: [id])
+}
+
+model Content {
+  id           Int           @id @default(autoincrement())
+  heading      String
+  subhead1     String
+  subhead2     String?
+  paragraph1   String
+  paragraph2   String?
+  moduleId     Int           @unique
+  Module       Module        @relation(fields: [moduleId], references: [id])
 }
 
 model Assessment {
@@ -51,11 +63,11 @@ model Assessment {
   type        AssessmentType
   level       Level
   question    String
-  options     String[] // For MCQs
-  correctAnswer String // Store correct answers
-  correctAnswersCount Int  @default(0)
+  options     String[] 
+  correctAnswer String 
+  correctAnswersCount Int    @default(0)
   moduleId    Int
-  Module      Module @relation(fields: [moduleId], references: [id])
+  Module      Module         @relation(fields: [moduleId], references: [id])
 }
 
 model UserCourse {
