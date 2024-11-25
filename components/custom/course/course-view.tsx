@@ -200,8 +200,8 @@ const CourseView = ({ courseId }: CourseViewProps) => {
                 <h3 className="text-xl font-semibold">{module.title}</h3>
               </div>
               <Checkbox 
-                checked={module?.completed === true}
-                onChange={() => toggleModuleCompletion(module.id, module.completed)}
+                checked={module?.completed}
+                onClick={() => toggleModuleCompletion(module.id, module.completed)}
               />
             </div>
           ))}
