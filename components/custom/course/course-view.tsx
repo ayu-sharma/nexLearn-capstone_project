@@ -213,15 +213,14 @@ const CourseView = ({ courseId }: CourseViewProps) => {
             <div className="text-center">Loading module content...</div>
           ) : selectedModule ? (
             <>
-              <h1 className="text-2xl font-bold mb-4">{selectedModule.title}</h1>
               {selectedModule.content ? (
                 <div className="space-y-4">
                   <h2 className="text-xl font-semibold">{selectedModule.content.heading}</h2>
-                  <h3 className="text-lg font-medium">{selectedModule.content.subhead1}</h3>
                   {selectedModule.content.subhead2 && (
                     <h4 className="text-md font-medium">{selectedModule.content.subhead2}</h4>
                   )}
                   <p className="text-base">{selectedModule.content.paragraph1}</p>
+                  <h3 className="text-lg font-medium">{selectedModule.content.subhead1}</h3>
                   {selectedModule.content.paragraph2 && (
                     <p className="text-base">{selectedModule.content.paragraph2}</p>
                   )}
