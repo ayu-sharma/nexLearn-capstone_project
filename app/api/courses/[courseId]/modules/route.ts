@@ -9,7 +9,13 @@ export async function POST(
 ) {
     try {
         const { courseId } = params;
-        console.log(courseId);
+
+        if (!courseId || isNaN(parseInt(courseId))) {
+            return NextResponse.json(
+              { error: "Invalid courseId" },
+              { status: 400 }
+            );
+          }
         
         const body = await request.json();
         const parsedBody = moduleSchema.safeParse(body);
@@ -22,16 +28,30 @@ export async function POST(
             });
         }
 
-        const { title, content, videoUrl } = parsedBody.data;
+        const { title, type, content, videoUrl } = parsedBody.data;
 
-        const newModule = await db.module.create({
-            data: {
-              title,
-              content,
-              videoUrl,
-              courseId: parseInt(courseId),
-            },
-        });
+        const moduleData: any = {
+            title,
+            courseId: parseInt(courseId),
+        }
+
+        if (type === "READING" && content) {
+            moduleData.content = {
+              create: {
+                heading: content.heading,
+                subhead1: content.subhead1,
+                subhead2: content.subhead2,
+                paragraph1: content.paragraph1,
+                paragraph2: content.paragraph2,
+              },
+            };
+          } else if (type === "VIDEO" && videoUrl) {
+            moduleData.videoUrl = videoUrl;
+          }
+      
+          const newModule = await db.module.create({
+            data: moduleData,
+          });
 
         return NextResponse.json({
             msg: 'Success',

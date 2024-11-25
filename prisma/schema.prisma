@@ -36,6 +36,7 @@ model Course {
 model Module {
   id          Int           @id @default(autoincrement())
   title       String
+  type        MaterialType
   content     Content?
   videoUrl    String?
   completed   Boolean       @default(false)
@@ -105,4 +106,9 @@ enum Level {
   EASY
   MEDIUM
   HARD
+}
+
+enum MaterialType {
+  READING
+  VIDEO
 }

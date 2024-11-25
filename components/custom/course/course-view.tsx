@@ -94,7 +94,7 @@ const CourseView = ({ courseId }: CourseViewProps) => {
           ))}
         </div>
         <div className='relative h-full w-3/4'>
-          <h1>Reading Material</h1>
+          <h1>{course.type}</h1>
           <div className='absolute bottom-0 flex w-full justify-end gap-x-4'>
             <Button>
               Mark as Completed
