@@ -26,6 +26,7 @@ const Library = ({ onSelectCourse }:  LibraryProps) => {
       });
       if (response.status === 200) {
         onSelectCourse(courseId);
+        localStorage.setItem("cId", courseId);
       }
     } catch (error) {
       console.error('Error while updating last viewed course: ' + error);

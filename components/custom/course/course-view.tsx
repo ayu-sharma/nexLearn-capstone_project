@@ -8,7 +8,7 @@ import React, { useEffect, useState } from 'react';
 
 // Define interfaces for type safety
 interface CourseViewProps {
-  courseId: string | null;
+  initialCourseId: string | null;
 }
 
 interface ModuleListItem {
@@ -47,12 +47,28 @@ interface Course {
   modules: ModuleListItem[];
 }
 
-const CourseView = ({ courseId }: CourseViewProps) => {
+const CourseView = ({ initialCourseId }: CourseViewProps) => {
+  const [courseId, setCourseId] = useState<string | null>(initialCourseId);
   const [course, setCourse] = useState<Course | null>(null);
   const [selectedModule, setSelectedModule] = useState<ModuleDetail | null>(null);
   const [loadingCourse, setLoadingCourse] = useState<boolean>(true);
   const [loadingModule, setLoadingModule] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
+
+  // Read courseId from localStorage on component mount
+  useEffect(() => {
+    const storedCourseId = localStorage.getItem('cId');
+    if (storedCourseId && !courseId) {
+      setCourseId(storedCourseId);
+    }
+  }, []);
+
+  // Update localStorage whenever courseId changes
+  useEffect(() => {
+    if (courseId) {
+      localStorage.setItem('cId', courseId);
+    }
+  }, [courseId]);
 
   // Fetch course data
   useEffect(() => {
