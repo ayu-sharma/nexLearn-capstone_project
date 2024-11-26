@@ -184,7 +184,7 @@ const CourseView = ({ courseId }: CourseViewProps) => {
       <div className="flex gap-6 h-[75vh]">
         {/* Module List */}
         <div className="flex flex-col gap-6 w-1/4 overflow-y-auto">
-          {course.modules.map((module) => (
+          {course.modules.sort((a, b) => a.id - b.id).map((module) => (
             <div
               key={module.id}
               className={`flex justify-between items-center p-4 border rounded transition cursor-pointer hover:border-neutral-400 ${
