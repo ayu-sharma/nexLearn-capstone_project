@@ -24,14 +24,11 @@ const Library = ({ onSelectCourse }:  LibraryProps) => {
           Authorization: `Bearer ${token}`
         },
       });
-      console.log(response.data);
       if (response.status === 200) {
-        console.log('Last viewed course updated');
         onSelectCourse(courseId);
       }
     } catch (error) {
       console.error('Error while updating last viewed course: ' + error);
-      console.log(error);
     }
   }
   return (
