@@ -3,6 +3,7 @@
 import React, { useState } from 'react'
 import LibraryTopbar from './library-topbar'
 import LibraryGrid from './library-grid'
+import axios from 'axios';
 
 interface LibraryProps {
   onSelectCourse: (courseId: string) => void;
@@ -11,6 +12,28 @@ interface LibraryProps {
 const Library = ({ onSelectCourse }:  LibraryProps) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [filter, setFilter] = useState('All');
+
+  const handleCourseSelect = async (courseId: string) => {
+    try {
+      const token = localStorage.getItem("token");
+      const cId = parseInt(courseId);
+      const response = await axios.put('http://localhost:3000/api/user/me', {
+        courseId: cId
+      }, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        },
+      });
+      console.log(response.data);
+      if (response.status === 200) {
+        console.log('Last viewed course updated');
+        onSelectCourse(courseId);
+      }
+    } catch (error) {
+      console.error('Error while updating last viewed course: ' + error);
+      console.log(error);
+    }
+  }
   return (
     <div>
       <LibraryTopbar 
@@ -19,7 +42,7 @@ const Library = ({ onSelectCourse }:  LibraryProps) => {
         filter={filter}
         setFilter={setFilter}
       />
-      <LibraryGrid searchTerm={searchTerm} filter={filter} onCourseSelect={(courseId) => onSelectCourse(courseId)}/>
+      <LibraryGrid searchTerm={searchTerm} filter={filter} onCourseSelect={handleCourseSelect}/>
     </div>
   )
 }
