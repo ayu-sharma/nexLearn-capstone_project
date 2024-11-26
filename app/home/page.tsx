@@ -74,6 +74,7 @@ const handleGroupChange = (newGroup: string) => {
   const handleCourseSelection = (courseId: string) => {
     setSelectedCourseId(courseId); // Update selected course ID
     setSelectedGroup("My Courses"); // Switch to "My Courses" view
+    localStorage.setItem("selectedGroup", "My Courses");
   };
 
   return (

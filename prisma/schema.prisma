@@ -17,6 +17,8 @@ model User {
   scores   UserScore[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt @default(now())
+  lastViewedCourse   Course?   @relation("LastViewed", fields: [lastViewedCourseId], references: [id])
+  lastViewedCourseId Int? 
 }
 
 model Course {
@@ -31,12 +33,13 @@ model Course {
   createdAt      DateTime     @default(now())
   updatedAt      DateTime     @updatedAt
   correctAnswers Int          @default(0)
+  User User[] @relation("LastViewed")
 }
 
 model Module {
   id          Int           @id @default(autoincrement())
   title       String
-  type        MaterialType
+  type        MaterialType  @default(READING)
   content     Content?
   videoUrl    String?
   completed   Boolean       @default(false)

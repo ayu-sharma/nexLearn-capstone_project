@@ -28,7 +28,8 @@ export async function GET(req: NextRequest) {
             return NextResponse.json({
                 name: userDetails?.name,
                 id: userDetails?.id,
-                email: userDetails?.email
+                email: userDetails?.email,
+                lastViewed: userDetails?.lastViewedCourseId
             });
         } else {
             return new NextResponse(
