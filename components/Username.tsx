@@ -21,6 +21,7 @@ const Username = () => {
         }
       }).then(response => {
         setUser(response.data);
+        localStorage.setItem("cId", response.data.lastViewed);
       }).catch(err => {
         console.error("Error fetching user: " + err);
       })

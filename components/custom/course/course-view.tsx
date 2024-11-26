@@ -3,7 +3,8 @@
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import axios from 'axios';
-import { BookA, ChevronRight, Code, DraftingCompass, File } from 'lucide-react';
+import { BookA, ChevronRight, Code, DraftingCompass, File, LibraryBig, LoaderCircle } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 
 // Define interfaces for type safety
@@ -54,6 +55,7 @@ const CourseView = ({ initialCourseId }: CourseViewProps) => {
   const [loadingCourse, setLoadingCourse] = useState<boolean>(true);
   const [loadingModule, setLoadingModule] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
+  const router = useRouter();
 
   // Read courseId from localStorage on component mount
   useEffect(() => {
@@ -169,16 +171,35 @@ const CourseView = ({ initialCourseId }: CourseViewProps) => {
     }
   };
 
+  const handleFind = () => {
+    localStorage.setItem("selectedGroup", "Library");
+    window.location.reload();
+  }
+
   if (!courseId) {
     return <div className="text-center text-red-500">No course selected</div>;
   }
 
   if (loadingCourse) {
-    return <div className="text-center">Loading course details...</div>;
+    return (
+      <div className="flex items-center justify-center h-full">
+        <LoaderCircle className='h-12 w-12 animate-spin'/>
+      </div>
+    );
   }
 
   if (error) {
-    return <div className="text-center text-red-500">{error}</div>;
+    return (
+      <div className="flex items-center justify-center h-full">
+        <div className='flex flex-col items-center gap-y-2'>
+          <LibraryBig className='h-12 w-12 opacity-30'/>
+          <p className='text-sm opacity-40 mb-4 font-semibold'>You haven't started learning yet</p>
+          <Button onClick={handleFind}>
+            Find Course
+          </Button>
+        </div>
+      </div>
+    )
   }
 
   if (!course) {
@@ -226,7 +247,9 @@ const CourseView = ({ initialCourseId }: CourseViewProps) => {
         {/* Module Content */}
         <div className="relative h-full w-3/4 p-4 border rounded overflow-y-auto">
           {loadingModule ? (
-            <div className="text-center">Loading module content...</div>
+            <div className="flex items-center justify-center h-full">
+              <LoaderCircle className='h-12 w-12 animate-spin'/>
+            </div>
           ) : selectedModule ? (
             <>
               {selectedModule.content ? (
@@ -249,7 +272,7 @@ const CourseView = ({ initialCourseId }: CourseViewProps) => {
                   </video>
                 </div>
               ) : (
-                <div>No content available for this module.</div>
+                <div className='flex items-center justify-center h-full'>Oops! Nothing here.</div>
               )}
             </>
           ) : (

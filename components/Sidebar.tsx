@@ -30,6 +30,8 @@ const Sidebar = ({ selectedGroup, onSelectGroup }: SidebarProps) => {
 
     const handleLogout = () => {
         localStorage.removeItem("token");
+        localStorage.removeItem("cId");
+        localStorage.removeItem("selectedGroup");
         router.push('/login');
     };
 
