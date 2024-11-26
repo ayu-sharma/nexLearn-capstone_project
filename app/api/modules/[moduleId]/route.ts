@@ -8,7 +8,6 @@ export async function GET(
   try {
     const { moduleId } = params;
 
-    // Validate courseId and moduleId
     const parsedModuleId = parseInt(moduleId);
 
     if (isNaN(parsedModuleId)) {
@@ -18,17 +17,15 @@ export async function GET(
       );
     }
 
-    // Fetch the module and its related content
     const module = await db.module.findUnique({
       where: {
         id: parsedModuleId,
       },
       include: {
-        content: true, // Include related content
+        content: true, 
       },
     });
 
-    // Check if the module exists and belongs to the given course
     if (!module) {
       return NextResponse.json(
         { error: "Module not found or does not belong to the course" },
@@ -36,7 +33,6 @@ export async function GET(
       );
     }
 
-    // Return the module and its content
     return NextResponse.json(
       {
         msg: "Module fetched successfully",
@@ -61,7 +57,6 @@ export async function PATCH(
     try {
       const { moduleId } = params;
   
-      // Validate moduleId
       const parsedModuleId = parseInt(moduleId);
   
       if (isNaN(parsedModuleId)) {
@@ -71,7 +66,6 @@ export async function PATCH(
         );
       }
   
-      // Fetch the current module
       const module = await db.module.findUnique({
         where: {
           id: parsedModuleId,
@@ -85,7 +79,6 @@ export async function PATCH(
         );
       }
   
-      // Toggle the 'completed' status
       const updatedModule = await db.module.update({
         where: {
           id: parsedModuleId,
