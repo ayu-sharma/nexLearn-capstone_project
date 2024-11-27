@@ -26,6 +26,7 @@ interface ModuleDetail {
   content: Content | null;
   videoUrl: string | null;
   courseId: number;
+  assessments: Assessment[];
 }
 
 interface Content {
@@ -47,6 +48,15 @@ interface Course {
   updatedAt: string;
   correctAnswers: number;
   modules: ModuleListItem[];
+}
+
+interface Assessment {
+  id: number;
+  type: string; 
+  level: string; 
+  question: string;
+  options: string[];
+  correctAnswer: string;
 }
 
 const CourseView = ({ initialCourseId }: CourseViewProps) => {
@@ -275,6 +285,32 @@ const CourseView = ({ initialCourseId }: CourseViewProps) => {
               ) : (
                 <div className='flex items-center justify-center h-full'>Oops! Nothing here.</div>
               )}
+
+<div className="mt-6">
+        <h3 className="text-xl font-semibold">Assessments</h3>
+        {selectedModule.assessments.length > 0 ? (
+          <ul className="mt-4 space-y-4">
+            {selectedModule.assessments.map((assessment) => (
+              <li
+                key={assessment.id}
+                className="border p-4 rounded shadow-sm space-y-2"
+              >
+                <h4 className="text-lg font-medium">{assessment.type} - {assessment.level}</h4>
+                <p className="font-medium">Question:</p>
+                <p>{assessment.question}</p>
+                <p className="font-medium">Options:</p>
+                <ul className="list-disc ml-6">
+                  {assessment.options.map((option, index) => (
+                    <li key={index}>{option}</li>
+                  ))}
+                </ul>
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <p>No assessments available for this module.</p>
+        )}
+      </div>
             </>
           ) : (
             <div className="text-center">Select a module to view its content.</div>
