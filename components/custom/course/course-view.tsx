@@ -4,7 +4,6 @@ import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import axios from 'axios';
 import { BookA, ChevronRight, Code, DraftingCompass, File, LibraryBig, LoaderCircle, Video } from 'lucide-react';
-import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 
 // Define interfaces for type safety
@@ -52,8 +51,8 @@ interface Course {
 
 interface Assessment {
   id: number;
-  type: string; 
-  level: string; 
+  type: string;
+  level: string;
   question: string;
   options: string[];
   correctAnswer: string;
@@ -66,7 +65,6 @@ const CourseView = ({ initialCourseId }: CourseViewProps) => {
   const [loadingCourse, setLoadingCourse] = useState<boolean>(true);
   const [loadingModule, setLoadingModule] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
-  const router = useRouter();
 
   // Read courseId from localStorage on component mount
   useEffect(() => {
@@ -138,18 +136,18 @@ const CourseView = ({ initialCourseId }: CourseViewProps) => {
 
   const toggleModuleCompletion = async (moduleId: number, currentStatus: boolean) => {
     if (!courseId) return;
-  
+
     try {
       // Send PATCH request to toggle the completion status
       const updatedStatus = !currentStatus;
       await axios.patch(`http://localhost:3000/api/modules/${moduleId}`, {
         completed: updatedStatus,
       });
-  
+
       // Update the local state to reflect the change
       setCourse((prevCourse) => {
         if (!prevCourse) return null;
-  
+
         return {
           ...prevCourse,
           modules: prevCourse.modules.map((module) =>
@@ -157,7 +155,7 @@ const CourseView = ({ initialCourseId }: CourseViewProps) => {
           ),
         };
       });
-  
+
       // Optionally update the selected module if it's the currently viewed one
       if (selectedModule?.id === moduleId) {
         setSelectedModule({ ...selectedModule, completed: updatedStatus });
@@ -194,7 +192,7 @@ const CourseView = ({ initialCourseId }: CourseViewProps) => {
   if (loadingCourse) {
     return (
       <div className="flex items-center justify-center h-full">
-        <LoaderCircle className='h-12 w-12 animate-spin'/>
+        <LoaderCircle className='h-12 w-12 animate-spin' />
       </div>
     );
   }
@@ -203,7 +201,7 @@ const CourseView = ({ initialCourseId }: CourseViewProps) => {
     return (
       <div className="flex items-center justify-center h-full">
         <div className='flex flex-col items-center gap-y-2'>
-          <LibraryBig className='h-12 w-12 opacity-30'/>
+          <LibraryBig className='h-12 w-12 opacity-30' />
           <p className='text-sm opacity-40 mb-4 font-semibold'>You haven't started learning yet</p>
           <Button onClick={handleFind}>
             Find Course
@@ -235,19 +233,18 @@ const CourseView = ({ initialCourseId }: CourseViewProps) => {
           {course.modules.sort((a, b) => a.id - b.id).map((module) => (
             <div
               key={module.id}
-              className={`flex justify-between items-center p-4 border rounded transition cursor-pointer hover:border-neutral-400 ${
-                selectedModule?.id === module.id ? "dark:bg-indigo-950 bg-indigo-200" : ""
-              }`}
+              className={`flex justify-between items-center p-4 border rounded transition cursor-pointer hover:border-neutral-400 ${selectedModule?.id === module.id ? "dark:bg-indigo-950 bg-indigo-200" : ""
+                }`}
               onClick={() => handleModuleClick(module.id)}
             >
               <div className="flex flex-col gap-2">
                 <div className="flex items-center">
-                  {module.type === 'READING' ? <File className="h-5 mr-2" /> : <Video className='h-5 mr-2'/>}
+                  {module.type === 'READING' ? <File className="h-5 mr-2" /> : <Video className='h-5 mr-2' />}
                   <h2>Module {module.id}</h2>
                 </div>
                 <h3 className="text-xl font-semibold">{module.title}</h3>
               </div>
-              <Checkbox 
+              <Checkbox
                 checked={module?.completed}
                 onClick={() => toggleModuleCompletion(module.id, module.completed)}
               />
@@ -259,7 +256,7 @@ const CourseView = ({ initialCourseId }: CourseViewProps) => {
         <div className="relative h-full w-3/4 p-4 border rounded overflow-y-auto">
           {loadingModule ? (
             <div className="flex items-center justify-center h-full">
-              <LoaderCircle className='h-12 w-12 animate-spin'/>
+              <LoaderCircle className='h-12 w-12 animate-spin' />
             </div>
           ) : selectedModule ? (
             <>
@@ -286,31 +283,31 @@ const CourseView = ({ initialCourseId }: CourseViewProps) => {
                 <div className='flex items-center justify-center h-full'>Oops! Nothing here.</div>
               )}
 
-<div className="mt-6">
-        <h3 className="text-xl font-semibold">Assessments</h3>
-        {selectedModule.assessments.length > 0 ? (
-          <ul className="mt-4 space-y-4">
-            {selectedModule.assessments.map((assessment) => (
-              <li
-                key={assessment.id}
-                className="border p-4 rounded shadow-sm space-y-2"
-              >
-                <h4 className="text-lg font-medium">{assessment.type} - {assessment.level}</h4>
-                <p className="font-medium">Question:</p>
-                <p>{assessment.question}</p>
-                <p className="font-medium">Options:</p>
-                <ul className="list-disc ml-6">
-                  {assessment.options.map((option, index) => (
-                    <li key={index}>{option}</li>
-                  ))}
-                </ul>
-              </li>
-            ))}
-          </ul>
-        ) : (
-          <p>No assessments available for this module.</p>
-        )}
-      </div>
+              <div className="mt-6">
+                <h3 className="text-xl font-semibold">Assessments</h3>
+                {selectedModule.assessments.length > 0 ? (
+                  <ul className="mt-4 space-y-4">
+                    {selectedModule.assessments.map((assessment) => (
+                      <li
+                        key={assessment.id}
+                        className="border p-4 rounded shadow-sm space-y-2"
+                      >
+                        <h4 className="text-lg font-medium">{assessment.type} - {assessment.level}</h4>
+                        <p className="font-medium">Question:</p>
+                        <p>{assessment.question}</p>
+                        <p className="font-medium">Options:</p>
+                        <ul className="list-disc ml-6">
+                          {assessment.options.map((option, index) => (
+                            <li key={index}>{option}</li>
+                          ))}
+                        </ul>
+                      </li>
+                    ))}
+                  </ul>
+                ) : (
+                  <p>No assessments available for this module.</p>
+                )}
+              </div>
             </>
           ) : (
             <div className="text-center">Select a module to view its content.</div>
@@ -327,7 +324,6 @@ const CourseView = ({ initialCourseId }: CourseViewProps) => {
               }}
             >
               {selectedModule?.completed ? 'Module Complete' : 'Mark as Completed'}
-              
             </Button>
             <Button size="icon">
               <ChevronRight />
