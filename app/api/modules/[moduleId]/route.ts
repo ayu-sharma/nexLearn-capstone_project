@@ -22,7 +22,8 @@ export async function GET(
         id: parsedModuleId,
       },
       include: {
-        content: true, 
+        content: true,
+        assessments: true
       },
     });
 

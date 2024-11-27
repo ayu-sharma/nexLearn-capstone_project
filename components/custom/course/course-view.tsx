@@ -3,7 +3,7 @@
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import axios from 'axios';
-import { BookA, ChevronRight, Code, DraftingCompass, File, LibraryBig, LoaderCircle } from 'lucide-react';
+import { BookA, ChevronRight, Code, DraftingCompass, File, LibraryBig, LoaderCircle, Video } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 
@@ -15,6 +15,7 @@ interface CourseViewProps {
 interface ModuleListItem {
   id: number;
   title: string;
+  type: string;
   completed: boolean;
 }
 
@@ -231,7 +232,7 @@ const CourseView = ({ initialCourseId }: CourseViewProps) => {
             >
               <div className="flex flex-col gap-2">
                 <div className="flex items-center">
-                  <File className="h-5 mr-2" />
+                  {module.type === 'READING' ? <File className="h-5 mr-2" /> : <Video className='h-5 mr-2'/>}
                   <h2>Module {module.id}</h2>
                 </div>
                 <h3 className="text-xl font-semibold">{module.title}</h3>
