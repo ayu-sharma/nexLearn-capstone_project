@@ -1,62 +1,13 @@
 "use client";
 
-import { Button } from '@/components/ui/button';
-import { Checkbox } from '@/components/ui/checkbox';
 import axios from 'axios';
-import { BookA, ChevronRight, Code, DraftingCompass, File, LibraryBig, LoaderCircle, Video } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
-
-// Define interfaces for type safety
-interface CourseViewProps {
-  initialCourseId: string | null;
-}
-
-interface ModuleListItem {
-  id: number;
-  title: string;
-  type: string;
-  completed: boolean;
-}
-
-interface ModuleDetail {
-  id: number;
-  title: string;
-  completed: boolean;
-  content: Content | null;
-  videoUrl: string | null;
-  courseId: number;
-  assessments: Assessment[];
-}
-
-interface Content {
-  heading: string;
-  subhead1: string;
-  subhead2?: string;
-  paragraph1: string;
-  paragraph2?: string;
-}
-
-interface Course {
-  id: number;
-  title: string;
-  description: string;
-  type: string;
-  goal: string;
-  lastViewedAt: string | null;
-  createdAt: string;
-  updatedAt: string;
-  correctAnswers: number;
-  modules: ModuleListItem[];
-}
-
-interface Assessment {
-  id: number;
-  type: string;
-  level: string;
-  question: string;
-  options: string[];
-  correctAnswer: string;
-}
+import CourseHeader from './course-header';
+import { Course, CourseViewProps, ModuleDetail } from './types';
+import ModuleListView from './module-list';
+import ModuleContent from './module-content';
+import Loader from './loader';
+import ErrorMessage from './error-msg';
 
 const CourseView = ({ initialCourseId }: CourseViewProps) => {
   const [courseId, setCourseId] = useState<string | null>(initialCourseId);
@@ -166,20 +117,6 @@ const CourseView = ({ initialCourseId }: CourseViewProps) => {
     }
   };
 
-  // Render the appropriate logo based on course type
-  const renderLogo = () => {
-    switch (course?.type) {
-      case "CODING":
-        return <Code className="mr-2" />;
-      case "APTITUDE":
-        return <DraftingCompass className="mr-2" />;
-      case "LANGUAGE":
-        return <BookA className="mr-2" />;
-      default:
-        return <File className="mr-2" />;
-    }
-  };
-
   const handleFind = () => {
     localStorage.setItem("selectedGroup", "Library");
     window.location.reload();
@@ -190,25 +127,11 @@ const CourseView = ({ initialCourseId }: CourseViewProps) => {
   }
 
   if (loadingCourse) {
-    return (
-      <div className="flex items-center justify-center h-full">
-        <LoaderCircle className='h-12 w-12 animate-spin' />
-      </div>
-    );
+    return <Loader />;
   }
 
   if (error) {
-    return (
-      <div className="flex items-center justify-center h-full">
-        <div className='flex flex-col items-center gap-y-2'>
-          <LibraryBig className='h-12 w-12 opacity-30' />
-          <p className='text-sm opacity-40 mb-4 font-semibold'>You haven't started learning yet</p>
-          <Button onClick={handleFind}>
-            Find Course
-          </Button>
-        </div>
-      </div>
-    )
+    return <ErrorMessage handleFind={handleFind}/>
   }
 
   if (!course) {
@@ -218,118 +141,15 @@ const CourseView = ({ initialCourseId }: CourseViewProps) => {
   return (
     <div className="flex flex-col gap-y-6 p-4">
       {/* Course Header */}
-      <div className="flex flex-col gap-y-2">
-        <div className="flex items-center">
-          {renderLogo()}
-          <h1 className="text-2xl font-medium">{course.title}</h1>
-        </div>
-        <p className="font-light">{course.description}</p>
-      </div>
+      <CourseHeader title={course.title} type={course.type} description={course.description} />
 
       {/* Course Modules and Content */}
       <div className="flex gap-6 h-[75vh]">
         {/* Module List */}
-        <div className="flex flex-col gap-6 w-1/4 overflow-y-auto">
-          {course.modules.sort((a, b) => a.id - b.id).map((module) => (
-            <div
-              key={module.id}
-              className={`flex justify-between items-center p-4 border rounded transition cursor-pointer hover:border-neutral-400 ${selectedModule?.id === module.id ? "dark:bg-indigo-950 bg-indigo-200" : ""
-                }`}
-              onClick={() => handleModuleClick(module.id)}
-            >
-              <div className="flex flex-col gap-2">
-                <div className="flex items-center">
-                  {module.type === 'READING' ? <File className="h-5 mr-2" /> : <Video className='h-5 mr-2' />}
-                  <h2>Module {module.id}</h2>
-                </div>
-                <h3 className="text-xl font-semibold">{module.title}</h3>
-              </div>
-              <Checkbox
-                checked={module?.completed}
-                onClick={() => toggleModuleCompletion(module.id, module.completed)}
-              />
-            </div>
-          ))}
-        </div>
+        <ModuleListView modules={course.modules} selectedModuleId={selectedModule?.id} onModuleClick={handleModuleClick} onToggleComplete={toggleModuleCompletion} />
 
         {/* Module Content */}
-        <div className="relative h-full w-3/4 p-4 border rounded overflow-y-auto">
-          {loadingModule ? (
-            <div className="flex items-center justify-center h-full">
-              <LoaderCircle className='h-12 w-12 animate-spin' />
-            </div>
-          ) : selectedModule ? (
-            <>
-              {selectedModule.content ? (
-                <div className="space-y-4">
-                  <h2 className="text-xl font-semibold">{selectedModule.content.heading}</h2>
-                  {selectedModule.content.subhead2 && (
-                    <h4 className="text-md font-medium">{selectedModule.content.subhead2}</h4>
-                  )}
-                  <p className="text-base">{selectedModule.content.paragraph1}</p>
-                  <h3 className="text-lg font-medium">{selectedModule.content.subhead1}</h3>
-                  {selectedModule.content.paragraph2 && (
-                    <p className="text-base">{selectedModule.content.paragraph2}</p>
-                  )}
-                </div>
-              ) : selectedModule.videoUrl ? (
-                <div className="mt-4">
-                  <video controls className="w-full">
-                    <source src={selectedModule.videoUrl} type="video/mp4" />
-                    Your browser does not support the video tag.
-                  </video>
-                </div>
-              ) : (
-                <div className='flex items-center justify-center h-full'>Oops! Nothing here.</div>
-              )}
-
-              <div className="mt-6">
-                <h3 className="text-xl font-semibold">Assessments</h3>
-                {selectedModule.assessments.length > 0 ? (
-                  <ul className="mt-4 space-y-4">
-                    {selectedModule.assessments.map((assessment) => (
-                      <li
-                        key={assessment.id}
-                        className="border p-4 rounded shadow-sm space-y-2"
-                      >
-                        <h4 className="text-lg font-medium">{assessment.type} - {assessment.level}</h4>
-                        <p className="font-medium">Question:</p>
-                        <p>{assessment.question}</p>
-                        <p className="font-medium">Options:</p>
-                        <ul className="list-disc ml-6">
-                          {assessment.options.map((option, index) => (
-                            <li key={index}>{option}</li>
-                          ))}
-                        </ul>
-                      </li>
-                    ))}
-                  </ul>
-                ) : (
-                  <p>No assessments available for this module.</p>
-                )}
-              </div>
-            </>
-          ) : (
-            <div className="text-center">Select a module to view its content.</div>
-          )}
-
-          {/* Footer Buttons */}
-          <div className="absolute bottom-4 right-4 flex gap-x-4">
-            <Button
-              onClick={async () => {
-                if (selectedModule) {
-                  // Trigger toggle on the Mark as Completed button click
-                  toggleModuleCompletion(selectedModule.id, selectedModule.completed);
-                }
-              }}
-            >
-              {selectedModule?.completed ? 'Module Complete' : 'Mark as Completed'}
-            </Button>
-            <Button size="icon">
-              <ChevronRight />
-            </Button>
-          </div>
-        </div>
+        <ModuleContent selectedModule={selectedModule} loading={loadingModule} toggleModuleCompletion={toggleModuleCompletion} />
       </div>
     </div>
   );
