@@ -85,16 +85,16 @@ const Login = () => {
         return () => observer.disconnect(); 
     }, []);
   return (
-    <div className='relative h-screen flex items-center justify-center w-screen'>
+    <div className='relative h-screen flex items-center justify-center w-full gap-4'>
         <div className='absolute top-10 right-10'>
             <ModeToggle />
         </div>
-        <div className='hidden md:flex md:mx-10'>
+        <div className='hidden md:flex ml-10'>
             <Carousel />
         </div>
-        <div className='w-full md:w-[75vw]'>
-            <div className='w-full flex justify-center'>
-                <div className='flex flex-col items-center gap-y-4 md:w-[40%]'>
+        <div className='w-full mx-4'>
+            <div className='w-full flex items-center justify-between'>
+                <div className='flex flex-col items-center max-w-lg md:max-w-md mx-auto w-full gap-y-4'>
                     <div className='pb-8'>
                         <Image 
                             src={isDarkMode ? logoL : logoD} alt='NexLearn Logo' height={44}

@@ -3,6 +3,7 @@ import { Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "react-hot-toast";
 import ClientProvider from "./ClientProvider"; // Import the client provider
+import { ReactNode } from "react";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -19,8 +20,11 @@ export const metadata = {
   title: "NexLearn",
   description: "Non-stop learning",
 };
+type RootLayoutProps = {
+  children: ReactNode; 
+};
 
-export default function RootLayout({ children }) {
+export default function RootLayout({ children }: RootLayoutProps) {
   return (
     <html lang="en">
       <body className={jakarta.className}>
