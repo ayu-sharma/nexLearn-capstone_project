@@ -14,6 +14,7 @@ const Library = ({ onSelectCourse }:  LibraryProps) => {
   const [filter, setFilter] = useState('All');
 
   const handleCourseSelect = async (courseId: string) => {
+    console.log("iscliked")
     try {
       const token = localStorage.getItem("token");
       const cId = parseInt(courseId);
