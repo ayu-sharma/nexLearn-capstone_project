@@ -2,7 +2,7 @@ import localFont from "next/font/local";
 import { Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "react-hot-toast";
-import ClientProvider from "./ClientProvider"; // Import the client provider
+
 import { ReactNode } from "react";
 
 const geistSans = localFont({
@@ -29,7 +29,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
     <html lang="en">
       <body className={jakarta.className}>
         <Toaster position="bottom-right" />
-        <ClientProvider>{children}</ClientProvider>
+      {children}
       </body>
     </html>
   );

@@ -47,6 +47,7 @@ const HomePage = () => {
   const handleGroupChange = (newGroup: string) => {
     setSelectedGroup(newGroup);
     localStorage.setItem("selectedGroup", newGroup);
+    
   };
 
   const renderComponent = () => {
