@@ -11,16 +11,14 @@ import { HiX, HiMenu } from "react-icons/hi";
 interface SidebarProps {
   selectedGroup: string;
   onSelectGroup: (group: string) => void;
+  isOpen: boolean;
+  toggleMenu: () => void;
 }
 
-const Sidebar = ({ selectedGroup, onSelectGroup }: SidebarProps) => {
+const Sidebar = ({ selectedGroup, onSelectGroup, isOpen, toggleMenu }: SidebarProps) => {
   const router = useRouter();
   const [isDarkMode, setIsDarkMode] = useState(false);
-  const [isOpen, setIsOpen] = useState(false);
-
-  const toggleMenu = () => {
-    setIsOpen(!isOpen);
-  };
+  
   useEffect(() => {
     const checkDarkMode = () => {
       setIsDarkMode(document.documentElement.classList.contains("dark"));

@@ -19,6 +19,11 @@ const HomePage = () => {
   const router = useRouter();
   const [selectedGroup, setSelectedGroup] = useState("Dashboard");
   const [selectedCourseId, setSelectedCourseId] = useState<string | null>(null);
+  const [isOpen, setIsOpen] = useState(false);
+
+  const toggleMenu = () => {
+    setIsOpen(!isOpen);
+  };
 
   useEffect(() => {
     const checkAuth = async () => {
@@ -47,7 +52,7 @@ const HomePage = () => {
   const handleGroupChange = (newGroup: string) => {
     setSelectedGroup(newGroup);
     localStorage.setItem("selectedGroup", newGroup);
-    
+    setIsOpen(false);
   };
 
   const renderComponent = () => {
@@ -57,7 +62,7 @@ const HomePage = () => {
       case "Library":
         return <Library onSelectCourse={handleCourseSelection} />;
       case "My Courses":
-        return <CourseView courseId={selectedCourseId} />;
+        return <CourseView initialCourseId={selectedCourseId} />;
       case "Code":
         return <CodePage />;
       case "Practice":
@@ -84,6 +89,8 @@ const HomePage = () => {
         <Sidebar
           selectedGroup={selectedGroup}
           onSelectGroup={handleGroupChange}
+          isOpen={isOpen}
+          toggleMenu={toggleMenu}
         />
       </div>
       <div className="px-6 xl:pl-[13rem] py-8 flex flex-col w-full">
