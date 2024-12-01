@@ -34,7 +34,7 @@ const Library = ({ onSelectCourse }:  LibraryProps) => {
     }
   }
   return (
-    <div>
+    <div className=''>
       <LibraryTopbar 
         searchTerm={searchTerm}
         setSearchTerm={setSearchTerm}

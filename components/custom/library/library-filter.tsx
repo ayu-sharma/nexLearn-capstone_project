@@ -9,7 +9,7 @@ interface LibraryFilterProps {
 const LibraryFilter = ({ filter, setFilter }: LibraryFilterProps) => {
     const filters = ['All', 'Coding', 'Aptitude', 'Language'];
   return (
-    <div className='flex items-center gap-x-6 w-full'>
+    <div className='flex items-center gap-3 w-full'>
         {filters.map((item) => (
             <ToggleButton 
                 title={item} 

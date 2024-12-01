@@ -11,7 +11,7 @@ interface LibraryTopbarProps {
 
 const LibraryTopbar = ({ searchTerm, setSearchTerm, filter, setFilter }: LibraryTopbarProps) => {
   return (
-    <div className='flex items-center gap-x-6 mb-8'>
+    <div className='flex flex-col gap-3 mb-8'>
         <Searchbar searchTerm={searchTerm} setSearchTerm={setSearchTerm}/>
         <LibraryFilter filter={filter} setFilter={setFilter}/>
     </div>
