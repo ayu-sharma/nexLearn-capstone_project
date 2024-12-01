@@ -2,7 +2,7 @@
 import Link from 'next/link';
 import { useState } from 'react';
 import { HiMenu, HiX } from "react-icons/hi";
-import CloseButton from './ui/CloseButton'
+import CloseButton from '../components/CloseButton'
 import {Button} from './ui/button'
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false)
