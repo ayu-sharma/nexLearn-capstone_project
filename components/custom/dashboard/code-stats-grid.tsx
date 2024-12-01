@@ -10,8 +10,8 @@ const DSAGrid = () => {
                 <p className='text-xl font-medium'>/ 30</p>
             </div>
             <div className='flex flex-col gap-y-2 p-4 w-2/5 bg-[#d2d6db] shadow-lg rounded-md items-start'>
-                <p className='text-xs text-white font-light underline'>Weak Points</p>
-                <div className='flex flex-col gap-y-1 text-[#7981FF]'>
+                <p className='text-xs text-normal font-light underline'>Weak Points</p>
+                <div className='flex md:text-normal text-xs flex-col gap-y-1 text-[#7981FF]'>
                     <p>Arrays</p>
                     <p>Linked List</p>
                     <p>Recursion</p>

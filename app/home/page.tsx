@@ -77,16 +77,16 @@ const HomePage = () => {
   };
 
   return (
-    <div className="relative h-screen w-screen flex">
+    <div className="relative h-screen w-full">
+      <div className="flex xl:block flex-row-reverse xl:pt-0 xl:px-0 pt-5 px-6 w-full justify-between">
       <RightNav />
-      <div className="xl:block hidden">
         <Sidebar
           selectedGroup={selectedGroup}
           onSelectGroup={handleGroupChange}
         />
       </div>
       <div className="px-6 xl:pl-[13rem] py-8 flex flex-col w-full">
-        <div className="text-2xl font-semibold mb-8">{selectedGroup}</div>
+        <div className="text-2xl font-semibold hidden xl:block mb-8">{selectedGroup}</div>
         {renderComponent()}
       </div>
     </div>
@@ -97,8 +97,8 @@ export default HomePage;
 
 const RightNav = () => {
   return (
-    <div className="absolute top-6 right-6">
-      <div className="flex justify-evenly gap-x-8 items-center">
+    <div className="xl:absolute top-6 right-6">
+      <div className="flex gap-3">
         {/* <Searchbar /> */}
         <Button size={"icon"} variant={"outline"}>
           <Bell className="w-5 h-5" />

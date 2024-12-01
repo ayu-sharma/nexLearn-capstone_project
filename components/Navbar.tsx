@@ -6,6 +6,7 @@ import CloseButton from './ui/CloseButton'
 import {Button} from './ui/button'
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false)
+  
   const toggleMenu=() => {
     setIsOpen(!isOpen)
   }

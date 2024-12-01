@@ -14,7 +14,7 @@ const Landing = () => {
          <div className="pb-4 ">
           <Image src={logoL} alt="NexLearn Logo" height={44} />
         </div>
-        <div className="">
+        <div className="md:hidden block">
           <Navbar />
         </div>
         </div>
