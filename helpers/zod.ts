@@ -15,6 +15,10 @@ export const loginInput = z.object({
     password: z.string().min(8)
 });
 
+export const upgateGoal = z.object({
+    goal: z.enum(['INTERNSHIP', 'PLACEMENT'])
+});
+
 export const courseSchema = z.object({
     title: z.string(),
     description: z.string(),
