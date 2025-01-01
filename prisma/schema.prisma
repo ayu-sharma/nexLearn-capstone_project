@@ -8,87 +8,84 @@ datasource db {
 }
 
 model User {
-  id       Int       @id @default(autoincrement())
-  name     String?
-  email    String    @unique
-  password String
-  goal     Goal      @default(PLACEMENT)
-  courses  UserCourse[]
-  scores   UserScore[]
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  lastViewedCourse   Course?   @relation("LastViewed", fields: [lastViewedCourseId], references: [id])
-  lastViewedCourseId Int?
+  id             String            @id @default(uuid())
+  name           String?
+  email          String            @unique
+  password       String
+  goal           Goal              @default(PLACEMENT)
+  startedCourses StartedCourse[]
+  performances   UserPerformance[]
+  createdAt      DateTime          @default(now())
+  updatedAt      DateTime          @updatedAt
 }
 
 model Course {
-  id             Int          @id @default(autoincrement())
+  id             String            @id @default(uuid())
   title          String
   description    String?
   type           CourseType
   goal           Goal
   modules        Module[]
-  lastViewedAt   DateTime?
-  userCourses    UserCourse[]  // Add this field to establish the reverse relation
-  createdAt      DateTime     @default(now())
-  updatedAt      DateTime     @updatedAt
-  correctAnswers Int          @default(0)
-  User User[] @relation("LastViewed")
+  startedByUsers StartedCourse[] // Relation to StartedCourse
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
 }
 
 model Module {
-  id          Int           @id @default(autoincrement())
-  title       String
-  type        MaterialType  @default(READING)
-  content     Content?
-  videoUrl    String?
-  completed   Boolean       @default(false)
-  courseId    Int
-  assessments Assessment[]
-  Course      Course        @relation(fields: [courseId], references: [id])
+  id             String            @id @default(uuid())
+  index     Int // Starting from 1 for ordering within a course
+  title     String
+  courseId  String
+  materials Material[]
+  Course    Course     @relation(fields: [courseId], references: [id])
+
+  @@unique([courseId, index])
 }
 
-model Content {
-  id           Int           @id @default(autoincrement())
-  heading      String
-  subhead1     String
-  subhead2     String?
-  paragraph1   String
-  paragraph2   String?
-  moduleId     Int           @unique
-  Module       Module        @relation(fields: [moduleId], references: [id])
+model Material {
+  id        String        @id @default(uuid())
+  type      MaterialType // VIDEO, READING, ASSESSMENT
+  title     String
+  videoUrl  String? // For Video Lectures
+  content   String? // For Reading Content
+  questions Assessment[] // For Assessments
+  moduleId  String
+  Module    Module       @relation(fields: [moduleId], references: [id])
 }
 
 model Assessment {
-  id          Int            @id @default(autoincrement())
-  type        AssessmentType
-  level       Level
-  question    String
-  options     String[] 
-  correctAnswer String 
-  correctAnswersCount Int    @default(0)
-  moduleId    Int
-  Module      Module         @relation(fields: [moduleId], references: [id])
+  id            String    @id @default(uuid())
+  question      String
+  options       String[]
+  correctAnswer String
+  materialId    String
+  Material      Material @relation(fields: [materialId], references: [id])
 }
 
-model UserCourse {
-  id           Int      @id @default(autoincrement())
-  userId       Int
-  courseId     Int
-  lastViewedAt DateTime?
-  User         User     @relation(fields: [userId], references: [id])
-  Course       Course   @relation(fields: [courseId], references: [id])
+model StartedCourse {
+  id            String    @id @default(uuid())
+  userId   String
+  courseId String
+  progress Float  @default(0) // Percentage progress
+  User     User   @relation(fields: [userId], references: [id])
+  Course   Course @relation(fields: [courseId], references: [id])
+
+  @@unique([userId, courseId]) // Ensure a user can only start a course once
 }
 
-model UserScore {
-  id          Int       @id @default(autoincrement())
-  userId      Int
-  courseType  CourseType
-  score       Int
-  User        User      @relation(fields: [userId], references: [id])
+model UserPerformance {
+  id         String    @id @default(uuid())
+  userId     String
+  courseType CourseType
+  totalScore Int        @default(0) // Total score based on correctness
+  correctDSA Int        @default(0) // Number of correct DSA questions
+  correctMCQ Int        @default(0) // Number of correct MCQs
+  totalDSA   Int        @default(0) // Total DSA questions attempted
+  totalMCQ   Int        @default(0) // Total MCQs attempted
+  User       User       @relation(fields: [userId], references: [id])
 }
 
-// Enums remain unchanged
+// Enums
 enum Goal {
   INTERNSHIP
   PLACEMENT
@@ -100,18 +97,8 @@ enum CourseType {
   LANGUAGE
 }
 
-enum AssessmentType {
-  CODING
-  MCQ
-}
-
-enum Level {
-  EASY
-  MEDIUM
-  HARD
-}
-
 enum MaterialType {
-  READING
-  VIDEO
+  VIDEO // Video Lecture
+  READING // Reading Content
+  ASSESSMENT // Assessments
 }

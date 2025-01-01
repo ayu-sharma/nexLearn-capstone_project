@@ -23,14 +23,16 @@ export async function GET(req: NextRequest) {
             const userDetails = await db.user.findUnique({
                 where: {
                     id: (user as any).id
+                },
+                include: {
+                    startedCourses: true,
+                    performances: true
                 }
             });
 
             return NextResponse.json({
-                name: userDetails?.name,
-                id: userDetails?.id,
-                email: userDetails?.email,
-                lastViewed: userDetails?.lastViewedCourseId
+                details: userDetails
+                
             });
         } else {
             return new NextResponse(
@@ -54,72 +56,72 @@ export async function GET(req: NextRequest) {
     }
 }
 
-export async function PUT(req: NextRequest, res: NextResponse) {
-    const authHeader = req.headers.get('authorization') || '';
+// export async function PUT(req: NextRequest, res: NextResponse) {
+//     const authHeader = req.headers.get('authorization') || '';
 
-    if (!authHeader || !authHeader.startsWith('Bearer ')) {
-        return NextResponse.json({
-            error: 'Bearer token not found'
-        }, {
-            status: 403
-        });
-    }
+//     if (!authHeader || !authHeader.startsWith('Bearer ')) {
+//         return NextResponse.json({
+//             error: 'Bearer token not found'
+//         }, {
+//             status: 403
+//         });
+//     }
 
-    const token = authHeader.split(' ')[1];
-    try {
-        const user = verify(token, JWT_SECRET);
+//     const token = authHeader.split(' ')[1];
+//     try {
+//         const user = verify(token, JWT_SECRET);
 
-        const userDetails = await db.user.findUnique({
-            where: {
-                id: (user as any).id
-            }
-        });
+//         const userDetails = await db.user.findUnique({
+//             where: {
+//                 id: (user as any).id
+//             }
+//         });
 
-        const body = await req.json();
-        const parsedBody = lastViewedSchema.safeParse(body);
+//         const body = await req.json();
+//         const parsedBody = lastViewedSchema.safeParse(body);
 
-        if (!parsedBody.success) {
-            return NextResponse.json({
-                err: "Invalid inputs",
-                error: parsedBody.error.errors
-            }, {
-                status: 400
-            });
-        }
+//         if (!parsedBody.success) {
+//             return NextResponse.json({
+//                 err: "Invalid inputs",
+//                 error: parsedBody.error.errors
+//             }, {
+//                 status: 400
+//             });
+//         }
 
-        const { courseId } = parsedBody.data;
-        const userId = userDetails?.id;
+//         const { courseId } = parsedBody.data;
+//         const userId = userDetails?.id;
 
-        if (!courseId) {
-            return NextResponse.json({ 
-                error: 'Course ID is required' 
-            }, {
-                status: 400
-            });
-        }
+//         if (!courseId) {
+//             return NextResponse.json({ 
+//                 error: 'Course ID is required' 
+//             }, {
+//                 status: 400
+//             });
+//         }
 
-        const updatedUser = await db.user.update({
-            where: { 
-                id: userId 
-            },
-            data: { 
-                lastViewedCourseId: courseId 
-            },
-        });
+//         const updatedUser = await db.user.update({
+//             where: { 
+//                 id: userId 
+//             },
+//             data: { 
+//                 lastViewedCourseId: courseId 
+//             },
+//         });
 
-        return NextResponse.json({
-            msg: "Last viewed course updated",
-            user: updatedUser
-        }, {
-            status: 200
-        });
+//         return NextResponse.json({
+//             msg: "Last viewed course updated",
+//             user: updatedUser
+//         }, {
+//             status: 200
+//         });
 
-    } catch (error) {
-        console.error(error);
-        return NextResponse.json({
-            err: "Something went wrong"
-        }, {
-            status: 500
-        });
-    }
-}
+//     } catch (error) {
+//         console.error(error);
+//         return NextResponse.json({
+//             err: "Something went wrong"
+//         }, {
+//             status: 500
+//         });
+//     }
+// }
