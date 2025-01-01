@@ -20,7 +20,11 @@ const Username = () => {
           Authorization: `Bearer ${token}`
         }
       }).then(response => {
-        setUser(response.data);
+        setUser({
+          name: response.data.details.name,
+          email: response.data.details.email,
+          id: response.data.details.email,
+        });
         localStorage.setItem("cId", response.data.lastViewed);
       }).catch(err => {
         console.error("Error fetching user: " + err);

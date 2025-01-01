@@ -2,21 +2,22 @@
 
 import React from "react";
 import Image from "next/image";
-import logoL from "@/public/images/logoL.svg";
+import logoD from "@/public/images/logoD.svg";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import Navbar from "@/components/Navbar";
 import aipowered from "../../public/images/aipowered.svg";
 import learning from "../../public/images/learning.svg";
 import trackable from "../../public/images/trackable.svg";
+import Courses from "../../components/Courses";
 
 const Landing = () => {
   return (
-    <div className="font-mono bg-gradient-to-b overflow-auto from-[#E8C6FF] to-[#D2A4FF] text-[#F2F2F2] min-h-[100vh]">
+    <div className="font-mono overflow-hidden bg-[#ffffff] text-[#0a1728] min-h-[100vh]">
       <div className="flex flex-col my-8 md:mx-5 mx-3 ">
         <div className="md:hidden flex items-center justify-between">
           <div className="pb-4">
-            <Image src={logoL} alt="NexLearn Logo" height={44} />
+            <Image src={logoD} alt="NexLearn Logo" height={44} />
           </div>
           <div className="md:hidden block">
             <Navbar />
@@ -25,13 +26,13 @@ const Landing = () => {
         <div className="hidden md:block">
           <div className="flex justify-between gap-x-8 items-center md:px-9">
             <div className="pb-4">
-              <Image src={logoL} alt="NexLearn Logo" height={44} />
+              <Image src={logoD} alt="NexLearn Logo" height={44} />
             </div>
             <div className="">
               <Navbar />
             </div>
             <Link href="http://localhost:3000/login">
-              <Button className=" w-full text-lg py-6 px-8 text-[#F2F2F2] bg-transparent border border-[#F2F2F2] hover:bg-[#F2F2F2] hover:text-[#121417]">
+              <Button className=" w-full text-lg py-6 px-8 text-[#F2F2F2] bg-[#121417] border border-[#121417] hover:bg-transparent hover:text-[#121417]">
                 Sign In
               </Button>
             </Link>
@@ -52,7 +53,7 @@ const Landing = () => {
 
           <div>
             <Link href={"http://localhost:3000/signup"}>
-              <Button className="bg-[#F2F2F2] rounded text-lg py-6 px-8 mx-3 md:mx-0 text-[#121417] my-10 hover:bg-transparent hover:border-[#F2F2F2] border-white border hover:border hover:text-white">
+              <Button className="bg-transparent rounded text-lg py-6 px-8 mx-3 md:mx-0 text-[#121417] my-10 hover:bg-[#121417] border-[#121417] hover:text-white">
                 Get Started
               </Button>
             </Link>
@@ -82,8 +83,8 @@ const Landing = () => {
                 "Engage with video lectures and quizzes while tracking your progress through detailed analytics",
             },
           ].map((info) => (
-            <div className="flex flex-col gap-10 rounded-xl items-center bg-white max-w-xs py-5 px-4 w-full ">
-              <p className="text-black">{info.heading}</p>
+            <div className="flex flex-col gap-10 rounded-xl items-center bg-[#121417] max-w-xs py-5 px-4 w-full ">
+              <p className="text-white"> {info.heading}</p>
               <Image
                 className=""
                 src={info.image}
@@ -91,10 +92,11 @@ const Landing = () => {
                 width={80}
                 height={60}
               />
-              <p className="text-center text-black">{info.description}</p>
+              <p className="text-center text-white">{info.description}</p>
             </div>
           ))}
         </div>
+        <Courses/>
       </div>
     </div>
   );

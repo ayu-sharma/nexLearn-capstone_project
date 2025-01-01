@@ -14,7 +14,7 @@ const Navbar = () => {
     <>
     <nav className="p-4 md:block hidden">
       <div className="container mx-auto flex items-center">
-        <div className="flex justify-between text-lg gap-10 space-x-4 text-[#F2F2F2]">
+        <div className="flex justify-between text-lg gap-10 space-x-4 text-[#0a1728]">
           <Link href="/">
             <div className="hover:text-[#7981FF] transition-colors">Home</div>
           </Link>
