@@ -3,10 +3,8 @@ import { verify } from "jsonwebtoken";
 import { JWT_SECRET } from "@/helpers/constants";
 import { db } from "@/lib/db";
 import { upgateGoal } from "@/helpers/zod";
-
 export async function PUT (req: NextRequest, res: NextResponse) {
     const authHeader = req.headers.get('authorization') || '';
-
     if (!authHeader || !authHeader.startsWith('Bearer ')) {
         return NextResponse.json({
             error: 'Bearer token not found'
@@ -14,21 +12,16 @@ export async function PUT (req: NextRequest, res: NextResponse) {
             status: 403
         });
     }
-
     const token = authHeader.split(' ')[1];
-
     try {
         const user = verify(token, JWT_SECRET);
-
         const userDetails = await db.user.findUnique({
             where: {
                 id: (user as any).id
             }
         });
-
         const body = await req.json();
         const parsedBody = upgateGoal.safeParse(body);
-
         if (!parsedBody.success) {
             return NextResponse.json({
                 err: "Invalid inputs",
@@ -36,10 +29,8 @@ export async function PUT (req: NextRequest, res: NextResponse) {
                 status: 400
             });
         }
-
         const { goal } = parsedBody.data;
         const userId = userDetails?.id;
-
         if (!goal) {
             return NextResponse.json({
                 error: 'Goal missing',
@@ -47,7 +38,6 @@ export async function PUT (req: NextRequest, res: NextResponse) {
                 status: 400
             });
         }
-
         const updatedUser = await db.user.update({
             where: {
                 id: userId
@@ -56,7 +46,6 @@ export async function PUT (req: NextRequest, res: NextResponse) {
                 goal: goal
             }
         });
-
         return NextResponse.json({
             msg: "Goal updated successfully",
             user: updatedUser

@@ -43,6 +43,7 @@ const HomePage = () => {
 
   useEffect(() => {
     const savedGroup = localStorage.getItem("selectedGroup");
+    console.log("this is saved", localStorage.getItem("selectedGroup"));
     if (savedGroup) {
       setSelectedGroup(savedGroup);
     }
@@ -83,7 +84,7 @@ const HomePage = () => {
   };
 
   return (
-    <div className="relative h-screen w-full">
+    <div className="relative h-screen w-full overflow-x-hidden">
       <div className="flex xl:block flex-row-reverse xl:pt-0 xl:px-0 pt-5 px-6 w-full justify-between">
       <RightNav />
         <Sidebar
