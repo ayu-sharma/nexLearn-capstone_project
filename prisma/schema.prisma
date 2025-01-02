@@ -20,7 +20,7 @@ model User {
 }
 
 model Course {
-  id             String            @id @default(uuid())
+  id             String          @id @default(uuid())
   title          String
   description    String?
   type           CourseType
@@ -32,7 +32,7 @@ model Course {
 }
 
 model Module {
-  id             String            @id @default(uuid())
+  id        String     @id @default(uuid())
   index     Int // Starting from 1 for ordering within a course
   title     String
   courseId  String
@@ -43,26 +43,26 @@ model Module {
 }
 
 model Material {
-  id        String        @id @default(uuid())
+  id        String       @id @default(uuid())
   type      MaterialType // VIDEO, READING, ASSESSMENT
   title     String
   videoUrl  String? // For Video Lectures
   content   String? // For Reading Content
   questions Assessment[] // For Assessments
-  completed Boolean     @default(false)
+  completed Boolean      @default(false)
   moduleId  String
   Module    Module       @relation(fields: [moduleId], references: [id])
 }
 
 model Assessment {
-  id            String    @id @default(uuid())
-  questions     Question[]
-  materialId    String
-  Material      Material @relation(fields: [materialId], references: [id])
+  id         String     @id @default(uuid())
+  questions  Question[]
+  materialId String
+  Material   Material   @relation(fields: [materialId], references: [id])
 }
 
 model Question {
-  id            String   @id @default(uuid())
+  id            String     @id @default(uuid())
   text          String
   options       String[]
   correctAnswer String
@@ -71,7 +71,7 @@ model Question {
 }
 
 model StartedCourse {
-  id            String    @id @default(uuid())
+  id       String @id @default(uuid())
   userId   String
   courseId String
   progress Float  @default(0) // Percentage progress
@@ -82,7 +82,7 @@ model StartedCourse {
 }
 
 model UserPerformance {
-  id         String    @id @default(uuid())
+  id         String     @id @default(uuid())
   userId     String
   courseType CourseType
   totalScore Int        @default(0) // Total score based on correctness
