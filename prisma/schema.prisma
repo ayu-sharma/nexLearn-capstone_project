@@ -49,17 +49,25 @@ model Material {
   videoUrl  String? // For Video Lectures
   content   String? // For Reading Content
   questions Assessment[] // For Assessments
+  completed Boolean     @default(false)
   moduleId  String
   Module    Module       @relation(fields: [moduleId], references: [id])
 }
 
 model Assessment {
   id            String    @id @default(uuid())
-  question      String
-  options       String[]
-  correctAnswer String
+  questions     Question[]
   materialId    String
   Material      Material @relation(fields: [materialId], references: [id])
+}
+
+model Question {
+  id            String   @id @default(uuid())
+  text          String
+  options       String[]
+  correctAnswer String
+  assessmentId  String
+  Assessment    Assessment @relation(fields: [assessmentId], references: [id])
 }
 
 model StartedCourse {
