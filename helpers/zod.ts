@@ -37,26 +37,33 @@ export const contentSchema = z.object({
 export const moduleSchema = z.object({
     title: z.string(),
     index: z.number().positive()
-//     type: z.enum(["READING", "VIDEO"]),
-//     content: contentSchema.optional(),
-//     videoUrl: z.string().optional(),
-// }).refine(
-//     (data) =>
-//       (data.type === "READING" && data.content && !data.videoUrl) ||
-//       (data.type === "VIDEO" && data.videoUrl && !data.content),
-//     {
-//       message: "A module must either have content for READING or a videoUrl for VIDEO, but not both.",
-//       path: ["content", "videoUrl"],
-//     }
 });
 
-export const assessmentSchema = z.object({
-    type: z.enum(['CODING', 'MCQ']),
-    level: z.enum(['EASY', 'MEDIUM', 'HARD']),
-    question: z.string(),
-    options: z.array(z.string()).optional(), // MCQ options
-    correctAnswer: z.string(),
-});
+export const materialSchema = z.object({
+    title: z.string(),
+    type: z.enum(["READING", "VIDEO", "ASSESSMENT"]),
+    videoUrl: z.string().optional(),
+    content: z.string().optional(),
+    questions: z.array(
+        z.object({
+          text: z.string().min(1, 'Question text is required'),
+          optionA: z.string().min(1, 'Option A is required'),
+          optionB: z.string().min(1, 'Option B is required'),
+          optionC: z.string().min(1, 'Option C is required'),
+          optionD: z.string().min(1, 'Option D is required'),
+          correctAnswer: z.enum(['A', 'B', 'C', 'D']),
+        })
+    ).nonempty('At least one question is required').optional()
+}).refine(
+    (data) =>
+       (data.type === "READING" && data.content && !data.videoUrl && !data.questions) ||
+       (data.type === "VIDEO" && data.videoUrl && !data.content && !data.questions) ||
+       (data.type === "ASSESSMENT" && data.questions && !data.videoUrl && !data.content),
+        {
+            message: "A module must either have content for READING, quiz for ASSESSMENT or a videoUrl for VIDEO.",
+            path: ["content", "videoUrl", "questions"],
+        }
+)
 
 export const lastViewedSchema = z.object({
     courseId: z.number()
@@ -66,5 +73,5 @@ export type SignupInput = z.infer<typeof signupInput>;
 export type LoginInput = z.infer<typeof loginInput>;
 export type CourseSchema = z.infer<typeof courseSchema>;
 export type ModuleSchema = z.infer<typeof moduleSchema>;
-export type AssessmentSchema = z.infer<typeof assessmentSchema>;
+export type MaterialSchema = z.infer<typeof materialSchema>;
 export type LastViewedSchema = z.infer<typeof lastViewedSchema>;
