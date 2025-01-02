@@ -64,8 +64,11 @@ model Assessment {
 model Question {
   id            String     @id @default(uuid())
   text          String
-  options       String[]
-  correctAnswer String
+  optionA       String
+  optionB       String
+  optionC       String
+  optionD       String
+  correctAnswer String // "A", "B", "C", "D"
   assessmentId  String
   Assessment    Assessment @relation(fields: [assessmentId], references: [id])
 }
