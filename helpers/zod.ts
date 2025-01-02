@@ -36,18 +36,19 @@ export const contentSchema = z.object({
 
 export const moduleSchema = z.object({
     title: z.string(),
-    type: z.enum(["READING", "VIDEO"]),
-    content: contentSchema.optional(),
-    videoUrl: z.string().optional(),
-}).refine(
-    (data) =>
-      (data.type === "READING" && data.content && !data.videoUrl) ||
-      (data.type === "VIDEO" && data.videoUrl && !data.content),
-    {
-      message: "A module must either have content for READING or a videoUrl for VIDEO, but not both.",
-      path: ["content", "videoUrl"],
-    }
-);
+    index: z.number().positive()
+//     type: z.enum(["READING", "VIDEO"]),
+//     content: contentSchema.optional(),
+//     videoUrl: z.string().optional(),
+// }).refine(
+//     (data) =>
+//       (data.type === "READING" && data.content && !data.videoUrl) ||
+//       (data.type === "VIDEO" && data.videoUrl && !data.content),
+//     {
+//       message: "A module must either have content for READING or a videoUrl for VIDEO, but not both.",
+//       path: ["content", "videoUrl"],
+//     }
+});
 
 export const assessmentSchema = z.object({
     type: z.enum(['CODING', 'MCQ']),
