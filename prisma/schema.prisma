@@ -8,50 +8,102 @@ datasource db {
 }
 
 model User {
-  id             String            @id @default(uuid())
-  name           String?
-  email          String            @unique
-  password       String
-  goal           Goal              @default(PLACEMENT)
-  startedCourses StartedCourse[]
-  performances   UserPerformance[]
-  createdAt      DateTime          @default(now())
-  updatedAt      DateTime          @updatedAt
+  id               String             @id @default(uuid())
+  name             String?
+  email            String             @unique
+  password         String
+  goal             Goal               @default(PLACEMENT)
+  startedCourses   StartedCourse[]
+  performances     UserPerformance[]
+  materialProgress MaterialProgress[]
+  moduleProgress   ModuleProgress[] // Add back-relation for `ModuleProgress`
+  recommendations  Recommendations[]
+  createdAt        DateTime           @default(now())
+  updatedAt        DateTime           @updatedAt
 }
 
 model Course {
-  id             String          @id @default(uuid())
-  title          String
-  description    String?
-  type           CourseType
-  goal           Goal
-  modules        Module[]
-  startedByUsers StartedCourse[] // Relation to StartedCourse
-  createdAt      DateTime        @default(now())
-  updatedAt      DateTime        @updatedAt
+  id              String            @id @default(uuid())
+  title           String
+  description     String?
+  type            CourseType
+  goal            Goal
+  // category       String          // For better discoverability
+  // tags           String[]        // Array of tags for filtering and searching
+  modules         Module[]
+  startedByUsers  StartedCourse[] // Relation for users who started this course
+  recommendations Recommendations[] // Back-relation for `Recommendations`
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime          @updatedAt
+  isDeleted       Boolean           @default(false) // Soft delete
 }
 
 model Module {
-  id        String     @id @default(uuid())
+  id        String           @id @default(uuid())
   index     Int // Starting from 1 for ordering within a course
   title     String
   courseId  String
   materials Material[]
-  Course    Course     @relation(fields: [courseId], references: [id])
+  Course    Course           @relation(fields: [courseId], references: [id])
+  progress  ModuleProgress[] // New relation for user-specific progress
 
   @@unique([courseId, index])
 }
 
 model Material {
-  id        String       @id @default(uuid())
-  type      MaterialType // VIDEO, READING, ASSESSMENT
-  title     String
-  videoUrl  String? // For Video Lectures
-  content   String? // For Reading Content
-  questions Assessment[] // For Assessments
-  completed Boolean      @default(false)
-  moduleId  String
-  Module    Module       @relation(fields: [moduleId], references: [id])
+  id               String             @id @default(uuid())
+  type             MaterialType
+  title            String
+  videoUrl         String?
+  content          String?
+  questions        Assessment[]
+  moduleId         String
+  Module           Module             @relation(fields: [moduleId], references: [id])
+  materialProgress MaterialProgress[] // Back-relation for `MaterialProgress`
+}
+
+model MaterialProgress {
+  id         String   @id @default(uuid())
+  userId     String
+  materialId String
+  progress   Float    @default(0) // User's progress on this material
+  completed  Boolean  @default(false)
+  User       User     @relation(fields: [userId], references: [id])
+  Material   Material @relation(fields: [materialId], references: [id])
+
+  @@unique([userId, materialId])
+}
+
+model ModuleProgress {
+  id       String @id @default(uuid())
+  userId   String
+  moduleId String
+  progress Float  @default(0) // User's progress on this module
+  User     User   @relation(fields: [userId], references: [id])
+  Module   Module @relation(fields: [moduleId], references: [id])
+
+  @@unique([userId, moduleId])
+}
+
+model StartedCourse {
+  id       String @id @default(uuid())
+  userId   String
+  courseId String
+  progress Float  @default(0) // Percentage progress
+  User     User   @relation(fields: [userId], references: [id])
+  Course   Course @relation(fields: [courseId], references: [id])
+
+  @@unique([userId, courseId]) // Ensure a user can only start a course once
+}
+
+model Recommendations {
+  id       String @id @default(uuid())
+  userId   String
+  courseId String
+  User     User   @relation(fields: [userId], references: [id])
+  Course   Course @relation(fields: [courseId], references: [id])
+
+  createdAt DateTime @default(now())
 }
 
 model Assessment {
@@ -71,17 +123,6 @@ model Question {
   correctAnswer String // "A", "B", "C", "D"
   assessmentId  String
   Assessment    Assessment @relation(fields: [assessmentId], references: [id])
-}
-
-model StartedCourse {
-  id       String @id @default(uuid())
-  userId   String
-  courseId String
-  progress Float  @default(0) // Percentage progress
-  User     User   @relation(fields: [userId], references: [id])
-  Course   Course @relation(fields: [courseId], references: [id])
-
-  @@unique([userId, courseId]) // Ensure a user can only start a course once
 }
 
 model UserPerformance {
