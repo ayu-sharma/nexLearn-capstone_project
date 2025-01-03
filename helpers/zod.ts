@@ -41,6 +41,7 @@ export const moduleSchema = z.object({
 });
 
 export const materialSchema = z.object({
+    moduleId: z.string(),
     title: z.string(),
     type: z.enum(["READING", "VIDEO", "ASSESSMENT"]),
     videoUrl: z.string().optional(),
