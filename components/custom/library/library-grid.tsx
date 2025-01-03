@@ -21,7 +21,7 @@ const LibraryGrid = ({
   useEffect(() => {
     const fetchCourses = async () => {
       try {
-        const response = await axios.get("http://localhost:3000/api/courses");
+        const response = await axios.get("http://localhost:3000/api/courses/all");
         setCourses(response.data.courses);
       } catch (error) {
         console.error("Error fetching courses:", error);
