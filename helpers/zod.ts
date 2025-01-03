@@ -35,6 +35,7 @@ export const contentSchema = z.object({
 });
 
 export const moduleSchema = z.object({
+    courseId: z.string(),
     title: z.string(),
     index: z.number().positive()
 });
