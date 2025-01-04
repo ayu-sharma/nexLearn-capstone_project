@@ -12,13 +12,13 @@ interface LibraryProps {
 const Library = ({ onSelectCourse }:  LibraryProps) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [filter, setFilter] = useState('All');
-
+// startedCourses or Enrolled courses
   const handleCourseSelect = async (courseId: string) => {
     console.log("iscliked")
     try {
       const token = localStorage.getItem("token");
-      const cId = parseInt(courseId);
-      const response = await axios.put('http://localhost:3000/api/user/me', {
+      const cId = courseId;
+      const response = await axios.post('http://localhost:3000/api/user/courses/enrolled', {
         courseId: cId
       }, {
         headers: {

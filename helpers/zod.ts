@@ -71,9 +71,14 @@ export const lastViewedSchema = z.object({
     courseId: z.number()
 });
 
+export const enrollCourseSchema = z.object({
+    courseId: z.string()
+});
+
 export type SignupInput = z.infer<typeof signupInput>;
 export type LoginInput = z.infer<typeof loginInput>;
 export type CourseSchema = z.infer<typeof courseSchema>;
 export type ModuleSchema = z.infer<typeof moduleSchema>;
 export type MaterialSchema = z.infer<typeof materialSchema>;
 export type LastViewedSchema = z.infer<typeof lastViewedSchema>;
+export type EnrollCourseSchema = z.infer<typeof enrollCourseSchema>;

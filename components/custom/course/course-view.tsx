@@ -139,6 +139,10 @@ const CourseView = ({ initialCourseId }: CourseViewProps) => {
     return <ErrorMessage handleFind={handleFind}/>
   }
 
+  if (courses.length > 0) {
+    return <div>Courses enrolled {courses.length}</div>
+  }
+
   return (
     <div className="flex flex-col gap-y-6 p-4">
       {/* Course Header */}
