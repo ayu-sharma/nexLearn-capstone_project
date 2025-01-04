@@ -25,12 +25,31 @@ export async function GET (req: NextRequest) {
                     id: (user as any).id
                 },
                 include: {
-                    startedCourses: true
+                    startedCourses: {
+                        include: {
+                            Course:  true
+                        }
+                    }
                 }
             });
 
+            if (!userDetails) {
+                return NextResponse.json(
+                    {
+                        error: 'User not found',
+                    },
+                    { status: 404 }
+                );
+            }
+
+            const enrolledCourses = userDetails.startedCourses.map((startedCourse) => ({
+                id: startedCourse.id,
+                progress: startedCourse.progress,
+                course: startedCourse.Course, // Include the course object
+            }));
+
             return NextResponse.json({
-                enrolledCourses: userDetails?.startedCourses
+                enrolledCourses
             });
         } else {
             return new NextResponse(
