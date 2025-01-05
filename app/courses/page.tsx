@@ -41,6 +41,7 @@ export default function courses() {
             Module Content
         </div>
         <div className="border border-[#e7e6ec] w-full p-0 "></div>
+        
       </div>
     </div>
   );
