@@ -2,14 +2,14 @@
 
 import React, { useEffect, useState } from 'react';
 import CourseGrid from './course-grid';
+import { useRouter } from 'next/navigation';
 
 
 const CourseView = () => {
+  const router = useRouter();
   const handleCourseSelect = async (courseId: string) => {
-    const cId = courseId;
-    localStorage.setItem("cId", cId);
-    // router push courses
-  }
+    router.push(`/courses?cId=${courseId}`);
+  };
 
   return (
     <div>
