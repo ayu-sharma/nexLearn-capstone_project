@@ -4,6 +4,7 @@ import React, { useState } from 'react'
 import LibraryTopbar from './library-topbar'
 import LibraryGrid from './library-grid'
 import axios from 'axios';
+import toast from 'react-hot-toast';
 
 interface LibraryProps {
   onSelectCourse: (courseId: string) => void;
@@ -12,9 +13,9 @@ interface LibraryProps {
 const Library = ({ onSelectCourse }:  LibraryProps) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [filter, setFilter] = useState('All');
-// startedCourses or Enrolled courses
+
+  // startedCourses or Enrolled courses
   const handleCourseSelect = async (courseId: string) => {
-    console.log("iscliked")
     try {
       const token = localStorage.getItem("token");
       const cId = courseId;
@@ -27,10 +28,14 @@ const Library = ({ onSelectCourse }:  LibraryProps) => {
       });
       if (response.status === 200) {
         onSelectCourse(courseId);
-        localStorage.setItem("cId", courseId);
+        toast.success('Enrolled in course');
       }
     } catch (error) {
       console.error('Error while updating last viewed course: ' + error);
+      toast.error("Already enrolled");
+    } finally {
+      localStorage.setItem("cId", courseId);
+      // router push courses
     }
   }
   return (
