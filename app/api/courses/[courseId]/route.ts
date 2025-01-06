@@ -20,7 +20,11 @@ export async function GET (req: NextRequest,
                 id: courseId
             },
             include: {
-                modules: true
+                modules: {
+                    include: {
+                        materials: true
+                    }
+                }
             }
         });
 
