@@ -8,6 +8,7 @@ import axios from "axios";
 import Header from "@/components/custom/course/header";
 import VideoPlayer from "@/components/custom/course/video-player";
 import ReadingContent from "@/components/custom/course/reading-content";
+import AssessmentStart from "@/components/custom/course/assessment-start";
 
 interface Material {
   id: string;
@@ -72,9 +73,6 @@ export default function courses() {
 
   const handleMaterialClick = (material: Material) => {
     setCurrentMaterial(material);
-    if (material.type === "ASSESSMENT") {
-      router.push(`/assessment?materialId=${material.id}`);
-    }
   };
 
   const handleNextMaterial = () => {
@@ -111,6 +109,9 @@ export default function courses() {
           )}
           {currentMaterial?.type === "READING" && currentMaterial.content && (
             <ReadingContent content={currentMaterial.content}/>
+          )}
+          {currentMaterial?.type === "ASSESSMENT" && (
+            <AssessmentStart materialId={currentMaterial.id} title={currentMaterial.title} questions={10}/>
           )}
           <div className="mt-5">
             {currentMaterial && (
