@@ -1,4 +1,2 @@
-\\
-
-2. finish auth carousel and make it more aesthetic
-3. design home page sidebar and fake courses to show design (add logout button)
+{/* ABOUT SECTION -> DISABLED FOR NOW */}
+          {/* <div className="px-2 py-3 bg-[#fafcfd] rounded-lg border border-[#e8e9ef]"></div> */}

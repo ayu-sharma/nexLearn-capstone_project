@@ -22,7 +22,15 @@ export async function GET (req: NextRequest,
             include: {
                 modules: {
                     include: {
-                        materials: true
+                        materials: {
+                            include: {
+                                questions: {
+                                    include: {
+                                        questions: true
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
             }
