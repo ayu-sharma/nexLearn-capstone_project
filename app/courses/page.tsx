@@ -1,7 +1,7 @@
 "use client"
 
 import React, { useEffect, useState } from "react";
-import { ChevronDown, ChevronLeft, ChevronUp, Clock, Star, Video } from "lucide-react";
+import { ChevronDown, ChevronLeft, ChevronRight, ChevronUp, Clock, Star, Video } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
 import CourseNav from "@/components/custom/course/course-nav";
 import axios from "axios";
@@ -9,6 +9,7 @@ import Header from "@/components/custom/course/header";
 import VideoPlayer from "@/components/custom/course/video-player";
 import ReadingContent from "@/components/custom/course/reading-content";
 import AssessmentStart from "@/components/custom/course/assessment-start";
+import { Button } from "@/components/ui/button";
 
 interface Material {
   id: string;
@@ -115,12 +116,12 @@ export default function courses() {
           )}
           <div className="mt-5">
             {currentMaterial && (
-              <button
+              <Button variant={'outline'}
                 onClick={handleNextMaterial}
-                className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600"
+                className=""
               >
-                Next Material
-              </button>
+                Next 
+              </Button>
             )}
           </div>
         </div>

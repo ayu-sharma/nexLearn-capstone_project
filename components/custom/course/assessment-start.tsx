@@ -26,7 +26,7 @@ const AssessmentStart = ({ materialId, questions, title }: AssessmentProps) => {
                 <p className='dark:text-slate-400'>{questions} questions</p>
             </div>
         </div>
-        <Button variant={'custom'} className='absolute bottom-6 right-6' onClick={handleStart}>
+        <Button variant={'outline'} className='absolute bottom-6 right-6' onClick={handleStart}>
             Start Assessment
         </Button>
     </div>

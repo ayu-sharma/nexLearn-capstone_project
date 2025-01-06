@@ -1,3 +1,4 @@
+import { Button } from '@/components/ui/button';
 import { ChevronLeft, Clock, Star, Video } from 'lucide-react';
 import React from 'react'
 
@@ -27,9 +28,9 @@ const Header = ({ course, handleBack }: HeaderProps) => {
     <div className="">
       <div className="flex items-center gap-3">
         {/* Back Button */}
-        <div onClick={handleBack} className="p-2 bg-[#fefefd] dark:bg-neutral-800 border border-[#e8e9ef] dark:border-neutral-700 rounded-xl hover:opacity-80 cursor-pointer transition">
+        <Button size={'icon'} variant={'outline'} onClick={handleBack}>
           <ChevronLeft />
-        </div>
+        </Button>
         <p className="text-lg font-semibold">{course?.title}</p>
         <p className="text-sm font-medium bg-[#7981FF]/20 text-[#7981FF] px-4 py-1 rounded uppercase">
           {course?.type}
