@@ -96,33 +96,36 @@ export default function quesionbar() {
   const handlePrev = () => {
     setIsActiveQuestion((isActiveQuestion - 1) % currentQuestion.length);
   };
+  const handleClick=(index: number) => {
+    setIsActiveQuestion(index)
+  }
 
   console.log(isActiveQuestion);
   return (
     <div className="flex flex-col justify-between h-full pt-20">
       <div className="flex flex-col">
         <div className="flex flex-col">
-          <p className="text-sm tracking-[-0.006em] font-mono font-semibold text-[#121212]">
+          <p className="text-sm tracking-[-0.006em] font-mono font-semibold text-slate-600">
             Question {isActiveQuestion + 1} of {currentQuestion.length}
           </p>
           <div className="flex flex-col justify-center items-start">
-            <p className="text-lg tracking-[-0.014] font-mono font-bold pt-3">
+            <p className="text-lg tracking-[-0.014em] text-slate-900 font-mono font-bold pt-3">
               {currentQuestion[isActiveQuestion].question}
             </p>
             <div className="grid grid-cols-2 gap-4 pt-4">
               <div className="grid grid-flow-row gap-3 items-center">
-                <div className="py-2 px-12 border border-[#e1e1e1] rounded-xl text-sm text-[#121212] font-mono">
-                  {currentQuestion[isActiveQuestion].optionA}
-                </div>
-                <div className="py-2 px-12 border border-[#e1e1e1] rounded-xl text-sm text-[#121212] font-mono">
-                  {currentQuestion[isActiveQuestion].optionC}
-                </div>
-              </div>
-              <div className="grid grid-flow-row gap-3 items-center">
-                <div className="py-2 px-12 border border-[#e1e1e1] rounded-xl text-sm text-[#121212] font-mono">
-                  {currentQuestion[isActiveQuestion].optionB}
-                </div>
-                <div className="py-2 px-12 border border-[#e1e1e1] rounded-xl text-sm text-[#121212] font-mono">
+                <div className="py-2 px-12 border border-[#e1e1e1] rounded-xl text-sm text-[#121212] font-mono cursor-pointer hover:bg-black hover:text-white ">
+                  {currentQuestion[isActiveQuestion].optionA} 
+                </div> 
+                <div className="py-2 px-12 border border-[#e1e1e1] rounded-xl text-sm text-[#121212] font-mono cursor-pointer hover:bg-black hover:text-white">
+                  {currentQuestion[isActiveQuestion].optionC} 
+                </div> 
+              </div> 
+              <div className="grid grid-flow-row gap-3 items-center"> 
+                <div className="py-2 px-12 border border-[#e1e1e1] rounded-xl text-sm text-[#121212] font-mono cursor-pointer hover:bg-black hover:text-white">
+                  {currentQuestion[isActiveQuestion].optionB} 
+                </div> 
+                <div className="py-2 px-12 border border-[#e1e1e1] rounded-xl text-sm text-[#121212] font-mono cursor-pointer hover:bg-black hover:text-white">
                   {currentQuestion[isActiveQuestion].optionD}
                 </div>
               </div>
@@ -141,6 +144,8 @@ export default function quesionbar() {
         </Button>
         {currentQuestion.map((item, index) => (
           <Button
+          key={index}
+          onClick={()=>handleClick(index)}
             className={` hover:text-white border  border-black font-mono ${
               isActiveQuestion === index
                 ? "bg-black text-white"
