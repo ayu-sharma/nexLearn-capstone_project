@@ -43,7 +43,7 @@ const Sidebar = ({ selectedGroup, onSelectGroup, isOpen, toggleMenu }: SidebarPr
 
   return (
     <>
-      <div className="xl:block hidden h-screen px-6 py-8 dark:text-[#121417] text-[#F2F2F2]  bg-[#121417] dark:bg-[#F2F2F2] w-[12rem]  shadow-md fixed">
+      <div className="xl:block hidden h-screen px-6 py-8 dark:text-[#121417] text-[#F2F2F2]  bg-[#121417] dark:bg-[#F2F2F2] w-[12rem]  shadow-md fixed rounded-r-lg">
         <div className="flex flex-col justify-between h-full font-medium text-sm">
           <div className="flex flex-col">
             <Image
@@ -276,7 +276,7 @@ const Sidebar = ({ selectedGroup, onSelectGroup, isOpen, toggleMenu }: SidebarPr
     </nav>
       {/* Close Button */}
       <div
-         className={`fixed top-0 left-0 h-full w-64 bg-white p-6 transition-transform duration-300 ease-in-out z-50 ${
+         className={`fixed top-0 left-0 h-full w-64 rounded-r-lg bg-white p-6 transition-transform duration-300 ease-in-out z-50 ${
           isOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >

@@ -63,7 +63,7 @@ const HomePage = () => {
       case "Library":
         return <Library onSelectCourse={handleCourseSelection} />;
       case "My Courses":
-        return <CourseView initialCourseId={selectedCourseId} />;
+        return <CourseView />;
       case "Code":
         return <CodePage />;
       case "Practice":
