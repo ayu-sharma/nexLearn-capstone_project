@@ -2,7 +2,7 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 
-export default function quesionbar() {
+export default function questionbar() {
   const [isActiveQuestion, setIsActiveQuestion] = useState(0);
   const [currentQuestion, setCurrentQuestion] = useState([
     {
@@ -105,27 +105,27 @@ export default function quesionbar() {
     <div className="flex flex-col justify-between h-full pt-20">
       <div className="flex flex-col">
         <div className="flex flex-col">
-          <p className="text-sm tracking-[-0.006em] font-mono font-semibold text-slate-600">
+          <p className="text-sm tracking-[-0.006em] font-mono font-semibold text-slate-600 dark:text-slate-400">
             Question {isActiveQuestion + 1} of {currentQuestion.length}
           </p>
           <div className="flex flex-col justify-center items-start">
-            <p className="text-lg tracking-[-0.014em] text-slate-900 font-mono font-bold pt-3">
+            <p className="text-lg tracking-[-0.014em] text-slate-900 dark:text-[#e1e1e1] font-mono font-bold pt-3">
               {currentQuestion[isActiveQuestion].question}
             </p>
             <div className="grid grid-cols-2 gap-4 pt-4">
               <div className="grid grid-flow-row gap-3 items-center">
-                <div className="py-2 px-12 border border-[#e1e1e1] rounded-xl text-sm text-[#121212] font-mono cursor-pointer hover:bg-black hover:text-white ">
+                <div className="py-2 px-12 border border-[#e1e1e1] rounded-xl text-sm text-[#121212] dark:text-[#e1e1e1] dark:hover:text-[#7981FF] font-mono cursor-pointer hover:bg-black hover:text-white ">
                   {currentQuestion[isActiveQuestion].optionA} 
                 </div> 
-                <div className="py-2 px-12 border border-[#e1e1e1] rounded-xl text-sm text-[#121212] font-mono cursor-pointer hover:bg-black hover:text-white">
+                <div className="py-2 px-12 border border-[#e1e1e1] rounded-xl text-sm text-[#121212] dark:text-[#e1e1e1] dark:hover:text-[#7981FF] font-mono cursor-pointer hover:bg-black hover:text-white">
                   {currentQuestion[isActiveQuestion].optionC} 
                 </div> 
               </div> 
               <div className="grid grid-flow-row gap-3 items-center"> 
-                <div className="py-2 px-12 border border-[#e1e1e1] rounded-xl text-sm text-[#121212] font-mono cursor-pointer hover:bg-black hover:text-white">
+                <div className="py-2 px-12 border border-[#e1e1e1] rounded-xl text-sm text-[#121212] dark:text-[#e1e1e1] dark:hover:text-[#7981FF] font-mono cursor-pointer hover:bg-black hover:text-white">
                   {currentQuestion[isActiveQuestion].optionB} 
                 </div> 
-                <div className="py-2 px-12 border border-[#e1e1e1] rounded-xl text-sm text-[#121212] font-mono cursor-pointer hover:bg-black hover:text-white">
+                <div className="py-2 px-12 border border-[#e1e1e1] rounded-xl text-sm text-[#121212] dark:text-[#e1e1e1] dark:hover:text-[#7981FF] font-mono cursor-pointer hover:bg-black hover:text-white">
                   {currentQuestion[isActiveQuestion].optionD}
                 </div>
               </div>
@@ -137,7 +137,7 @@ export default function quesionbar() {
         <Button
           onClick={handlePrev}
           disabled={isActiveQuestion === 0}
-          className={`disabled:border-[#797979] bg-transparent hover:text-white border text-black border-black font-mono`}
+          className={`disabled:border-[#797979] bg-transparent hover:text-white dark:hover:text-black border text-black dark:text-white border-black dark:border-white font-mono`}
         >
           {" "}
           Prev{" "}
@@ -146,10 +146,10 @@ export default function quesionbar() {
           <Button
           key={index}
           onClick={()=>handleClick(index)}
-            className={` hover:text-white border  border-black font-mono ${
+            className={` hover:text-white dark:hover:text-black border  border-black font-mono ${
               isActiveQuestion === index
-                ? "bg-black text-white"
-                : "text-black bg-transparent"
+                ? "bg-black dark:bg-[#e1e1e1] text-white dark:text-black"
+                : "text-black bg-transparent dark:border-[#e1e1e1] dark:text-[#e1e1e1]"
             }`}
           >
             <span key={index}>{index + 1} </span>
@@ -158,7 +158,7 @@ export default function quesionbar() {
         <Button
           onClick={handleNext}
           disabled={isActiveQuestion === currentQuestion.length-1}
-          className="bg-transparent hover:text-white border text-black border-black font-mono disabled:border-[#797979]"
+          className="disabled:border-[#797979] bg-transparent hover:text-white dark:hover:text-black border text-black dark:text-white border-black dark:border-white font-mono"
         >
           {" "}
           Next{" "}
