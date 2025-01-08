@@ -11,6 +11,22 @@ import ReadingContent from "@/components/custom/course/reading-content";
 import AssessmentStart from "@/components/custom/course/assessment-start";
 import { Button } from "@/components/ui/button";
 
+interface Questions {
+  id: string;
+  text: string;
+  optionA: string;
+  optionB: string;
+  optionC: string;
+  optionD: string;
+  correctAnswer: string;
+}
+
+interface Assessment {
+  id: string;
+  materialId: string;
+  questions: Questions[];
+}
+
 interface Material {
   id: string;
   title: string;
@@ -18,6 +34,7 @@ interface Material {
   videoUrl: string | null;
   content: string | null;
   moduleId: string;
+  questions: Assessment[];
 }
 
 interface Module {
@@ -112,7 +129,7 @@ export default function courses() {
             <ReadingContent content={currentMaterial.content}/>
           )}
           {currentMaterial?.type === "ASSESSMENT" && (
-            <AssessmentStart materialId={currentMaterial.id} title={currentMaterial.title} questions={10}/>
+            <AssessmentStart materialId={currentMaterial.id} title={currentMaterial.title} questions={currentMaterial.questions[0].questions.length}/>
           )}
           <div className="mt-5">
             {currentMaterial && (
