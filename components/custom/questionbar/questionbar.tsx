@@ -12,17 +12,23 @@ interface Questions {
   optionB: string;
   optionC: string;
   optionD: string;
-  correctAnswer: string;
+  correctAnswer: "A" | "B" | "C" | "D";
 }
 
-export default function questionbar() {
+interface QuestionbarProps {
+  onQuizComplete: (score: number, total: number) => void; // Callback to pass score to parent
+}
+
+export default function Questionbar({ onQuizComplete }: QuestionbarProps) {
   const [questions, setQuestions] = useState<Questions[]>([]);
   const [isActiveQuestion, setIsActiveQuestion] = useState(0);
+  const [userAnswers, setUserAnswers] = useState<{ [key: string]: string }>({});
+  const [score, setScore] = useState(0);
+
   const searchParams = useSearchParams();
 
   useEffect(() => {
     const id = searchParams.get("materialId");
-    
     if (id) {
       const fetchQuestions = async () => {
         try {
@@ -32,93 +38,98 @@ export default function questionbar() {
         } catch (error) {
           console.error("Failed to fetch questions:", error);
         }
-      }
-
+      };
       fetchQuestions();
     } else {
       console.error("Material ID is missing");
     }
   }, [searchParams]);
 
+  const handleAnswerSelect = (selectedAnswer: string) => {
+    const currentQuestion = questions[isActiveQuestion];
+  
+    // Map correctAnswer ('A', 'B', 'C', 'D') to the corresponding option
+    const correctOption = currentQuestion[`option${currentQuestion.correctAnswer}` as keyof Questions];
+  
+    setUserAnswers((prev) => ({
+      ...prev,
+      [currentQuestion.id]: selectedAnswer,
+    }));
+  
+    // Update score only if selected answer matches the correct option
+    if (selectedAnswer === correctOption) {
+      setScore((prev) => prev + 1);
+    }
+  };
+
   const handleNext = () => {
     setIsActiveQuestion((isActiveQuestion + 1) % questions.length);
   };
+
   const handlePrev = () => {
-    setIsActiveQuestion((isActiveQuestion - 1) % questions.length);
+    setIsActiveQuestion((isActiveQuestion - 1 + questions.length) % questions.length);
   };
-  const handleClick=(index: number) => {
-    setIsActiveQuestion(index)
-  }
+
+  const handleClick = (index: number) => {
+    setIsActiveQuestion(index);
+  };
+
+  useEffect(() => {
+    // Notify parent component once all questions are answered
+    if (Object.keys(userAnswers).length === questions.length) {
+      onQuizComplete(score, questions.length);
+    }
+  }, [userAnswers, score, questions.length, onQuizComplete]);
+
   return (
     <div className="flex flex-col justify-between h-full pt-20">
       {questions.length > 0 ? (
-        <>  
-        <div className="flex flex-col">
+        <>
           <div className="flex flex-col">
-            <p className="text-sm tracking-[-0.006em] font-mono font-semibold text-slate-600 dark:text-slate-400">
+            <p className="text-sm font-mono text-slate-600 dark:text-slate-400">
               Question {isActiveQuestion + 1} of {questions.length}
             </p>
-            <div className="flex flex-col justify-center items-start">
-              <p className="text-lg tracking-[-0.014em] text-slate-900 dark:text-[#e1e1e1] font-mono font-bold pt-3">
-                {questions[isActiveQuestion].text} 
-              </p>
-              <div className="grid grid-cols-2 gap-4 pt-4">
-                <div className="grid grid-flow-row gap-3 items-center">
-                  <div className="py-2 px-12 border border-[#e1e1e1] rounded-xl text-sm text-[#121212] dark:text-[#e1e1e1] dark:hover:text-[#7981FF] font-mono cursor-pointer hover:bg-black hover:text-white ">
-                    {questions[isActiveQuestion].optionA} 
-                  </div> 
-                  <div className="py-2 px-12 border border-[#e1e1e1] rounded-xl text-sm text-[#121212] dark:text-[#e1e1e1] dark:hover:text-[#7981FF] font-mono cursor-pointer hover:bg-black hover:text-white">
-                    {questions[isActiveQuestion].optionC} 
-                  </div> 
-                </div> 
-                <div className="grid grid-flow-row gap-3 items-center"> 
-                  <div className="py-2 px-12 border border-[#e1e1e1] rounded-xl text-sm text-[#121212] dark:text-[#e1e1e1] dark:hover:text-[#7981FF] font-mono cursor-pointer hover:bg-black hover:text-white">
-                    {questions[isActiveQuestion].optionB} 
-                  </div> 
-                  <div className="py-2 px-12 border border-[#e1e1e1] rounded-xl text-sm text-[#121212] dark:text-[#e1e1e1] dark:hover:text-[#7981FF] font-mono cursor-pointer hover:bg-black hover:text-white">
-                    {questions[isActiveQuestion].optionD}
-                  </div>
+            <p className="text-lg font-bold text-slate-900 dark:text-[#e1e1e1]">
+              {questions[isActiveQuestion].text}
+            </p>
+            <div className="grid grid-cols-2 gap-4 pt-4">
+              {["optionA", "optionB", "optionC", "optionD"].map((optionKey) => (
+                <div
+                  key={optionKey}
+                  onClick={() => handleAnswerSelect(questions[isActiveQuestion][optionKey as keyof Questions])}
+                  className={`py-2 px-12 border rounded-xl text-sm cursor-pointer ${
+                    userAnswers[questions[isActiveQuestion].id] ===
+                    questions[isActiveQuestion][optionKey as keyof Questions]
+                      ? "bg-black dark:bg-white dark:text-black text-white"
+                      : "hover:bg-black hover:text-white"
+                  }`}
+                >
+                  {questions[isActiveQuestion][optionKey as keyof Questions]}
                 </div>
-              </div>
+              ))}
             </div>
           </div>
-        </div>
-        <div className="flex justify-between items-center pt-10 w-full">
-          <Button
-            onClick={handlePrev}
-            disabled={isActiveQuestion === 0}
-            className={`disabled:border-[#797979] bg-transparent hover:text-white dark:hover:text-black border text-black dark:text-white border-black dark:border-white font-mono`}
-          >
-            {" "}
-            Prev{" "}
-          </Button>
-          {questions.map((item, index) => (
-            <Button
-            key={index}
-            onClick={()=>handleClick(index)}
-              className={` hover:text-white dark:hover:text-black border  border-black font-mono ${
-                isActiveQuestion === index
-                  ? "bg-black dark:bg-[#e1e1e1] text-white dark:text-black"
-                  : "text-black bg-transparent dark:border-[#e1e1e1] dark:text-[#e1e1e1]"
-              }`}
-            >
-              <span key={index}>{index + 1} </span>
+          <div className="flex justify-between items-center pt-10 w-full">
+            <Button variant={'outline'} onClick={handlePrev} disabled={isActiveQuestion === 0}>
+              Prev
             </Button>
-          ))}
-          <Button
-            onClick={handleNext}
-            disabled={isActiveQuestion === questions.length-1}
-            className="disabled:border-[#797979] bg-transparent hover:text-white dark:hover:text-black border text-black dark:text-white border-black dark:border-white font-mono"
-          >
-            {" "}
-            Next{" "}
-          </Button>
-        </div>
-        </>  
-      ): (
-        <p className="text-center text-slate-600 dark:text-slate-400 font-mono">
-          Loading questions...
-        </p>
+            {questions.map((_, index) => (
+              <Button
+                key={index}
+                variant={'outline'}
+                onClick={() => handleClick(index)}
+                className={isActiveQuestion === index ? "bg-black dark:bg-slate-600 text-white" : ""}
+              >
+                {index + 1}
+              </Button>
+            ))}
+            <Button variant={'outline'} onClick={handleNext} disabled={isActiveQuestion === questions.length - 1}>
+              Next
+            </Button>
+          </div>
+        </>
+      ) : (
+        <p className="text-center">Loading questions...</p>
       )}
     </div>
   );
