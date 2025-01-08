@@ -1,2 +1,85 @@
-{/* ABOUT SECTION -> DISABLED FOR NOW */}
-          {/* <div className="px-2 py-3 bg-[#fafcfd] rounded-lg border border-[#e8e9ef]"></div> */}
+// const [currentQuestion, setCurrentQuestion] = useState([
+  //   {
+  //     question: "Which of the following is a front-end framework?",
+  //     optionA: "Laravel",
+  //     optionB: "Django",
+  //     optionC: "React",
+  //     optionD: "Spring",
+  //     correctAnswer: "optionC",
+  //   },
+  //   {
+  //     question: "What does CRUD stand for in web development?",
+  //     optionA: "Create, Read, Update, Delete",
+  //     optionB: "Connect, Replace, Update, Delete",
+  //     optionC: "Create, Replace, Upload, Download",
+  //     optionD: "Connect, Read, Upload, Delete",
+  //     correctAnswer: "optionA",
+  //   },
+  //   {
+  //     question: "Which of these is a NoSQL database?",
+  //     optionA: "MySQL",
+  //     optionB: "PostgreSQL",
+  //     optionC: "MongoDB",
+  //     optionD: "SQLite",
+  //     correctAnswer: "optionC",
+  //   },
+  //   {
+  //     question:
+  //       "What is the primary role of Node.js in a full stack application?",
+  //     optionA: "Database management",
+  //     optionB: "Client-side rendering",
+  //     optionC: "Server-side scripting",
+  //     optionD: "UI design",
+  //     correctAnswer: "optionC",
+  //   },
+  //   {
+  //     question: "Which HTTP method is commonly used to update a resource?",
+  //     optionA: "GET",
+  //     optionB: "POST",
+  //     optionC: "PUT",
+  //     optionD: "DELETE",
+  //     correctAnswer: "optionC",
+  //   },
+  //   {
+  //     question: "Which of the following is a popular CSS preprocessor?",
+  //     optionA: "Sass",
+  //     optionB: "JavaScript",
+  //     optionC: "jQuery",
+  //     optionD: "React",
+  //     correctAnswer: "optionA",
+  //   },
+  //   {
+  //     question:
+  //       "Which tool is commonly used for version control in software development?",
+  //     optionA: "Git",
+  //     optionB: "Docker",
+  //     optionC: "Webpack",
+  //     optionD: "NPM",
+  //     correctAnswer: "optionA",
+  //   },
+  //   {
+  //     question: "In the MVC architecture, what does the 'M' stand for?",
+  //     optionA: "Model",
+  //     optionB: "Method",
+  //     optionC: "Module",
+  //     optionD: "Middleware",
+  //     correctAnswer: "optionA",
+  //   },
+  //   {
+  //     question:
+  //       "Which of the following is a commonly used build tool in JavaScript projects?",
+  //     optionA: "Grunt",
+  //     optionB: "Python",
+  //     optionC: "Ruby",
+  //     optionD: "PHP",
+  //     correctAnswer: "optionA",
+  //   },
+  //   {
+  //     question: "Which is a common backend language?",
+  //     optionA: "HTML",
+  //     optionB: "CSS",
+  //     optionC: "JavaScript",
+  //     optionD: "Python",
+  //     correctAnswer: "optionD",
+  //   },
+  // ]);

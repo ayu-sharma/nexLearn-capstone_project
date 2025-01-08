@@ -3,7 +3,9 @@ import { Clock } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Questionbar from "../../components/custom/questionbar/questionbar";
 import { ModeToggle } from "@/components/ModeToggle";
+
 export default function assessment() {
+  
   return (
     <div className="flex flex-col py-6 px-5 h-screen">
       <div className="flex items-center justify-between w-full">

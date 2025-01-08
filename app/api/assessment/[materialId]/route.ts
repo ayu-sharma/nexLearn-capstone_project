@@ -30,7 +30,7 @@ export async function GET(request: NextRequest,
         }
 
         return NextResponse.json({
-            allQuestions: material.questions
+            allQuestions: material.questions[0].questions
         }, {
             status: 201
         });
