@@ -1,11 +1,14 @@
 import React from 'react'
-import Codeplayground from '../code/code-playground'
+import SolvedGrid from './solved-grid'
+
 const CodePage = () => {
   return (
-    <>
-    <div>CodePage</div>
-    <Codeplayground />
-    </>
+    <div className='grid grid-cols-3 gap-x-6'>
+      <SolvedGrid />
+      <div className='col-span-2'>
+        LIST
+      </div>
+    </div>
   )
 }
 
