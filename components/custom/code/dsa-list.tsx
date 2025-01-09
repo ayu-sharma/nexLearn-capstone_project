@@ -1,6 +1,7 @@
 "use client"
 
 import { ChevronDown } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 import React, { useState } from 'react'
 
 interface Section {
@@ -20,7 +21,7 @@ const dropdownSections: Section[] = [
       total: 9,
       solved: 0,
       problems: [
-        { name: 'Contains Duplicate', difficulty: 'Easy', link: '#' },
+        { name: 'Contains Duplicate', difficulty: 'Easy', link: '/code' },
         { name: 'Valid Anagram', difficulty: 'Easy', link: '#' },
         { name: 'Two Sum', difficulty: 'Easy', link: '#' },
         { name: 'Group Anagrams', difficulty: 'Medium', link: '#' },
@@ -44,7 +45,7 @@ const DSAList = () => {
     const toggleExpand = (title: string) => {
         setExpanded(expanded === title ? null : title);
     };
-
+    const router = useRouter();
   return (
     <div className='col-span-2 p-4 rounded-md'>
         {dropdownSections.map((section) => (
@@ -77,9 +78,9 @@ const DSAList = () => {
                   <ul className='space-y-2'>
                     {section.problems.map((problem) => (
                       <li key={problem.name} className='flex justify-between items-center'>
-                        <a href={problem.link} target='_blank' rel='noopener noreferrer' className='text-black dark:text-[#e1e1e1] hover:underline'>
+                        <div onClick={() => router.push(`${problem.link}`)} className='text-black dark:text-[#e1e1e1] hover:underline cursor-pointer'>
                           {problem.name}
-                        </a>
+                        </div>
                         <span
                           className={`px-4 py-2 text-sm rounded bg-[#121417] ${
                             problem.difficulty === 'Easy'
