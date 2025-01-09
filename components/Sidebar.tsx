@@ -153,7 +153,7 @@ const Sidebar = ({ selectedGroup, onSelectGroup, isOpen, toggleMenu }: SidebarPr
                 <Code className="w-5 h-5" />
                 <p>Code</p>
               </div>
-              <div
+              {/* <div
                 className={`flex items-center gap-x-2 p-2 rounded-md cursor-pointer transition hover:bg-white/10 dark:hover:bg-black/10 ${
                   selectedGroup === "Practice"
                     ? "text-[#7981FF]"
@@ -163,8 +163,8 @@ const Sidebar = ({ selectedGroup, onSelectGroup, isOpen, toggleMenu }: SidebarPr
               >
                 <NotebookPen className="w-5 h-5" />
                 <p>Practice</p>
-              </div>
-              <div
+              </div> */}
+              {/* <div
                 className={`flex items-center gap-x-2 p-2 rounded-md cursor-pointer transition hover:bg-white/10 dark:hover:bg-black/10 ${
                   selectedGroup === "Messages"
                     ? "text-[#7981FF]"
@@ -189,7 +189,7 @@ const Sidebar = ({ selectedGroup, onSelectGroup, isOpen, toggleMenu }: SidebarPr
                   <path d="M20.677 4.117A1.996 1.996 0 0 0 20 4H4c-.225 0-.44.037-.642.105l.758.607L12 10.742 19.9 4.7l.777-.583Z" />
                 </svg>
                 <p>Messages</p>
-              </div>
+              </div> */}
               <div
                 className={`flex items-center gap-x-2 p-2 rounded-md cursor-pointer transition hover:bg-white/10 dark:hover:bg-black/10 ${
                   selectedGroup === "Settings"
