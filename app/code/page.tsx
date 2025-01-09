@@ -1,5 +1,6 @@
 "use client";
 
+import CodeEditor from '@/components/custom/code/code-editor';
 import ProblemPanel from '@/components/custom/code/problem-panel';
 import CourseNav from '@/components/custom/course/course-nav'
 import { Button } from '@/components/ui/button';
@@ -27,7 +28,7 @@ const CodingTerminal = () => {
                     <ProblemPanel />
                 </div>
                 <div className='col-span-3'>
-                    Coding Window 
+                    <CodeEditor />
                 </div>
             </div>
         </div>
