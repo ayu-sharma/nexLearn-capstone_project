@@ -1,15 +1,14 @@
-import React from 'react'
-import SolvedGrid from './solved-grid'
+import SolvedGrid from './solved-grid';
+import DSAList from './dsa-list';
 
 const CodePage = () => {
+
   return (
     <div className='grid grid-cols-3 gap-x-6'>
       <SolvedGrid />
-      <div className='col-span-2'>
-        LIST
-      </div>
+      <DSAList />
     </div>
-  )
-}
+  );
+};
 
-export default CodePage
+export default CodePage;
