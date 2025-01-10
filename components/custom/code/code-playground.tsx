@@ -10,7 +10,7 @@ const CodePlayground = () => {
         value={code}
         onChange={(e) => setCode(e.target.value)}
         style={{ resize: 'none' }}
-      />
+      /> 
       </div>
   );
 };

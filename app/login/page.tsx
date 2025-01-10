@@ -74,25 +74,25 @@ const Login = () => {
     }
   };
 
-  const [isDarkMode, setIsDarkMode] = useState(false);
-  useEffect(() => {
-    const checkDarkMode = () => {
-      setIsDarkMode(document.documentElement.classList.contains("dark"));
-    };
-    checkDarkMode();
-    const observer = new MutationObserver(checkDarkMode);
+  // const [isDarkMode, setIsDarkMode] = useState(false);
+  // useEffect(() => {
+  //   const checkDarkMode = () => {
+  //     setIsDarkMode(document.documentElement.classList.contains("dark"));
+  //   };
+  //   checkDarkMode();
+  //   const observer = new MutationObserver(checkDarkMode);
 
-    observer.observe(document.documentElement, {
-      attributes: true,
-      attributeFilter: ["class"],
-    });
+  //   observer.observe(document.documentElement, {
+  //     attributes: true,
+  //     attributeFilter: ["class"],
+  //   });
 
-    return () => observer.disconnect();
-  }, []);
+  //   return () => observer.disconnect();
+  // }, []);
   return (
     <div className="relative h-screen flex items-center justify-center w-full gap-4">
       <div className="absolute top-10 right-10">
-        <ModeToggle />
+        {/* <ModeToggle /> */}
       </div>
       <div className="hidden md:flex ml-10">
         <Carousel />
@@ -102,14 +102,14 @@ const Login = () => {
           <div className="flex flex-col items-center max-w-lg md:max-w-md mx-auto w-full gap-y-4">
             <div className="pb-8">
               <Image
-                src={isDarkMode ? logoL : logoD}
+                src={logoD}
                 alt="NexLearn Logo"
                 height={44}
               />
             </div>
             <h2 className="text-2xl py-2">Welcome Back!</h2>
             <div className="flex flex-col w-full gap-y-2 my-1">
-              <p className="text-sm">Email</p>
+              <p className="text-sm font-mono">Email</p>
               <Input
                 placeholder="✉️"
                 onChange={(e) => {
@@ -121,7 +121,7 @@ const Login = () => {
               />
             </div>
             <div className="flex flex-col w-full gap-y-2 my-1">
-              <p className="text-sm">Password</p>
+              <p className="text-sm font-mono">Password</p>
               <Input
                 type="password"
                 placeholder="🔓"
@@ -150,7 +150,7 @@ const Login = () => {
                 Sign Up
               </div>
             </div>
-            <div className="flex mt-4 items-center gap-x-4 w-full">
+            {/* <div className="flex mt-4 items-center gap-x-4 w-full">
               <div className="w-[30%] h-[0.75px] bg-gray-700/10 dark:bg-gray-300/20" />
               <p className="text-sm flex-1 text-center">or Login with</p>
               <div className="w-[30%] h-[0.75px] bg-gray-700/10 dark:bg-gray-300/20" />
@@ -207,7 +207,7 @@ const Login = () => {
                   />
                 </svg>
               </Button>
-            </div>
+             </div> */}
           </div>
         </div>
       </div>

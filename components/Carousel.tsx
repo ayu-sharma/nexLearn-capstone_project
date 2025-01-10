@@ -59,25 +59,25 @@ interface ElementProps {
 }
 
 const Element = ({ heading, description, imgD, imgL }: ElementProps) => {
-  const [isDarkMode, setIsDarkMode] = useState(false);
-  useEffect(() => {
-    const checkDarkMode = () => {
-      setIsDarkMode(document.documentElement.classList.contains('dark'));
-    };
-    checkDarkMode(); 
-    const observer = new MutationObserver(checkDarkMode); 
+  // const [isDarkMode, setIsDarkMode] = useState(false);
+  // useEffect(() => {
+  //   const checkDarkMode = () => {
+  //     setIsDarkMode(document.documentElement.classList.contains('dark'));
+  //   };
+  //   checkDarkMode(); 
+  //   const observer = new MutationObserver(checkDarkMode); 
 
-    observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
+  //   observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
 
-    return () => observer.disconnect(); 
-  }, []);
+  //   return () => observer.disconnect(); 
+  // }, []);
   return (
     <div className='flex flex-col items-center justify-evenly h-full'>
         <div className='flex flex-col text-xl w-full px-10'>
           <h1 className='font-bold'>{heading}</h1>
           <p>{description}</p>
         </div>
-        <Image src={isDarkMode ? imgD : imgL} alt='Carousel image'/>
+        <Image src={imgD} alt='Carousel image'/>
       </div>
   )
 };
