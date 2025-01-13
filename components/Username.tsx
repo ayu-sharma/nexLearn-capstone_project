@@ -1,36 +1,15 @@
 "use client"
 
-import axios from 'axios';
-import React, { useEffect, useState } from 'react'
-
-interface User {
-  id: string;
-  name: string;
-  email: string;
-}
+import React from 'react'
+import { useUserContext } from '@/context/UserContext';
 
 const Username = () => {
-  const [user, setUser] = useState<User>({name: "", email: "", id: ""});
-  useEffect(() => {
-    const token = localStorage.getItem('token');
+  const { user } = useUserContext();
 
-    if (token) {
-      axios.get('http://localhost:3000/api/user/me', {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      }).then(response => {
-        setUser({
-          name: response.data.details.name,
-          email: response.data.details.email,
-          id: response.data.details.email,
-        });
-        localStorage.setItem("cId", response.data.lastViewed);
-      }).catch(err => {
-        console.error("Error fetching user: " + err);
-      })
-    }
-  }, []);
+  if (!user) {
+    return <div>Loading</div>;
+  }
+  
   return (
     <div className='flex items-center gap-x-4 cursor-pointer'>
         <div className='text-end'>

@@ -4,6 +4,7 @@ import "./globals.css";
 import { Toaster } from "react-hot-toast";
 
 import { ReactNode } from "react";
+import { UserProvider } from "@/context/UserContext";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -28,8 +29,10 @@ export default function RootLayout({ children }: RootLayoutProps) {
   return (
     <html lang="en">
       <body className={jakarta.className}>
+        <UserProvider>
         <Toaster position="bottom-right" />
       {children}
+        </UserProvider>
       </body>
     </html>
   );
