@@ -18,6 +18,7 @@ model User {
   materialProgress MaterialProgress[]
   moduleProgress   ModuleProgress[] // Add back-relation for `ModuleProgress`
   recommendations  Recommendations[]
+  submissions      Submission[]
   createdAt        DateTime           @default(now())
   updatedAt        DateTime           @updatedAt
 }
@@ -153,4 +154,56 @@ enum MaterialType {
   VIDEO // Video Lecture
   READING // Reading Content
   ASSESSMENT // Assessments
+}
+
+model DSATopic {
+  id       String    @id @default(uuid())
+  index    Int       @default(autoincrement())
+  title    String
+  problems Problem[]
+}
+
+model Problem {
+  id               String       @id @default(uuid())
+  topicId          String
+  title            String
+  difficulty       Difficulty
+  problemStatement String
+  sampleInput1     String
+  sampleOutput1    String
+  sampleInput2     String
+  sampleOutput2    String
+  testCases        TestCase[]
+  submission       Submission[]
+
+  DSATopic DSATopic @relation(fields: [topicId], references: [id])
+}
+
+model TestCase {
+  id        String @id @default(uuid())
+  input     String
+  expected  String
+  problemId String
+
+  problem Problem @relation(fields: [problemId], references: [id])
+}
+
+model Submission {
+  id        String   @id @default(uuid())
+  userId    String
+  problemId String
+  language  String
+  code      String
+  status    String
+  output    String
+  createdAt DateTime @default(now())
+
+  user    User    @relation(fields: [userId], references: [id])
+  problem Problem @relation(fields: [problemId], references: [id])
+}
+
+enum Difficulty {
+  EASY
+  MEDIUM
+  HARD
 }
