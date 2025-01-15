@@ -1,0 +1,4 @@
+-- AlterTable
+ALTER TABLE "DSATopic" ALTER COLUMN "index" SET DEFAULT 1,
+ALTER COLUMN "index" DROP DEFAULT;
+DROP SEQUENCE "DSATopic_index_seq";

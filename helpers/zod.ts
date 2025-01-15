@@ -75,6 +75,10 @@ export const enrollCourseSchema = z.object({
     courseId: z.string()
 });
 
+export const dsaTopicSchema = z.object({
+    title: z.string()
+})
+
 export type SignupInput = z.infer<typeof signupInput>;
 export type LoginInput = z.infer<typeof loginInput>;
 export type CourseSchema = z.infer<typeof courseSchema>;
