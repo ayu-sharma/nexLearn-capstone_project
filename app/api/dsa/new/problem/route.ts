@@ -1,4 +1,4 @@
-import { dsaProblemSchema, dsaTopicSchema } from "@/helpers/zod";
+import { dsaProblemSchema } from "@/helpers/zod";
 import { db } from "@/lib/db";
 import { NextRequest, NextResponse } from "next/server";
 
