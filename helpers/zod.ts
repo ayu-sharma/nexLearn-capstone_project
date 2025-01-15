@@ -79,6 +79,23 @@ export const dsaTopicSchema = z.object({
     title: z.string()
 })
 
+export const dsaProblemSchema = z.object({
+    topicId: z.string(),
+    title: z.string(),
+    difficulty: z.enum(['EASY', 'MEDIUM', 'HARD']),
+    problemStatement: z.string(),
+    sampleInput1: z.string(),
+    sampleOutput1: z.string(),
+    sampleInput2: z.string(),
+    sampleOutput2: z.string()
+});
+
+export const testCaseSchema = z.object({
+    problemId: z.string(),
+    input: z.string(),
+    expected: z.string()
+})
+
 export type SignupInput = z.infer<typeof signupInput>;
 export type LoginInput = z.infer<typeof loginInput>;
 export type CourseSchema = z.infer<typeof courseSchema>;
