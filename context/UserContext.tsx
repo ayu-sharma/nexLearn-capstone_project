@@ -3,10 +3,18 @@
 import React, { createContext, useState, useEffect, useContext } from "react";
 import axios from "axios";
 
+interface Submission {
+    id: string;
+    problemId: string;
+    submittedAt: string;
+    status: "Accepted" | "Rejected";
+}
+
 interface User {
     id: string;
     name: string;
     email: string;
+    submissions: Submission[];
 }
 
 interface UserContextType {
@@ -28,10 +36,12 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
                     Authorization: `Bearer ${token}`
                 }
                 }).then(response => {
+                    const { name, email, id, submissions } = response.data.details;
                     setUser({
-                        name: response.data.details.name,
-                        email: response.data.details.email,
-                        id: response.data.details.email,
+                        name,
+                        email,
+                        id,
+                        submissions, // Include the submissions in the state
                     });
                     localStorage.setItem("cId", response.data.lastViewed);
                 }).catch(err => {

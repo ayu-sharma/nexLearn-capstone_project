@@ -25,7 +25,8 @@ export async function GET(req: NextRequest) {
                 },
                 include: {
                     startedCourses: true,
-                    performances: true
+                    performances: true,
+                    submissions: true
                 }
             });
 
