@@ -10,7 +10,7 @@ type Language = {
     value: string;
     label: string;
     boilerplate: string;
-  };
+}
 
   const languages: Language[] = [
     {

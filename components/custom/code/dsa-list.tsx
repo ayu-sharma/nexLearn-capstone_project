@@ -75,7 +75,7 @@ const DSAList = () => {
               id: problem.id,
               name: problem.title,
               difficulty: problem.difficulty,
-              link: `/code/${problem.id}`, // Assuming a dynamic route for each problem
+              link: `/code?problemId=${problem.id}`, // Assuming a dynamic route for each problem
             })),
           }));
 
