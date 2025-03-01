@@ -6,11 +6,11 @@ export async function GET(request: NextRequest,
     { params }: { params: { problemId: string } }
 ) {
     try {
-        const { problemId } = params;
+        const problemId = Number(params.problemId);
 
-        if (!problemId) {
+        if (isNaN(problemId) || !problemId) {
             return NextResponse.json({
-                error: "Problem ID not found"
+                error: "Problem ID invalid"
             }, {
                 status: 404
             });

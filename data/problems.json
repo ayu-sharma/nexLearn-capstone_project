@@ -1,0 +1,21 @@
+{ 
+    "problems": [
+        {
+            "id": 1,
+            "title": "Contains Duplicate",
+            "solution": {
+              "java": "public class Solution { public int max(int[] arr) { /* logic */ return 0; } }",
+              "cpp": "int max(int arr[], int n) { /* logic */ return 0; }",
+              "python": "def max(arr): return max(arr)",
+              "js": "function max(arr) { return Math.max(...arr); }"
+            },
+            "testCases": [
+              { "input": "[1, 2, 3, 3]", "expectedOutput": "true" },
+              { "input": "[1, 2, 3, 4]", "expectedOutput": "false" },
+              { "input": "[]", "expectedOutput": "false" },
+              { "input": "[-1, -2, -3, -3]", "expectedOutput": "true" }
+            ]
+        },
+        {}
+    ]
+  }

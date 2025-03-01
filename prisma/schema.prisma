@@ -18,6 +18,7 @@ model User {
   materialProgress MaterialProgress[]
   moduleProgress   ModuleProgress[] // Add back-relation for `ModuleProgress`
   recommendations  Recommendations[]
+  attemptedDSA     Int[]
   submissions      Submission[]
   createdAt        DateTime           @default(now())
   updatedAt        DateTime           @updatedAt
@@ -164,7 +165,7 @@ model DSATopic {
 }
 
 model Problem {
-  id               String       @id @default(uuid())
+  id               Int       @id @default(autoincrement())
   topicId          String
   title            String
   difficulty       Difficulty
@@ -183,15 +184,23 @@ model TestCase {
   id        String @id @default(uuid())
   input     String
   expected  String
-  problemId String
+  problemId Int
 
   problem Problem @relation(fields: [problemId], references: [id])
+}
+
+model DSASubmission {
+  id String @id @default(uuid())
+  problemId Int
+  userId String
+  isSolved Boolean @default(false)
+  isCorrect Boolean
 }
 
 model Submission {
   id        String   @id @default(uuid())
   userId    String
-  problemId String
+  problemId Int
   language  String
   code      String
   status    String

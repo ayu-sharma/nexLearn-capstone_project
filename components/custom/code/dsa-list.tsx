@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation';
 import React, { useState, useEffect } from 'react'
 
 interface Problem {
-  id: string;
+  id: number;
   topicId: string;
   title: string;
   difficulty: "EASY" | "MEDIUM" | "HARD";

@@ -90,6 +90,12 @@ export const dsaProblemSchema = z.object({
     sampleOutput2: z.string()
 });
 
+export const dsaExecute = z.object({
+    code: z.string(),
+    problemId: z.number(),
+    language: z.string()
+});
+
 export const testCaseSchema = z.object({
     problemId: z.string(),
     input: z.string(),
