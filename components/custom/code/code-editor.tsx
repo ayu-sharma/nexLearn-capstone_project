@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Editor from "@monaco-editor/react";
 import { Button } from "@/components/ui/button";
 import {
@@ -9,151 +9,47 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import { useSearchParams } from "next/navigation";
 
-type Language = {
-  value: string;
-  label: string;
-  boilerplate: string;
-};
-
-const languages: Language[] = [
-  {
-    value: "javascript",
-    label: "JavaScript",
-    boilerplate: `// Start typing your JavaScript solution here...
-function solution(nums) {
-  // Your code here
-  return nums.length > 0;
-}`,
-  },
-  {
-    value: "python",
-    label: "Python",
-    boilerplate: `# Start typing your Python solution here...
-def solution(nums):
-    # Your code here
-    return len(nums) > 0`,
-  },
-  {
-    value: "java",
-    label: "Java",
-    boilerplate: `// Start typing your Java solution here...
-import java.util.*;
-
-public class Solution {
-    public static boolean solution(int[] nums) {
-        // Your code here
-        return nums.length > 0;
-    }
-}`,
-  },
-  {
-    value: "cpp",
-    label: "C++",
-    boilerplate: `// Start typing your C++ solution here...
-#include <vector>
-using namespace std;
-
-bool solution(vector<int> nums) {
-    // Your code here
-    return nums.size() > 0;
-}`,
-  },
-];
-
-// Example test cases
-const testCases = [
-  { input: [1, 2, 3, 4], expected: true },
-  { input: [], expected: false },
-  { input: [-1, -2, -3, -3], expected: true },
+const languages = [
+  "javascript",
+  "java",
+  "cpp",
+  "python"
 ];
 
 const CodeEditor = () => {
-  const [code, setCode] = useState(languages[0].boilerplate);
-  const [language, setLanguage] = useState<Language>(languages[0]);
+  const searchParams = useSearchParams();
+  const problemId = searchParams.get("problemId");
+
+  const [code, setCode] = useState("");
+  const [language, setLanguage] = useState("javascript");
+
   const [testResults, setTestResults] = useState<string | null>(null);
+  
   const [isModalOpen, setModalOpen] = useState(false);
   const [isLoading, setLoading] = useState(false);
 
-  const handleEditorChange = (value: string | undefined) => {
-    setCode(value || "");
-  };
+  useEffect(() => {
+    if (problemId) {
+        fetch(`/api/dsa/editor/${problemId}`)
+            .then((res) => res.json())
+            .then((data) => {
+                if (data.boilerplate) {
+                    setCode(data.boilerplate[language]);
+                }
+            })
+            .catch((err) => console.error("Error fetching problem:", err));
+    }
+}, [problemId, language]);
 
   const handleLanguageChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const selectedLanguage = languages.find(
-      (lang) => lang.value === event.target.value
+      (lang) => lang === event.target.value
     );
     if (selectedLanguage) {
       setLanguage(selectedLanguage);
-      setCode(selectedLanguage.boilerplate);
     }
-  };
-
-  const runTestCases = async () => {
-    setLoading(true);
-    setModalOpen(true);
-
-    let passed = 0;
-    try {
-      // Execute user code based on selected language
-      const executeCode = (input: any): any => {
-        switch (language.value) {
-          case "javascript":
-            // Dynamically create and execute JS function
-            const jsFunction = new Function(
-              "nums",
-              `${code}; return solution(nums);`
-            );
-            return jsFunction(input);
-          case "python":
-            // Simple Python interpreter simulation
-            if (code.includes("def solution(nums):")) {
-              if (code.includes("len(nums) > 0")) {
-                return input.length > 0;
-              }
-              throw new Error("Python: Simulated runtime error");
-            }
-            break;
-          case "java":
-            // Simple Java interpreter simulation
-            if (code.includes("public static boolean solution")) {
-              if (code.includes("nums.length > 0")) {
-                return input.length > 0;
-              }
-              throw new Error("Java: Simulated runtime error");
-            }
-            break;
-          case "cpp":
-            // Simple C++ interpreter simulation
-            if (code.includes("bool solution(vector<int> nums)")) {
-              if (code.includes("nums.size() > 0")) {
-                return input.length > 0;
-              }
-              throw new Error("C++: Simulated runtime error");
-            }
-            break;
-          default:
-            throw new Error("Unsupported language");
-        }
-        return null;
-      };
-
-      testCases.forEach((testCase) => {
-        const { input, expected } = testCase;
-        const result = executeCode(input);
-        if (result === expected) {
-          passed += 1;
-        }
-      });
-
-      setTestResults(`Passed ${passed} out of ${testCases.length} test cases.`);
-    } catch (error: any) {
-      setTestResults(
-        `Error in your code. Please fix syntax or runtime errors.`
-      );
-    }
-
-    setLoading(false);
   };
 
   return (
@@ -161,30 +57,30 @@ const CodeEditor = () => {
       <div className="flex items-center justify-between gap-4 pb-6">
         <select
           id="language"
-          value={language.value}
+          value={language}
           onChange={handleLanguageChange}
           className="p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-black"
         >
           {languages.map((lang) => (
-            <option key={lang.value} value={lang.value}>
-              {lang.label}
+            <option key={lang} value={lang}>
+              {lang}
             </option>
           ))}
         </select>
         <Button
-          onClick={runTestCases}
+          onClick={() => {}}
           className="bg-[#7981ff] text-white hover:bg-[#5560ff]"
         >
           Run
         </Button>
-        <Button onClick={runTestCases}>Submit</Button>
+        <Button onClick={() => {}}>Submit</Button>
       </div>
       <Editor
         height="500px"
-        language={language.value}
+        language={language}
         value={code}
         theme="vs-dark"
-        onChange={handleEditorChange}
+        onChange={(val) => setCode(val || "")}
         options={{
           minimap: { enabled: true },
           fontSize: 14,

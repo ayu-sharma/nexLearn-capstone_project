@@ -3,11 +3,17 @@
         {
             "id": 1,
             "title": "Contains Duplicate",
+            "boilerplate": {
+                "java": "public class Solution { public boolean containsDuplicate(int[] nums) { // Write your code here } }",
+                "cpp": "bool containsDuplicate(vector<int>& nums) { // Write your code here }",
+                "python": "def containsDuplicate(nums): # Write your code here",
+                "javascript": "function containsDuplicate(nums) { // Write your code here }"
+            },
             "solution": {
-              "java": "public class Solution { public int max(int[] arr) { /* logic */ return 0; } }",
-              "cpp": "int max(int arr[], int n) { /* logic */ return 0; }",
-              "python": "def max(arr): return max(arr)",
-              "js": "function max(arr) { return Math.max(...arr); }"
+                "java": "public class Solution { public boolean containsDuplicate(int[] nums) { Set<Integer> set = new HashSet<>(); for (int num : nums) { if (!set.add(num)) return true; } return false; } }",
+                "cpp": "bool containsDuplicate(vector<int>& nums) { unordered_set<int> s; for (int num : nums) { if (s.count(num)) return true; s.insert(num); } return false; }",
+                "python": "def containsDuplicate(nums): return len(nums) != len(set(nums))",
+                "javascript": "function containsDuplicate(nums) { return new Set(nums).size !== nums.length; }"
             },
             "testCases": [
               { "input": "[1, 2, 3, 3]", "expectedOutput": "true" },
