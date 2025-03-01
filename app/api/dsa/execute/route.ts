@@ -54,8 +54,14 @@ export async function POST(req: NextRequest, res: NextResponse) {
             return NextResponse.json({ error: "Language not supported" }, { status: 400 });
         }
 
-        const boilerplate = problem.boilerplate[language].trim();
-        const userCode = code.trim();
+        const normalizeCode = (input: string) =>
+            input
+                .replace(/[\n\r\t]+/g, " ") // Remove newlines and tabs
+                .replace(/\s+/g, " ") // Convert multiple spaces to a single space
+                .trim();
+
+        const boilerplate = normalizeCode(problem.boilerplate[language]);
+        const userCode = normalizeCode(code);
 
         // **Boilerplate Enforcement: Check if user just copied boilerplate**
         if (userCode === boilerplate) {
@@ -64,8 +70,8 @@ export async function POST(req: NextRequest, res: NextResponse) {
             }, { status: 400 });
         }
 
-        const boilerplateFunctionSignature = problem.boilerplate[language].split("{")[0].trim();
-        const userFunctionSignature = code.split("{")[0].trim();
+        const boilerplateFunctionSignature = normalizeCode(problem.boilerplate[language].split("{")[0]);
+        const userFunctionSignature = normalizeCode(code.split("{")[0]);
 
         if (!userFunctionSignature.includes(boilerplateFunctionSignature)) {
             return NextResponse.json({
@@ -88,7 +94,7 @@ export async function POST(req: NextRequest, res: NextResponse) {
             });
         }
 
-        const isCorrect = problem.solution[language] && code.includes(problem.solution[language]);
+        const isCorrect = problem.solution[language] && normalizeCode(code) === normalizeCode(problem.solution[language]);
         
         return NextResponse.json({
             passed: isCorrect ? problem.testCases.length : Math.floor(Math.random() * problem.testCases.length),

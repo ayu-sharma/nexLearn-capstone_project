@@ -10,6 +10,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { useSearchParams } from "next/navigation";
+import axios from "axios";
 
 const languages = [
   "javascript",
@@ -20,7 +21,7 @@ const languages = [
 
 const CodeEditor = () => {
   const searchParams = useSearchParams();
-  const problemId = searchParams.get("problemId");
+  const pId = searchParams.get("problemId");
 
   const [code, setCode] = useState("");
   const [language, setLanguage] = useState("javascript");
@@ -31,8 +32,8 @@ const CodeEditor = () => {
   const [isLoading, setLoading] = useState(false);
 
   useEffect(() => {
-    if (problemId) {
-        fetch(`/api/dsa/editor/${problemId}`)
+    if (pId) {
+        fetch(`/api/dsa/editor/${pId}`)
             .then((res) => res.json())
             .then((data) => {
                 if (data.boilerplate) {
@@ -41,7 +42,7 @@ const CodeEditor = () => {
             })
             .catch((err) => console.error("Error fetching problem:", err));
     }
-}, [problemId, language]);
+}, [pId, language]);
 
   const handleLanguageChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const selectedLanguage = languages.find(
@@ -51,6 +52,24 @@ const CodeEditor = () => {
       setLanguage(selectedLanguage);
     }
   };
+
+  const runCode = async () => {
+    setLoading(true);
+    try {
+      const problemId = Number(pId);
+      const res = await axios.post("http://localhost:3000/api/dsa/execute", { code, language, problemId });
+      setLoading(false);
+      setTestResults(res.data.error  || `Passed ${res.data.passed}/${res.data.total} test cases\n${res.data.message}`);
+    } catch (err) {
+      setLoading(false);
+      setTestResults("Compilation Error");
+    }
+    setModalOpen(true);
+  };
+
+  const handleSubmit = async () => {
+    
+  }
 
   return (
     <div className="h-full w-full rounded-md">
@@ -68,7 +87,7 @@ const CodeEditor = () => {
           ))}
         </select>
         <Button
-          onClick={() => {}}
+          onClick={runCode}
           className="bg-[#7981ff] text-white hover:bg-[#5560ff]"
         >
           Run

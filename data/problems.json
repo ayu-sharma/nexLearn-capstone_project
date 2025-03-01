@@ -4,10 +4,10 @@
             "id": 1,
             "title": "Contains Duplicate",
             "boilerplate": {
-                "java": "public class Solution { public boolean containsDuplicate(int[] nums) { // Write your code here } }",
-                "cpp": "bool containsDuplicate(vector<int>& nums) { // Write your code here }",
-                "python": "def containsDuplicate(nums): # Write your code here",
-                "javascript": "function containsDuplicate(nums) { // Write your code here }"
+                "java": "public class Solution {\n\tpublic boolean containsDuplicate(int[] nums) {\n\t\t// Write your code here\n\t}\n}",
+                "cpp": "bool containsDuplicate(vector<int>& nums) {\n\t// Write your code here\n}",
+                "python": "def containsDuplicate(nums):\n\t# Write your code here",
+                "javascript": "function containsDuplicate(nums) {\n\t// Write your code here\n}"
             },
             "solution": {
                 "java": "public class Solution { public boolean containsDuplicate(int[] nums) { Set<Integer> set = new HashSet<>(); for (int num : nums) { if (!set.add(num)) return true; } return false; } }",
