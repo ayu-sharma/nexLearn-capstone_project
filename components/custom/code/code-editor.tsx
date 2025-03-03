@@ -68,7 +68,25 @@ const CodeEditor = () => {
   };
 
   const handleSubmit = async () => {
-    
+    setLoading(true);
+    try {
+      const token = localStorage.getItem("token");
+      const problemId = Number(pId);
+      const response = await axios.post("http://localhost:3000/api/dsa/submit",
+        { code, language, problemId },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        }
+      );
+      setLoading(false);
+      setTestResults(response.data.error  || `Passed ${response.data.passed}/${response.data.total} test cases\n${response.data.message}`);
+    } catch (error) {
+      setLoading(false);
+      setTestResults("Compilation Error");
+    }
+    setModalOpen(true);
   }
 
   return (
@@ -92,7 +110,7 @@ const CodeEditor = () => {
         >
           Run
         </Button>
-        <Button onClick={() => {}}>Submit</Button>
+        <Button onClick={handleSubmit}>Submit</Button>
       </div>
       <Editor
         height="500px"
