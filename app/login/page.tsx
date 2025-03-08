@@ -70,30 +70,41 @@ const Login = () => {
   useEffect(() => {
     const checkAuth = async () => {
       try {
+        // Get token from localStorage
         const token = localStorage.getItem("token");
-
-        if (!token) {
-          return; // If no token, stay on login page
+        
+        // Explicitly check if token is null before proceeding
+        if (token === null) {
+          console.log("No token found, staying on login page");
+          return null; // Explicitly return null
         }
 
+        // Only attempt API call if we have a non-null token
         try {
-          await axios.get("http://localhost:3000/api/user/me", {
+          const response = await axios.get("http://localhost:3000/api/user/me", {
             headers: {
               Authorization: `Bearer ${token}`,
             },
           });
-          router.push("/home");
+          
+          // If API call succeeds, user is authenticated
+          if (response.status === 200) {
+            router.push("/home");
+          }
         } catch (error) {
           console.error("Authentication error:", error);
           localStorage.removeItem("token"); // Clear invalid token
+          return null;
         }
       } catch (error) {
         console.error("Error checking authentication:", error);
+        return null;
       }
     };
 
+    // Call the function
     checkAuth();
-  }, [router]); // Add router to dependency array
+  }, [router]);
 
   const handleLogin = async () => {
     setIsLoading(true);
