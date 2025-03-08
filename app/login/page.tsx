@@ -12,6 +12,7 @@ import Image from "next/image";
 import logoL from "@/public/images/logol.svg";
 import logoD from "@/public/images/logoD.svg";
 import toast from "react-hot-toast";
+import { Eye, EyeOff } from 'lucide-react';
 
 const Login = () => {
   const router = useRouter();
@@ -21,7 +22,12 @@ const Login = () => {
     email: "",
     password: "",
   });
+  const [showPassword, setShowPassword] = useState(false);
+  const [password, setPassword] = useState('');
 
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
   useEffect(() => {
     const areInputsFilled =
       formInputs.email.trim() !== "" && formInputs.password.trim() !== "";
@@ -121,18 +127,28 @@ const Login = () => {
               />
             </div>
             <div className="flex flex-col w-full gap-y-2 my-1">
-              <p className="text-sm font-mono">Password</p>
-              <Input
-                type="password"
-                placeholder="🔓"
-                onChange={(e) => {
-                  setFormInputs((c) => ({
-                    ...c,
-                    password: e.target.value,
-                  }));
-                }}
-              />
-            </div>
+      <p className="text-sm font-mono">Password</p>
+      <div className="relative">
+        <Input
+          type={showPassword ? "text" : "password"}
+          placeholder="🔓"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          className="pr-10"
+        />
+        <button
+          type="button"
+          onClick={togglePasswordVisibility}
+          className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700 focus:outline-none"
+        >
+          {showPassword ? (
+            <EyeOff size={18} />
+          ) : (
+            <Eye size={18} />
+          )}
+        </button>
+      </div>
+    </div>
             <Button
               variant={"custom"}
               className="w-full my-1 py-6"

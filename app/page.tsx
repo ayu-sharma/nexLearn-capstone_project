@@ -54,7 +54,7 @@ const Landing = () => {
             <div className="">
               <Navbar />
             </div>
-            <Link href="http://localhost:3000/login">
+            <Link href="/login">
               <Button className="w-full text-lg py-6 px-10 text-[#F2F2F2] bg-[#121417] border border-[#121417] hover:bg-transparent hover:text-[#121417]">
                 Sign In
               </Button>

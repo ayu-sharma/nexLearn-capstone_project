@@ -18,6 +18,8 @@ const Signup = () => {
     const [checked, setChecked] = useState(false);
     const [isButtonDisabled, setIsButtonDisabled] = useState(true);
     const [isLoading, setIsLoading] = useState(false);
+    const [showPassword, setShowPassword] = useState(false);
+    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
     const [formInputs, setFormInputs] = useState<SignupInput>({
         name: "",
         email: "",
@@ -89,6 +91,14 @@ const Signup = () => {
     //     return () => observer.disconnect();
     // }, []);
 
+    const togglePasswordVisibility = () => {
+        setShowPassword(!showPassword);
+    };
+
+    const toggleConfirmPasswordVisibility = () => {
+        setShowConfirmPassword(!showConfirmPassword);
+    };
+
     return (
         <div className='relative h-screen flex items-center justify-center w-screen'>
             <div className='absolute top-10 right-10'>
@@ -126,21 +136,65 @@ const Signup = () => {
                         </div>
                         <div className='flex flex-col w-full gap-y-2 my-1'>
                             <p className='text-sm'>Password</p>
-                            <Input type='password' placeholder='🔓' onChange={(e) => {
-                                setFormInputs(c => ({
-                                    ...c,
-                                    password: e.target.value
-                                }))
-                            }} />
+                            <div className="relative w-full">
+                                <Input 
+                                    type={showPassword ? 'text' : 'password'} 
+                                    placeholder='🔓' 
+                                    className="pr-10"
+                                    onChange={(e) => {
+                                        setFormInputs(c => ({
+                                            ...c,
+                                            password: e.target.value
+                                        }))
+                                    }} 
+                                />
+                                <div 
+                                    className="absolute inset-y-0 right-0 flex items-center pr-3 cursor-pointer"
+                                    onClick={togglePasswordVisibility}
+                                >
+                                    {showPassword ? (
+                                        <svg className="h-5 w-5 text-gray-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21" />
+                                        </svg>
+                                    ) : (
+                                        <svg className="h-5 w-5 text-gray-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                                        </svg>
+                                    )}
+                                </div>
+                            </div>
                         </div>
                         <div className='flex flex-col w-full gap-y-2 my-1'>
                             <p className='text-sm'>Confirm Password</p>
-                            <Input type='password' placeholder='🔓' onChange={(e) => {
-                                setFormInputs(c => ({
-                                    ...c,
-                                    confirmPassword: e.target.value
-                                }))
-                            }} />
+                            <div className="relative w-full">
+                                <Input 
+                                    type={showConfirmPassword ? 'text' : 'password'} 
+                                    placeholder='🔓' 
+                                    className="pr-10"
+                                    onChange={(e) => {
+                                        setFormInputs(c => ({
+                                            ...c,
+                                            confirmPassword: e.target.value
+                                        }))
+                                    }} 
+                                />
+                                <div 
+                                    className="absolute inset-y-0 right-0 flex items-center pr-3 cursor-pointer"
+                                    onClick={toggleConfirmPasswordVisibility}
+                                >
+                                    {showConfirmPassword ? (
+                                        <svg className="h-5 w-5 text-gray-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21" />
+                                        </svg>
+                                    ) : (
+                                        <svg className="h-5 w-5 text-gray-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                                        </svg>
+                                    )}
+                                </div>
+                            </div>
                         </div>
                         <div className='flex items-center gap-x-2 my-1'>
                             <input type="checkbox" name="agree" id="agree" onChange={(e) => setChecked(e.target.checked)} />
