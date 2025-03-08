@@ -1,268 +1,262 @@
 "use client";
 
-import { ModeToggle } from '@/components/ModeToggle'
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import React, { useState, useEffect } from 'react'
-import { SignupInput } from '@/helpers/zod';
-import { useRouter } from 'next/navigation';
-import axios, { AxiosError } from "axios"
-import Carousel from '@/components/Carousel';
-import Image from 'next/image';
-import logoL from "@/public/images/logol.svg"
-import logoD from "@/public/images/logoD.svg"
-import toast from 'react-hot-toast';
+import React, { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
+import axios, { AxiosError } from "axios";
+import Image from "next/image";
+import { Eye, EyeOff } from 'lucide-react';
+import toast from "react-hot-toast";
+
+// Import your UI components
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import Carousel from "@/components/Carousel";
+// import { ModeToggle } from "@/components/ModeToggle";
+
+// Import your images
+import logoD from "@/public/images/logoD.svg";
+import { SignupInput } from "@/helpers/zod";
+
+// Define Loader component
+const Loader = () => {
+  return (
+    <div className="flex items-center justify-center">
+      <svg
+        className="animate-spin h-5 w-5 text-[#F2F2F2] dark:text-[#121417]"
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+      >
+        <circle
+          className="opacity-25"
+          cx="12"
+          cy="12"
+          r="10"
+          stroke="currentColor"
+          strokeWidth="4"
+        ></circle>
+        <path
+          className="opacity-75"
+          fill="currentColor"
+          d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
+        ></path>
+      </svg>
+    </div>
+  );
+};
 
 const Signup = () => {
-    const router = useRouter();
-    const [checked, setChecked] = useState(false);
-    const [isButtonDisabled, setIsButtonDisabled] = useState(true);
-    const [isLoading, setIsLoading] = useState(false);
-    const [showPassword, setShowPassword] = useState(false);
-    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-    const [formInputs, setFormInputs] = useState<SignupInput>({
-        name: "",
-        email: "",
-        password: "",
-        confirmPassword: ""
-    });
+  const router = useRouter();
+  const [checked, setChecked] = useState(false);
+  const [isButtonDisabled, setIsButtonDisabled] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [formInputs, setFormInputs] = useState<SignupInput>({
+    name: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+  });
 
-    useEffect(() => {
-        const areInputsFilled =
-            formInputs.email.trim() !== '' &&
-            formInputs.password.trim() !== '' &&
-            formInputs.confirmPassword.trim() !== ''
+  useEffect(() => {
+    const areInputsFilled =
+      formInputs.email.trim() !== "" &&
+      formInputs.password.trim() !== "" &&
+      formInputs.confirmPassword.trim() !== "";
 
-        setIsButtonDisabled(!(areInputsFilled && checked));
-    }, [formInputs, checked]);
+    setIsButtonDisabled(!(areInputsFilled && checked));
+  }, [formInputs, checked]);
 
-    useEffect(() => {
-        const checkAuth = async () => {
-            try {
-                const token = localStorage.getItem("token");
+  useEffect(() => {
+    const checkAuth = async () => {
+      try {
+        const token = localStorage.getItem("token");
 
-                if (!token) {
-                    router.push('/signup');
-                }
-
-                await axios.get('http://localhost:3000/api/user/me', {
-                    headers: {
-                        Authorization: `Bearer ${token}`
-                    }
-                });
-                router.push('/home');
-            } catch (error) {
-                console.error('Error finding token: ', error);
-            }
+        if (!token) {
+          return; // If no token, stay on signup page
         }
 
-        checkAuth();
-    }, []);
-
-    const handleSignup = async () => {
-        setIsLoading(true);
         try {
-            const response = await axios.post('http://localhost:3000/api/user/signup', formInputs);
-            localStorage.setItem("token", response.data.jwt);
-            toast.success('Signup successful');
-            router.push('/home');
-        } catch (error: unknown) {
-            if (error instanceof AxiosError && error.response?.data?.error) {
-                toast.error(error.response.data.error.toString());
-            } else {
-                toast.error('Something went wrong. Please try again.');
-            }
-            console.error("Failed to sign up: ", error);
-        } finally {
-            setIsLoading(false);
+          await axios.get("http://localhost:3000/api/user/me", {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          });
+          router.push("/home");
+        } catch (error) {
+          console.error("Authentication error:", error);
+          localStorage.removeItem("token"); // Clear invalid token
         }
+      } catch (error) {
+        console.error("Error checking authentication:", error);
+      }
     };
 
-    // const [isDarkMode, setIsDarkMode] = useState(false);
-    // useEffect(() => {
-    //     const checkDarkMode = () => {
-    //         setIsDarkMode(document.documentElement.classList.contains('dark'));
-    //     };
-    //     checkDarkMode();
-    //     const observer = new MutationObserver(checkDarkMode);
+    checkAuth();
+  }, [router]); // Add router to dependency array
 
-    //     observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
+  const handleSignup = async () => {
+    setIsLoading(true);
+    try {
+      const response = await axios.post(
+        "http://localhost:3000/api/user/signup",
+        formInputs
+      );
+      localStorage.setItem("token", response.data.jwt);
+      toast.success("Signup successful");
+      router.push("/home");
+    } catch (error) {
+      if (error instanceof AxiosError && error.response?.data?.error) {
+        toast.error(error.response.data.error.toString());
+      } else {
+        toast.error("Something went wrong. Please try again.");
+      }
+      console.error("Failed to sign up:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
-    //     return () => observer.disconnect();
-    // }, []);
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
 
-    const togglePasswordVisibility = () => {
-        setShowPassword(!showPassword);
-    };
+  const toggleConfirmPasswordVisibility = () => {
+    setShowConfirmPassword(!showConfirmPassword);
+  };
 
-    const toggleConfirmPasswordVisibility = () => {
-        setShowConfirmPassword(!showConfirmPassword);
-    };
-
-    return (
-        <div className='relative h-screen flex items-center justify-center w-screen'>
-            <div className='absolute top-10 right-10'>
+  return (
+    <div className="relative h-screen flex gap-x-2 items-center justify-center w-full overflow-hidden">
+      <div className="absolute top-10 right-10">
+        {/* <ModeToggle /> */}
+      </div>
+      <div className="hidden md:flex ml-10">
+        <Carousel />
+      </div>
+      <div className="w-full mx-4">
+        <div className="w-full flex items-center justify-between">
+          <div className="flex flex-col items-center max-w-lg md:max-w-md mx-auto w-full">
+            <div className="pb-4">
+              {/* Handle possible image loading issues */}
+              {logoD ? (
+                <Image
+                  src={logoD}
+                  alt="NexLearn Logo"
+                  height={44}
+                  width={200}
+                />
+              ) : (
+                <div className="h-11 w-48 bg-gray-200 rounded animate-pulse"></div>
+              )}
             </div>
-            <div className='hidden md:flex md:mx-10'>
-                <Carousel />
+            <h2 className="text-2xl pb-2">Sign Up</h2>
+            <div className="flex flex-col w-full gap-y-1 mb-1">
+              <p className="text-sm font-mono">Name</p>
+              <Input
+                placeholder="👤"
+                onChange={(e) => {
+                  setFormInputs((prev) => ({
+                    ...prev,
+                    name: e.target.value,
+                  }));
+                }}
+              />
             </div>
-            <div className='w-full md:w-[75vw]'>
-                <div className='w-[70%] md:w-full mx-auto flex justify-center'>
-                    <div className='flex flex-col items-center gap-y-4 md:w-[40%]'>
-                        <div className='pb-4'>
-                            <Image
-                                src={logoD} alt='NexLearn Logo' height={44}
-                            />
-                        </div>
-                        <div className="">
-                        <h2 className='text-2xl py-2'>Sign Up</h2>
-                        <div className='flex flex-col w-full gap-y-2 my-1'>
-                            <p className='text-sm'>Name</p>
-                            <Input onChange={(e) => {
-                                setFormInputs(c => ({
-                                    ...c,
-                                    name: e.target.value
-                                }))
-                            }} />
-                        </div>
-                        <div className='flex flex-col w-full gap-y-2 my-1'>
-                            <p className='text-sm'>Email</p>
-                            <Input placeholder='✉️' onChange={(e) => {
-                                setFormInputs(c => ({
-                                    ...c,
-                                    email: e.target.value
-                                }))
-                            }} />
-                        </div>
-                        <div className='flex flex-col w-full gap-y-2 my-1'>
-                            <p className='text-sm'>Password</p>
-                            <div className="relative w-full">
-                                <Input 
-                                    type={showPassword ? 'text' : 'password'} 
-                                    placeholder='🔓' 
-                                    className="pr-10"
-                                    onChange={(e) => {
-                                        setFormInputs(c => ({
-                                            ...c,
-                                            password: e.target.value
-                                        }))
-                                    }} 
-                                />
-                                <div 
-                                    className="absolute inset-y-0 right-0 flex items-center pr-3 cursor-pointer"
-                                    onClick={togglePasswordVisibility}
-                                >
-                                    {showPassword ? (
-                                        <svg className="h-5 w-5 text-gray-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21" />
-                                        </svg>
-                                    ) : (
-                                        <svg className="h-5 w-5 text-gray-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                                        </svg>
-                                    )}
-                                </div>
-                            </div>
-                        </div>
-                        <div className='flex flex-col w-full gap-y-2 my-1'>
-                            <p className='text-sm'>Confirm Password</p>
-                            <div className="relative w-full">
-                                <Input 
-                                    type={showConfirmPassword ? 'text' : 'password'} 
-                                    placeholder='🔓' 
-                                    className="pr-10"
-                                    onChange={(e) => {
-                                        setFormInputs(c => ({
-                                            ...c,
-                                            confirmPassword: e.target.value
-                                        }))
-                                    }} 
-                                />
-                                <div 
-                                    className="absolute inset-y-0 right-0 flex items-center pr-3 cursor-pointer"
-                                    onClick={toggleConfirmPasswordVisibility}
-                                >
-                                    {showConfirmPassword ? (
-                                        <svg className="h-5 w-5 text-gray-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21" />
-                                        </svg>
-                                    ) : (
-                                        <svg className="h-5 w-5 text-gray-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                                        </svg>
-                                    )}
-                                </div>
-                            </div>
-                        </div>
-                        <div className='flex items-center gap-x-2 my-1'>
-                            <input type="checkbox" name="agree" id="agree" onChange={(e) => setChecked(e.target.checked)} />
-                            <p className='text-sm'>
-                                I agree to abide by Terms of Service and Privacy Policy
-                            </p>
-                        </div>
-                        <Button variant={'custom'} className='w-full my-1 py-6' onClick={handleSignup} disabled={isButtonDisabled || isLoading}>
-                            {
-                                isLoading ? (
-                                    <Loader />
-                                ) : (
-                                    'Continue'
-                                )
-                            }
-                        </Button>
-                        <div className='flex items-center my-1 text-sm gap-x-2'>
-                            <p>Already have an account?</p>
-                            <div className='cursor-pointer underline' onClick={() => router.push('/login')}>Login</div>
-                        </div>
-                        {/* <div className='flex mt-4 items-center gap-x-4 w-full'>
-                            <div className='w-[25%] h-[0.75px] bg-gray-700/10 dark:bg-gray-300/20' />
-                            <p className='text-sm flex-1 text-center'>or Signup with</p>
-                            <div className='w-[25%] h-[0.75px] bg-gray-700/10 dark:bg-gray-300/20' />
-                        </div>
-                        <div className='flex my-1 w-full gap-x-4'>
-                            <Button className='w-1/2 py-6' variant={'outline'}>
-                                <svg className='h-5' viewBox="-3 0 262 262" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid" fill="#000000"><g id="SVGRepo_bgCarrier" strokeWidth="0"></g><g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M255.878 133.451c0-10.734-.871-18.567-2.756-26.69H130.55v48.448h71.947c-1.45 12.04-9.283 30.172-26.69 42.356l-.244 1.622 38.755 30.023 2.685.268c24.659-22.774 38.875-56.282 38.875-96.027" fill="#4285F4"></path><path d="M130.55 261.1c35.248 0 64.839-11.605 86.453-31.622l-41.196-31.913c-11.024 7.688-25.82 13.055-45.257 13.055-34.523 0-63.824-22.773-74.269-54.25l-1.531.13-40.298 31.187-.527 1.465C35.393 231.798 79.49 261.1 130.55 261.1" fill="#34A853"></path><path d="M56.281 156.37c-2.756-8.123-4.351-16.827-4.351-25.82 0-8.994 1.595-17.697 4.206-25.82l-.073-1.73L15.26 71.312l-1.335.635C5.077 89.644 0 109.517 0 130.55s5.077 40.905 13.925 58.602l42.356-32.782" fill="#FBBC05"></path><path d="M130.55 50.479c24.514 0 41.05 10.589 50.479 19.438l36.844-35.974C195.245 12.91 165.798 0 130.55 0 79.49 0 35.393 29.301 13.925 71.947l42.211 32.783c10.59-31.477 39.891-54.251 74.414-54.251" fill="#EB4335"></path></g></svg>
-                            </Button>
-                            <Button className='w-1/2 py-6' variant={'outline'}>
-                                <svg className="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
-                                    <path fillRule="evenodd" d="M12.006 2a9.847 9.847 0 0 0-6.484 2.44 10.32 10.32 0 0 0-3.393 6.17 10.48 10.48 0 0 0 1.317 6.955 10.045 10.045 0 0 0 5.4 4.418c.504.095.683-.223.683-.494 0-.245-.01-1.052-.014-1.908-2.78.62-3.366-1.21-3.366-1.21a2.711 2.711 0 0 0-1.11-1.5c-.907-.637.07-.621.07-.621.317.044.62.163.885.346.266.183.487.426.647.71.135.253.318.476.538.655a2.079 2.079 0 0 0 2.37.196c.045-.52.27-1.006.635-1.37-2.219-.259-4.554-1.138-4.554-5.07a4.022 4.022 0 0 1 1.031-2.75 3.77 3.77 0 0 1 .096-2.713s.839-.275 2.749 1.05a9.26 9.26 0 0 1 5.004 0c1.906-1.325 2.74-1.05 2.74-1.05.37.858.406 1.828.101 2.713a4.017 4.017 0 0 1 1.029 2.75c0 3.939-2.339 4.805-4.564 5.058a2.471 2.471 0 0 1 .679 1.897c0 1.372-.012 2.477-.012 2.814 0 .272.18.592.687.492a10.05 10.05 0 0 0 5.388-4.421 10.473 10.473 0 0 0 1.313-6.948 10.32 10.32 0 0 0-3.39-6.165A9.847 9.847 0 0 0 12.007 2Z" clipRule="evenodd" />
-                                </svg>
-                            </Button>
-                        </div> */}
-                    </div>
-                    </div>
-                </div>
+            <div className="flex flex-col w-full gap-y-1 mb-1">
+              <p className="text-sm font-mono">Email</p>
+              <Input
+                placeholder="✉️"
+                onChange={(e) => {
+                  setFormInputs((prev) => ({
+                    ...prev,
+                    email: e.target.value,
+                  }));
+                }}
+              />
             </div>
-        </div>
-    )
-}
-
-export default Signup
-
-const Loader = () => {
-    return (
-        <div className="flex items-center justify-center">
-            <svg
-                className="animate-spin h-5 w-5 text-[#F2F2F2] dark:text-[#121417]"
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
+            <div className="flex flex-col w-full gap-y-1 mb-1">
+              <p className="text-sm font-mono">Password</p>
+              <div className="relative">
+                <Input
+                  type={showPassword ? "text" : "password"}
+                  placeholder="🔓"
+                  value={formInputs.password}
+                  onChange={(e) =>
+                    setFormInputs((prev) => ({
+                      ...prev,
+                      password: e.target.value,
+                    }))
+                  }
+                  className="pr-10"
+                />
+                <button
+                  type="button"
+                  onClick={togglePasswordVisibility}
+                  className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700 focus:outline-none"
+                >
+                  {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                </button>
+              </div>
+            </div>
+            <div className="flex flex-col w-full gap-y-1 mb-1">
+              <p className="text-sm font-mono">Confirm Password</p>
+              <div className="relative">
+                <Input
+                  type={showConfirmPassword ? "text" : "password"}
+                  placeholder="🔓"
+                  value={formInputs.confirmPassword}
+                  onChange={(e) =>
+                    setFormInputs((prev) => ({
+                      ...prev,
+                      confirmPassword: e.target.value,
+                    }))
+                  }
+                  className="pr-10"
+                />
+                <button
+                  type="button"
+                  onClick={toggleConfirmPasswordVisibility}
+                  className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700 focus:outline-none"
+                >
+                  {showConfirmPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                </button>
+              </div>
+            </div>
+            <div className="flex items-center gap-x-2 my-1 w-full">
+              <input 
+                type="checkbox" 
+                name="agree" 
+                id="agree" 
+                onChange={(e) => setChecked(e.target.checked)} 
+                className="h-4 w-4"
+              />
+              <p className="text-sm">
+                I agree to abide by Terms of Service and Privacy Policy
+              </p>
+            </div>
+            <Button
+              variant={"custom"}
+              className="w-full my-1 py-5"
+              onClick={handleSignup}
+              disabled={isButtonDisabled || isLoading}
             >
-                <circle
-                    className="opacity-25"
-                    cx="12"
-                    cy="12"
-                    r="10"
-                    stroke="currentColor"
-                    strokeWidth="4"
-                ></circle>
-                <path
-                    className="opacity-75"
-                    fill="currentColor"
-                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
-                ></path>
-            </svg>
+              {isLoading ? <Loader /> : "Sign Up"}
+            </Button>
+            <div className="flex items-center my-1 text-sm gap-x-2">
+              <p>Already have an account?</p>
+              <div
+                className="cursor-pointer font-bold"
+                onClick={() => router.push("/login")}
+              >
+                Login
+              </div>
+            </div>
+          </div>
         </div>
-    )
-}
+      </div>
+    </div>
+  );
+};
+
+export default Signup;
