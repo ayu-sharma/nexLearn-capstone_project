@@ -1,7 +1,5 @@
-"use client";
-
 import axios from "axios";
-import { ArrowRight, BookA, Code, DraftingCompass } from "lucide-react";
+import { ArrowRight, BookA, Code, DraftingCompass, Clock } from "lucide-react";
 import React, { useEffect, useState } from "react";
 
 interface LibraryGridProps {
@@ -36,27 +34,44 @@ const LibraryGrid = ({
   const filteredCourses = courses.filter((course) => {
     const matchesSearch = course.title
       .toLowerCase()
-      .includes(searchTerm.toLocaleLowerCase());
+      .includes(searchTerm.toLowerCase());
     const matchesFilter =
       filter === "All" || course.type.toUpperCase() === filter.toUpperCase();
     return matchesFilter && matchesSearch;
   });
+
+  if (loading) {
+    return (
+      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {Array.from({ length: 9 }).map((_, index) => (
+          <SkeletonCard key={index} />
+        ))}
+      </div>
+    );
+  }
+
+  if (filteredCourses.length === 0) {
+    return (
+      <div className="flex flex-col items-center justify-center py-20 text-center">
+        <Clock className="h-16 w-16 text-gray-400 mb-4" />
+        <h3 className="text-xl font-semibold text-gray-700 dark:text-gray-300">No courses found</h3>
+        <p className="text-gray-500 mt-2">Try adjusting your search or filter criteria</p>
+      </div>
+    );
+  }
+
   return (
-    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-      {loading
-        ? Array.from({ length: 8 }).map((_, index) => (
-            <SkeletonCard key={index} />
-          ))
-        : filteredCourses.map((course) => (
-            <CourseCard
-              key={course.id}
-              id={course.id}
-              title={course.title}
-              description={course.description}
-              type={course.type}
-              onClick={() => onCourseSelect(course.id)}
-            />
-          ))}
+    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+      {filteredCourses.map((course) => (
+        <CourseCard
+          key={course.id}
+          id={course.id}
+          title={course.title}
+          description={course.description}
+          type={course.type}
+          onClick={() => onCourseSelect(course.id)}
+        />
+      ))}
     </div>
   );
 };
@@ -78,52 +93,81 @@ const CourseCard = ({
   type,
   onClick,
 }: CourseCardProps) => {
-  const renderLogo = () => {
-    switch (type) {
+  const getTypeColor = () => {
+    switch (type.toUpperCase()) {
       case "CODING":
-        return <Code className="mr-2" />;
+        return "bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400";
       case "APTITUDE":
-        return <DraftingCompass className="mr-2" />;
+        return "bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400";
       case "LANGUAGE":
-        return <BookA className="mr-2" />;
+        return "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400";
+      default:
+        return "bg-[#7981FF]/20 text-[#7981FF]";
     }
   };
+
+  const renderLogo = () => {
+    switch (type.toUpperCase()) {
+      case "CODING":
+        return <Code className="h-5 w-5 text-blue-600 dark:text-blue-400" />;
+      case "APTITUDE":
+        return <DraftingCompass className="h-5 w-5 text-amber-600 dark:text-amber-400" />;
+      case "LANGUAGE":
+        return <BookA className="h-5 w-5 text-green-600 dark:text-green-400" />;
+      default:
+        return <Code className="h-5 w-5 text-[#7981FF]" />;
+    }
+  };
+
   return (
     <div
       onClick={onClick}
-      className="group transition cursor-pointer relative shadow-sm p-6 border rounded-md flex flex-col justify-between gap-y-4 hover:border-neutral-400"
+      className="group bg-white dark:bg-gray-800 transition-all duration-300 cursor-pointer rounded-xl shadow-sm hover:shadow-md border border-gray-200 dark:border-gray-700 overflow-hidden flex flex-col justify-between"
     >
-      <div className="flex flex-col gap-y-4">
-        <div className="flex items-center">
-          {renderLogo()}
-          <h1 className="text-2xl font-medium">{title}</h1>
+      <div className="p-6">
+        <div className="flex items-center gap-3 mb-4">
+          <div className="p-2 rounded-lg bg-gray-100 dark:bg-gray-700">
+            {renderLogo()}
+          </div>
+          <h3 className="text-xl font-semibold text-gray-800 dark:text-white truncate">
+            {title}
+          </h3>
         </div>
-        <p className="font-light">{description}</p>
-      </div>
-      <div className="flex w-1/3">
-        <p className="text-sm font-medium bg-[#7981FF]/20 text-[#7981FF] px-4 py-1 rounded">
-          {type}
+        <p className="text-gray-600 dark:text-gray-300 line-clamp-3 mb-6 text-sm h-14">
+          {description}
         </p>
+        <div className="flex items-center justify-between">
+          <span className={`px-3 py-1 rounded-full text-xs font-medium ${getTypeColor()}`}>
+            {type}
+          </span>
+          <span className="text-[#7981FF] group-hover:translate-x-1 transform transition-transform duration-300">
+            <ArrowRight className="h-5 w-5" />
+          </span>
+        </div>
       </div>
-      <div className="absolute bottom-6 right-6 hidden group-hover:flex transition ease-in-out">
-        <ArrowRight />
-      </div>
+      <div className="h-1 w-full bg-gradient-to-r from-[#7981FF] to-[#6A74FF] transform scale-x-0 group-hover:scale-x-100 origin-left transition-transform duration-300"></div>
     </div>
   );
 };
 
 const SkeletonCard = () => {
   return (
-    <div className="animate-pulse shadow-sm p-6 border rounded-md flex flex-col justify-between gap-y-4">
-      <div className="flex flex-col gap-y-4">
-        <div className="flex items-center gap-x-2">
-          <div className="w-8 h-8 bg-gray-300/20 rounded-full"></div>
-          <div className="w-2/3 h-6 bg-gray-300/20 rounded"></div>
+    <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden p-6">
+      <div className="animate-pulse">
+        <div className="flex items-center gap-3 mb-4">
+          <div className="w-9 h-9 bg-gray-200 dark:bg-gray-700 rounded-lg"></div>
+          <div className="h-6 bg-gray-200 dark:bg-gray-700 rounded w-2/3"></div>
         </div>
-        <div className="w-full h-4 bg-gray-300/20 rounded"></div>
-        <div className="w-5/6 h-4 bg-gray-300/20 rounded"></div>
+        <div className="space-y-2 mb-6">
+          <div className="h-3 bg-gray-200 dark:bg-gray-700 rounded w-full"></div>
+          <div className="h-3 bg-gray-200 dark:bg-gray-700 rounded w-5/6"></div>
+          <div className="h-3 bg-gray-200 dark:bg-gray-700 rounded w-3/4"></div>
+        </div>
+        <div className="flex items-center justify-between">
+          <div className="h-5 bg-gray-200 dark:bg-gray-700 rounded w-1/4"></div>
+          <div className="h-5 w-5 bg-gray-200 dark:bg-gray-700 rounded-full"></div>
+        </div>
       </div>
-      <div className="w-1/3 h-6 bg-gray-300/20 rounded"></div>
     </div>
   );
 };

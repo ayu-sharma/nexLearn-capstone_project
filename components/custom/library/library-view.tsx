@@ -1,8 +1,8 @@
 "use client";
 
-import React, { useState } from 'react'
-import LibraryTopbar from './library-topbar'
-import LibraryGrid from './library-grid'
+import React, { useState } from 'react';
+import LibraryTopbar from './library-topbar';
+import LibraryGrid from './library-grid';
 import axios from 'axios';
 import toast from 'react-hot-toast';
 
@@ -10,11 +10,10 @@ interface LibraryProps {
   onSelectCourse: (courseId: string) => void;
 }
 
-const Library = ({ onSelectCourse }:  LibraryProps) => {
+const Library = ({ onSelectCourse }: LibraryProps) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [filter, setFilter] = useState('All');
 
-  // startedCourses or Enrolled courses
   const handleCourseSelect = async (courseId: string) => {
     try {
       const token = localStorage.getItem("token");
@@ -38,17 +37,22 @@ const Library = ({ onSelectCourse }:  LibraryProps) => {
       // router push courses
     }
   }
+
   return (
-    <div className=''>
+    <div className="container mx-auto px-4 py-8">
       <LibraryTopbar 
         searchTerm={searchTerm}
         setSearchTerm={setSearchTerm}
         filter={filter}
         setFilter={setFilter}
       />
-      <LibraryGrid searchTerm={searchTerm} filter={filter} onCourseSelect={handleCourseSelect}/>
+      <LibraryGrid 
+        searchTerm={searchTerm} 
+        filter={filter} 
+        onCourseSelect={handleCourseSelect}
+      />
     </div>
-  )
+  );
 }
 
-export default Library
+export default Library;

@@ -3,10 +3,6 @@
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Sidebar from "@/components/Sidebar";
-import { ModeToggle } from "@/components/ModeToggle";
-import { Button } from "@/components/ui/button";
-import Username from "@/components/Username";
-import { Bell } from "lucide-react";
 import DashboardGrid from "@/components/custom/dashboard/dashboard-grid";
 import CourseView from "@/components/custom/course/course-view";
 import Library from "@/components/custom/library/library-view";
@@ -14,6 +10,7 @@ import CodePage from "@/components/custom/code/code-view";
 import PracticeSection from "@/components/custom/practice/practice-section";
 import NotificationSection from "@/components/custom/notification/notification-section";
 import SettingsSection from "@/components/custom/settings/settings-section";
+import RightNav from "@/components/right-nav"
 
 const HomePage = () => {
   const router = useRouter();
@@ -84,37 +81,33 @@ const HomePage = () => {
   };
 
   return (
-    <div className="relative h-screen w-full overflow-x-hidden">
-      <div className="flex xl:block flex-row-reverse xl:pt-0 xl:px-0 pt-5 px-6 w-full justify-between">
+    <div className="relative min-h-screen bg-gray-50 overflow-hidden">
+  {/* Sidebar */}
+  <Sidebar
+    selectedGroup={selectedGroup}
+    onSelectGroup={handleGroupChange}
+    isOpen={isOpen}
+    toggleMenu={toggleMenu}
+  />
+  
+  {/* Header */}
+      <div className="fixed z-10 w-full bg-white shadow-sm border-b border-gray-200 pl-[13rem]">
+  <div className="px-6 xl:flex hidden items-center justify-between">
+    <div className="text-2xl font-medium text-gray-800 hidden xl:block py-4">{selectedGroup}</div>
       <RightNav />
-        <Sidebar
-          selectedGroup={selectedGroup}
-          onSelectGroup={handleGroupChange}
-          isOpen={isOpen}
-          toggleMenu={toggleMenu}
-        />
-      </div>
-      <div className="px-6 xl:pl-[13rem] py-8 flex flex-col w-full">
-        <div className="text-2xl font-semibold hidden xl:block mb-8">{selectedGroup}</div>
-        {renderComponent()}
-      </div>
+  </div>
+</div>
+  
+  {/* Main Content */}
+  <div className="px-4 xl:px-6 xl:pl-[14rem] xl:pt-[5rem] xl:py-8 flex flex-col w-full py-20">
+    <div className="w-full max-w-7xl mx-auto">
+      {renderComponent()}
     </div>
+  </div>
+</div>
   );
 };
 
 export default HomePage;
 
-const RightNav = () => {
-  return (
-    <div className="xl:absolute top-6 right-6">
-      <div className="flex gap-3">
-        {/* <Searchbar /> */}
-        <Button size={"icon"} variant={"outline"}>
-          <Bell className="w-5 h-5" />
-        </Button>
-        <Username />
-        <ModeToggle />
-      </div>
-    </div>
-  );
-};
+

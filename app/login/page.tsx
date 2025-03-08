@@ -1,24 +1,56 @@
 "use client";
 
-import { ModeToggle } from "@/components/ModeToggle";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import React, { useState, useEffect } from "react";
-import { LoginInput } from "@/helpers/zod";
 import { useRouter } from "next/navigation";
 import axios, { AxiosError } from "axios";
-import Carousel from "@/components/Carousel";
 import Image from "next/image";
+import { Eye, EyeOff } from 'lucide-react';
+import toast from "react-hot-toast";
+
+// Import your UI components
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import Carousel from "@/components/Carousel";
+// import { ModeToggle } from "@/components/ModeToggle";
+
+// Import your images
+// If you're having issues with the imports, make sure the paths are correct
 import logoL from "@/public/images/logol.svg";
 import logoD from "@/public/images/logoD.svg";
-import toast from "react-hot-toast";
-import { Eye, EyeOff } from 'lucide-react';
+
+// Define Loader component first
+const Loader = () => {
+  return (
+    <div className="flex items-center justify-center">
+      <svg
+        className="animate-spin h-5 w-5 text-[#F2F2F2] dark:text-[#121417]"
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+      >
+        <circle
+          className="opacity-25"
+          cx="12"
+          cy="12"
+          r="10"
+          stroke="currentColor"
+          strokeWidth="4"
+        ></circle>
+        <path
+          className="opacity-75"
+          fill="currentColor"
+          d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
+        ></path>
+      </svg>
+    </div>
+  );
+};
 
 const Login = () => {
   const router = useRouter();
   const [isButtonDisabled, setIsButtonDisabled] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
-  const [formInputs, setFormInputs] = useState<LoginInput>({
+  const [formInputs, setFormInputs] = useState({
     email: "",
     password: "",
   });
@@ -41,22 +73,27 @@ const Login = () => {
         const token = localStorage.getItem("token");
 
         if (!token) {
-          router.push("/login");
+          return; // If no token, stay on login page
         }
 
-        await axios.get("http://localhost:3000/api/user/me", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        router.push("/home");
+        try {
+          await axios.get("http://localhost:3000/api/user/me", {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          });
+          router.push("/home");
+        } catch (error) {
+          console.error("Authentication error:", error);
+          localStorage.removeItem("token"); // Clear invalid token
+        }
       } catch (error) {
-        console.error("Error finding token: ", error);
+        console.error("Error checking authentication:", error);
       }
     };
 
     checkAuth();
-  }, []);
+  }, [router]); // Add router to dependency array
 
   const handleLogin = async () => {
     setIsLoading(true);
@@ -65,16 +102,22 @@ const Login = () => {
         "http://localhost:3000/api/user/login",
         formInputs
       );
-      localStorage.setItem("token", response.data.jwt);
-      toast.success("Login successful");
-      router.push("/home");
+      
+      if (response.data && response.data.jwt) {
+        localStorage.setItem("token", response.data.jwt);
+        toast.success("Login successful");
+        router.push("/home");
+      } else {
+        toast.error("Invalid response from server");
+        console.error("No JWT in response:", response.data);
+      }
     } catch (error) {
       if (error instanceof AxiosError && error.response?.data?.error) {
         toast.error(error.response.data.error.toString());
       } else {
         toast.error("Something went wrong. Please try again.");
       }
-      console.error("Failed to login: ", error);
+      console.error("Failed to login:", error);
     } finally {
       setIsLoading(false);
     }
@@ -92,11 +135,17 @@ const Login = () => {
         <div className="w-full flex items-center justify-between">
           <div className="flex flex-col items-center max-w-lg md:max-w-md mx-auto w-full gap-y-4">
             <div className="pb-8">
-              <Image
-                src={logoD}
-                alt="NexLearn Logo"
-                height={44}
-              />
+              {/* Handle possible image loading issues */}
+              {logoD ? (
+                <Image
+                  src={logoD}
+                  alt="NexLearn Logo"
+                  height={44}
+                  width={200}
+                />
+              ) : (
+                <div className="h-11 w-48 bg-gray-200 rounded animate-pulse"></div>
+              )}
             </div>
             <h2 className="text-2xl py-2">Welcome Back!</h2>
             <div className="flex flex-col w-full gap-y-2 my-1">
@@ -162,30 +211,3 @@ const Login = () => {
 };
 
 export default Login;
-
-const Loader = () => {
-  return (
-    <div className="flex items-center justify-center">
-      <svg
-        className="animate-spin h-5 w-5 text-[#F2F2F2] dark:text-[#121417]"
-        xmlns="http://www.w3.org/2000/svg"
-        fill="none"
-        viewBox="0 0 24 24"
-      >
-        <circle
-          className="opacity-25"
-          cx="12"
-          cy="12"
-          r="10"
-          stroke="currentColor"
-          strokeWidth="4"
-        ></circle>
-        <path
-          className="opacity-75"
-          fill="currentColor"
-          d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
-        ></path>
-      </svg>
-    </div>
-  );
-};

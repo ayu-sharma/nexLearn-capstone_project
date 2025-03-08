@@ -1,37 +1,38 @@
 import React, { useEffect, useState } from 'react'
-import HeatMap from '@uiw/react-heat-map';
+import { Calendar } from 'lucide-react'
 
-const value = [
-    { date: '2016/01/11', count: 2 },
-    { date: '2016/01/12', count: 20 },
-    { date: '2016/01/13', count: 10 },
-    ...[...Array(17)].map((_, idx) => ({
-      date: `2016/02/${idx + 10}`, count: idx, content: ''
-    })),
-    { date: '2016/04/11', count: 2 },
-    { date: '2016/05/01', count: 5 },
-    { date: '2016/05/02', count: 5 },
-    { date: '2016/05/04', count: 11 },
-  ];
+
 
 const DashboardHeatMap = () => {
     
   return (
-    <div className='mt-6 py-6 justify-center items-center flex bg-[#121417] rounded-md'>
-        <HeatMap
-        value={value}
-        width={920}
-        height={170}
-        style={{ color: '#7981FF', fontSize: '12px' }}
-        weekLabels={['', 'Mon', '', 'Wed', '', 'Fri', '']}
-        startDate={new Date('2016/01/01')}
-        panelColors={['#172554', '#3730a3', '#4f46e5','#7981FF', '#8b5cf6', '#9333ea']}
-        rectProps={{
-            rx: 2
-        }}
-        rectSize={15}
-      />
+    <div className="bg-white rounded-lg shadow p-6">
+    <div className="flex justify-between items-center mb-4">
+      <h2 className="text-lg font-semibold text-gray-800">Activity Heatmap</h2>
+      <div className="flex items-center">
+        <Calendar className="w-4 h-4 text-gray-500 mr-2" />
+        <span className="text-sm text-gray-500">Last 6 months</span>
+      </div>
     </div>
+    <div className="grid grid-cols-7 gap-1 mt-2">
+      {Array(140).fill(0).map((_, i) => (
+        <div 
+          key={i} 
+          className={`w-4 h-4 rounded-sm ${['bg-gray-100', 'bg-green-100', 'bg-green-200', 'bg-green-300', 'bg-green-500'][Math.floor(Math.random() * 5)]}`}
+        ></div>
+      ))}
+    </div>
+    <div className="flex justify-end mt-3 text-xs text-gray-500">
+      <span className="flex items-center mr-3">
+        <div className="w-3 h-3 bg-gray-100 rounded-sm mr-1"></div>
+        Less
+      </span>
+      <span className="flex items-center">
+        <div className="w-3 h-3 bg-green-500 rounded-sm mr-1"></div>
+        More
+      </span>
+    </div>
+  </div>
   )
 }
 

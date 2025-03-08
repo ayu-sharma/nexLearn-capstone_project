@@ -11,7 +11,7 @@ const Searchbar = ({ searchTerm, setSearchTerm }: SearchbarProps) => {
     <div className='flex items-center gap-x-2'>
         <Input 
           placeholder={`Search...`} 
-          className='dark:border-[#F2F2F2]/30 border-[#121417]/20 max-w-sm w-full'
+          className='dark:border-[#F2F2F2]/30 border-[#121417]/20 max-w-sm w-full text-black dark:text-white'
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
         />
