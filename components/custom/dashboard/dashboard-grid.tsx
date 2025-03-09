@@ -1,18 +1,29 @@
+import React, { useState } from "react";
+import { Activity, Users, Code, BookOpen, CheckSquare } from "lucide-react";
+
 import GoalGrid from "./goal-grid";
 import ActivityGrid from "./activity-grid";
 import DSAGrid from "./dsa-progress";
 import MCQGrid from "./mcq-stats";
 import AccuracyGrid from "./accuracy-grid";
 import DashboardHeatMap from "./heatmap";
-import React, { useState } from "react";
-import { Activity, Users, Code, BookOpen, CheckSquare } from "lucide-react";
+import Recommendations from "@/components/Recomendation";
 
-const Dashboard = () => {
-  const [activeTab, setActiveTab] = useState("overview");
+interface ActivityData {
+  // Define your activity data type here if needed
+}
+
+const Dashboard: React.FC = () => {
+  const [activeTab, setActiveTab] = useState<"overview" | "dsa" | "mcq">("overview");
+  const [isRecommendationsOpen, setIsRecommendationsOpen] = useState<boolean>(false);
 
   // Sample data for demonstration
-  const activityData = [65, 40, 80, 35, 60, 75, 50];
-  const goalProgress = 68;
+  const activityData: number[] = [65, 40, 80, 35, 60, 75, 50];
+  const goalProgress: number = 68;
+
+  const toggleRecommendations = () => {
+    setIsRecommendationsOpen(prev => !prev);
+  };
 
   return (
     <div className="min-h-screen bg-gray-100">
@@ -22,10 +33,13 @@ const Dashboard = () => {
           <h1 className="text-xl font-bold text-gray-800">
             Learning Dashboard
           </h1>
-          <div className="flex items-center space-x-4">
-            <button className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md text-sm flex items-center">
+          <div className="md:flex hidden items-center space-x-4">
+            <button 
+              onClick={toggleRecommendations}
+              className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md text-sm flex items-center"
+            >
               <Activity className="w-4 h-4 mr-2" />
-              Weekly Report
+              Recommendations
             </button>
             <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center text-blue-600 font-semibold">
               NT
@@ -33,6 +47,12 @@ const Dashboard = () => {
           </div>
         </div>
       </header>
+
+      {/* Recommendations Component */}
+      <Recommendations 
+        isOpen={isRecommendationsOpen} 
+        onClose={() => setIsRecommendationsOpen(false)} 
+      />
 
       {/* Navigation Tabs */}
       <div className="bg-white shadow-sm mb-6">
@@ -68,16 +88,6 @@ const Dashboard = () => {
             >
               MCQ Stats
             </button>
-            {/* <button
-              onClick={() => setActiveTab("activity")}
-              className={`px-6 py-4 text-sm font-medium border-b-2 ${
-                activeTab === "activity"
-                  ? "border-blue-500 text-blue-600"
-                  : "border-transparent text-gray-500 hover:text-gray-700"
-              }`}
-            >
-              Activity Log
-            </button> */}
           </div>
         </div>
       </div>
@@ -145,14 +155,14 @@ const Dashboard = () => {
         {/* Placeholder content for other tabs */}
         {activeTab === "dsa" && (
           <div>
-            < DSAGrid/>
+            <DSAGrid />
           </div>
         )}
 
         {/* MCQ Stats Section */}
         {activeTab === "mcq" && (
           <div>
-            < MCQGrid/>
+            <MCQGrid />
           </div>
         )}
       </div>
