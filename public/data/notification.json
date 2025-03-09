@@ -1,0 +1,56 @@
+{
+    "notifications": [
+      {
+        "id": 1,
+        "message": "John Doe commented on your post",
+        "type": "comment",
+        "read": false,
+        "timestamp": "2025-03-09T14:32:45Z",
+        "sender": {
+          "id": 123,
+          "name": "John Doe",
+          "avatar": "/images/avatars/john-doe.jpg"
+        },
+        "link": "/posts/456/comments"
+      },
+      {
+        "id": 2,
+        "message": "Your project proposal was approved",
+        "type": "system",
+        "read": false,
+        "timestamp": "2025-03-09T12:15:30Z",
+        "link": "/projects/789"
+      },
+      {
+        "id": 3,
+        "message": "Meeting reminder: Team standup in 15 minutes",
+        "type": "reminder",
+        "read": false,
+        "timestamp": "2025-03-09T09:45:00Z",
+        "link": "/calendar/events/101112"
+      },
+      {
+        "id": 4,
+        "message": "Jane Smith liked your comment",
+        "type": "like",
+        "read": true,
+        "timestamp": "2025-03-08T18:22:10Z",
+        "sender": {
+          "id": 456,
+          "name": "Jane Smith",
+          "avatar": "/images/avatars/jane-smith.jpg"
+        },
+        "link": "/posts/123/comments/456"
+      },
+      {
+        "id": 5,
+        "message": "New task assigned: Update documentation",
+        "type": "task",
+        "read": true,
+        "timestamp": "2025-03-08T11:05:22Z",
+        "link": "/tasks/131415"
+      }
+    ],
+    "unreadCount": 3,
+    "totalCount": 5
+  }
