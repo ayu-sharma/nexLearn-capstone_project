@@ -15,6 +15,7 @@ import Carousel from "@/components/Carousel";
 // Import your images
 import logoD from "@/public/images/logoD.svg";
 import { SignupInput } from "@/helpers/zod";
+import { useUserContext } from "@/context/UserContext";
 
 // Define Loader component
 const Loader = () => {
@@ -95,6 +96,7 @@ const Signup = () => {
     checkAuth();
   }, [router]); // Add router to dependency array
 
+  const { setToken } = useUserContext();
   const handleSignup = async () => {
     setIsLoading(true);
     try {
@@ -103,6 +105,7 @@ const Signup = () => {
         formInputs
       );
       localStorage.setItem("token", response.data.jwt);
+      setToken(response.data.jwt);
       toast.success("Signup successful");
       router.push("/home");
     } catch (error) {

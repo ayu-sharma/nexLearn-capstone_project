@@ -22,7 +22,7 @@ export const metadata = {
   description: "Non-stop learning",
 };
 type RootLayoutProps = {
-  children: ReactNode; 
+  children: ReactNode;
 };
 
 export default function RootLayout({ children }: RootLayoutProps) {
@@ -30,8 +30,8 @@ export default function RootLayout({ children }: RootLayoutProps) {
     <html lang="en">
       <body className={jakarta.className}>
         <UserProvider>
-        <Toaster position="bottom-right" />
-      {children}
+          <Toaster position="bottom-right" />
+          {children}
         </UserProvider>
       </body>
     </html>

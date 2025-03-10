@@ -16,6 +16,7 @@ import Carousel from "@/components/Carousel";
 // If you're having issues with the imports, make sure the paths are correct
 import logoL from "@/public/images/logol.svg";
 import logoD from "@/public/images/logoD.svg";
+import { useUserContext } from "@/context/UserContext";
 
 // Define Loader component first
 const Loader = () => {
@@ -105,6 +106,7 @@ const Login = () => {
     checkAuth();
   }, [router]);
 
+  const { setToken } = useUserContext();
   const handleLogin = async () => {
     setIsLoading(true);
     try {
@@ -115,6 +117,7 @@ const Login = () => {
       
       if (response.data && response.data.jwt) {
         localStorage.setItem("token", response.data.jwt);
+        setToken(response.data.jwt);
         toast.success("Login successful");
         router.push("/home");
       } else {

@@ -7,6 +7,7 @@ import logoD from "@/public/images/sidebarD.svg";
 import { useRouter } from "next/navigation";
 import { Code, NotebookPen, Menu, X } from "lucide-react";
 import RightNav from "./right-nav";
+import { useUserContext } from "@/context/UserContext";
 
 interface SidebarProps {
   selectedGroup: string;
@@ -17,27 +18,13 @@ interface SidebarProps {
 
 const Sidebar = ({ selectedGroup, onSelectGroup, isOpen, toggleMenu }: SidebarProps) => {
   const router = useRouter();
-  const [isDarkMode, setIsDarkMode] = useState(false);
-  
-  useEffect(() => {
-    const checkDarkMode = () => {
-      setIsDarkMode(document.documentElement.classList.contains("dark"));
-    };
-    checkDarkMode();
-    const observer = new MutationObserver(checkDarkMode);
-
-    observer.observe(document.documentElement, {
-      attributes: true,
-      attributeFilter: ["class"],
-    });
-
-    return () => observer.disconnect();
-  }, []);
+  const { logout } = useUserContext();
 
   const handleLogout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("cId");
     localStorage.removeItem("selectedGroup");
+    logout();
     router.push("/login");
   };
   
@@ -168,7 +155,7 @@ const Sidebar = ({ selectedGroup, onSelectGroup, isOpen, toggleMenu }: SidebarPr
         <div className="flex flex-col justify-between h-full font-medium text-sm">
           <div className="flex flex-col">
             <Image
-              src={isDarkMode ? logoL : logoD}
+              src={logoD}
               alt="NexLearn Logo"
               height={24}
               className="pb-4 px-2"

@@ -1,57 +1,48 @@
 import { NextRequest, NextResponse } from "next/server";
 import { verify } from "jsonwebtoken";
 import { JWT_SECRET } from "@/helpers/constants";
-import { db } from "@/lib/db";
+import connectToDatabase from "@/lib/mongo";
+import user from "@/models/user";
+import mongoose from "mongoose";
 
 export async function GET(req: NextRequest) {
-    const authHeader = req.headers.get('authorization') || '';
-
-    if (!authHeader || !authHeader.startsWith('Bearer ')) {
-        return NextResponse.json({
-            error: 'Bearer token not found'
-        }, {
-            status: 403
-        });
-    }
-
-    const token = authHeader.split(' ')[1];
     try {
-        const user = verify(token, JWT_SECRET);
+        await connectToDatabase();
 
-        if (user) {
-            const userDetails = await db.user.findUnique({
-                where: {
-                    id: (user as any).id
-                },
-                include: {
-                    startedCourses: true,
-                    performances: true,
-                    submissions: true
-                }
-            });
+        const authHeader = req.headers.get('authorization') || '';
 
+        if (!authHeader || !authHeader.startsWith('Bearer ')) {
             return NextResponse.json({
-                details: userDetails
-                
+                error: 'Bearer token not found'
+            }, {
+                status: 403
+            });
+        }
+
+        const token = authHeader.split(' ')[1];
+        const isUser = verify(token, JWT_SECRET);
+
+        if (isUser) {
+            const userInfo = await user.findOne({ _id: new mongoose.Types.ObjectId((isUser as any).id) });
+            console.log("Decoded JWT:", isUser);
+            return NextResponse.json({
+                details: userInfo
+            }, {
+                status: 200
             });
         } else {
-            return new NextResponse(
-                JSON.stringify({
-                    msg: "You are not logged in"
-                }),
-                {
-                    status: 403
-                }
-            )
+            return NextResponse.json({
+                message: "You are not logged in"
+            }, {
+                status: 400
+            });
         }
     } catch (error) {
-        return new NextResponse(
-            JSON.stringify({
-                err: 'Invalid token ' + error
-            }),
-            {
-                status: 500
-            }
-        )
+        console.log(error);
+        return NextResponse.json({
+            error: "Invalid token"
+        }, {
+            status: 500
+        });
     }
 }
