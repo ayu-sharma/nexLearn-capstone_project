@@ -99,7 +99,7 @@ const Signup = () => {
     setIsLoading(true);
     try {
       const response = await axios.post(
-        "http://localhost:3000/api/user/signup",
+        "http://localhost:3000/api/user/register",
         formInputs
       );
       localStorage.setItem("token", response.data.jwt);
