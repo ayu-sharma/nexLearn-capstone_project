@@ -3,6 +3,7 @@ import z from "zod";
 export const signupInput = z.object({
     name: z.string(),
     email: z.string().email(),
+    goal: z.enum(['INTERNSHIP', 'PLACEMENT']).optional(),
     password: z.string().min(8),
     confirmPassword: z.string().min(8)
 }).refine((data) => data.password === data.confirmPassword, {
