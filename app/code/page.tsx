@@ -43,7 +43,7 @@ const CodingTerminal = () => {
                         size="icon" 
                         variant="outline" 
                         onClick={handleBack}
-                        className="hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+                        className="hover:bg-slate-100 transition-colors"
                     >
                         <ChevronLeft className="h-5 w-5" />
                     </Button>
@@ -62,10 +62,10 @@ const CodingTerminal = () => {
                     </div>
                 ) : (
                     <div className="grid grid-cols-1 lg:grid-cols-5 gap-6 h-full ">
-                        <div className="lg:col-span-2 bg-white dark:bg-slate-900 shadow-sm h-[40rem]">
+                        <div className="lg:col-span-2 bg-white shadow-sm h-[40rem]">
                             <ProblemPanel />
                         </div>
-                        <div className="lg:col-span-3 bg-white dark:bg-slate-900 rounded-lg shadow-sm h-[35rem]">
+                        <div className="lg:col-span-3 bg-white rounded-lg shadow-sm h-[35rem]">
                             <CodeEditor />
                         </div>
                     </div>

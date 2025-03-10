@@ -11,7 +11,6 @@ import toast from "react-hot-toast";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import Carousel from "@/components/Carousel";
-// import { ModeToggle } from "@/components/ModeToggle";
 
 // Import your images
 // If you're having issues with the imports, make sure the paths are correct
@@ -137,7 +136,6 @@ const Login = () => {
   return (
     <div className="relative h-screen flex items-center justify-center w-full gap-4">
       <div className="absolute top-10 right-10">
-        {/* <ModeToggle /> */}
       </div>
       <div className="hidden md:flex ml-10">
         <Carousel />

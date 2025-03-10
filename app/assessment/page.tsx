@@ -4,7 +4,6 @@ import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import Questionbar from "../../components/custom/questionbar/questionbar";
 import { Clock } from "lucide-react";
-import { ModeToggle } from "@/components/ModeToggle";
 import { useRouter } from "next/navigation";
 
 export default function Assessment() {
@@ -39,7 +38,7 @@ export default function Assessment() {
         </div>
         <div className="flex items-center gap-x-6">
         <Button variant={'custom'} onClick={handleSubmit}>Submit</Button>
-        <ModeToggle />
+        
         </div>
       </div>
       <Questionbar onQuizComplete={handleQuizComplete} />

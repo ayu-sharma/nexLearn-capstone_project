@@ -11,7 +11,6 @@ import toast from "react-hot-toast";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import Carousel from "@/components/Carousel";
-// import { ModeToggle } from "@/components/ModeToggle";
 
 // Import your images
 import logoD from "@/public/images/logoD.svg";
@@ -129,7 +128,6 @@ const Signup = () => {
   return (
     <div className="relative h-screen flex gap-x-2 items-center justify-center w-full overflow-hidden">
       <div className="absolute top-10 right-10">
-        {/* <ModeToggle /> */}
       </div>
       <div className="hidden md:flex ml-10">
         <Carousel />
