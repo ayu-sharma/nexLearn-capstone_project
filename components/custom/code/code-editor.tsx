@@ -34,7 +34,7 @@ const CodeEditor = () => {
 
   useEffect(() => {
     if (pId) {
-      fetch(`/api/dsa/editor/${pId}`)
+      fetch(`/api/code/editor/${pId}`)
         .then((res) => res.json())
         .then((data) => {
           if (data.boilerplate) {
@@ -57,7 +57,7 @@ const CodeEditor = () => {
     setTestResults(null);
     try {
       const problemId = Number(pId);
-      const res = await axios.post("/api/dsa/execute", { code, language, problemId });
+      const res = await axios.post("/api/code/execute", { code, language, problemId });
       
       // Process the results
       const results = {
