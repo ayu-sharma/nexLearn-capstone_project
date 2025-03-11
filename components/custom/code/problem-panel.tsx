@@ -26,7 +26,7 @@ const ProblemPanel = () => {
     setLoading(true);
     const fetchProblem = async () => {
       try {
-        const response = await axios.get(`http://localhost:3000/api/dsa/problem/${problemId}`);
+        const response = await axios.get(`http://localhost:3000/api/code/problem/${problemId}`);
         const data = response.data.problem;
         setProblem(data);
       } catch (error) {

@@ -6,8 +6,9 @@ import { useRouter } from 'next/navigation';
 import React, { useState, useEffect } from 'react'
 
 interface Problem {
-  id: number;
-  topicId: string;
+  _id: string;
+  serial: number;
+  topic: string;
   title: string;
   difficulty: "EASY" | "MEDIUM" | "HARD";
   problemStatement: string;
@@ -77,10 +78,10 @@ const DSAList = () => {
               total: topic.problems.length,
               solved: 0, // Update with actual solved count if available
               problems: topic.problems.map((problem: Problem) => ({
-              id: problem.id,
+              id: problem.serial,
               name: problem.title,
               difficulty: problem.difficulty,
-              link: `/code?problemId=${problem.id}`, // Assuming a dynamic route for each problem
+              link: `/code?problemId=${problem.serial}`, // Assuming a dynamic route for each problem
               solved: false, // Update with actual solved status if available
             })),
           }));
