@@ -1,17 +1,25 @@
 import connectToDatabase from "@/lib/mongo";
-import topic from "@/models/topic";
+import Problem from "@/models/problem";
+import Topic from "@/models/topic";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(req: NextRequest) {
     try {
         await connectToDatabase();
 
-        const topics = await topic.find().sort({ order: 1 });
+        const topics = await Topic.find().sort({ order: 1 });
 
-        console.log(topics);
+        const topicsWithProblems = await Promise.all(
+            topics.map(async (topic) => {
+                const problems = await Problem.find({ _id: { $in: topic.problems } });
+                return { ...topic.toObject(), problems };
+            })
+        );
+
+        console.log(topicsWithProblems);
 
         return NextResponse.json({
-            topics
+            topicsWithProblems
         }, {
             status: 200
         });

@@ -1,5 +1,5 @@
 import connectToDatabase from "@/lib/mongo";
-import topic from "@/models/topic";
+import Topic from "@/models/topic";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest) {
@@ -8,7 +8,7 @@ export async function POST(req: NextRequest) {
 
         const { name, order } = await req.json();
 
-        const newTopic = new topic({
+        const newTopic = new Topic({
             name,
             order
         });

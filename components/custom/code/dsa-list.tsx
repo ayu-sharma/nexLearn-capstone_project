@@ -69,11 +69,11 @@ const DSAList = () => {
       const fetchTopics = async () => {
         setLoading(true);
         try {
-          const response = await axios.get("http://localhost:3000/api/dsa/list");
+          const response = await axios.get("http://localhost:3000/api/code/list");
           const data = response.data;
-
-          const transformedData: Section[] = data.topics.map((topic: any) => ({
-              title: topic.title,
+          console.log(data);
+          const transformedData: Section[] = data.topicsWithProblems.map((topic: any) => ({
+              title: topic.name,
               total: topic.problems.length,
               solved: 0, // Update with actual solved count if available
               problems: topic.problems.map((problem: Problem) => ({

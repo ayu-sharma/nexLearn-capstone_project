@@ -22,6 +22,28 @@
               { "input": "[-1, -2, -3, -3]", "expectedOutput": "true" }
             ]
         },
-        {}
+        {
+            "id": 2,
+            "title": "Valid Anagram",
+            "boilerplate": {
+                "java": "class Solution {\n\tpublic boolean isAnagram(String s, String t) {\n\t\t// Your code here\n\t}\n}",
+                "cpp": "class Solution {\npublic:\n\tbool isAnagram(string s, string t) {\n\t\t// Your code here\n\t}\n};",
+                "python": "class Solution:\n\tdef isAnagram(self, s: str, t: str) -> bool:\n\t\t# Your code here",
+                "javascript": "class Solution {\n\tisAnagram(s, t) {\n\t\t// Your code here\n\t}\n}"
+            },
+            "solution": {
+                "java": "import java.util.Arrays; class Solution { public boolean isAnagram(String s, String t) { if (s.length() != t.length()) return false; char[] sArr = s.toCharArray(); char[] tArr = t.toCharArray(); Arrays.sort(sArr); Arrays.sort(tArr); return Arrays.equals(sArr, tArr); } }",
+                "cpp": "#include <algorithm> #include <string> using namespace std; class Solution { public: bool isAnagram(string s, string t) { if (s.length() != t.length()) return false; sort(s.begin(), s.end()); sort(t.begin(), t.end()); return s == t; } };",
+                "python": "class Solution: def isAnagram(self, s: str, t: str) -> bool: return sorted(s) == sorted(t)",
+                "javascript": "class Solution { isAnagram(s, t) { return s.split('').sort().join('') === t.split('').sort().join(''); } }"
+            },
+            "testCases": [
+                { "input": "[\"anagram\", \"nagaram\"]", "expectedOutput": "true" },
+                { "input": "[\"rat\", \"car\"]", "expectedOutput": "false" },
+                { "input": "[\"a\", \"a\"]", "expectedOutput": "true" },
+                { "input": "[\"abc\", \"cba\"]", "expectedOutput": "true" },
+                { "input": "[\"hello\", \"world\"]", "expectedOutput": "false" }
+            ]
+        }
     ]
   }
