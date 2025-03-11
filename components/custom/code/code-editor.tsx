@@ -65,6 +65,7 @@ const CodeEditor = () => {
         total: res.data.total,
         message: res.data.message,
         error: res.data.error,
+        isCorrect: res.data.success,
         status: res.data.error ? "error" : (res.data.passed === res.data.total ? "success" : "partial")
       };
       
