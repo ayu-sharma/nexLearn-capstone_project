@@ -70,21 +70,28 @@ const DSAList = () => {
       const fetchTopics = async () => {
         setLoading(true);
         try {
-          const response = await axios.get("http://localhost:3000/api/code/list");
+          const token = localStorage.getItem("token");
+          const response = await axios.get("http://localhost:3000/api/code/list", {
+            headers: { Authorization: `Bearer ${token}` },
+          });
           const data = response.data;
           console.log(data);
-          const transformedData: Section[] = data.topicsWithProblems.map((topic: any) => ({
+
+          const transformedData: Section[] = data.topicsWithProblems.map((topic: any) => {
+            const solvedCount = topic.problems.filter((problem: any) => problem.isSolved).length;
+
+            return {
               title: topic.name,
               total: topic.problems.length,
-              solved: 0, // Update with actual solved count if available
-              problems: topic.problems.map((problem: Problem) => ({
-              id: problem.serial,
-              name: problem.title,
-              difficulty: problem.difficulty,
-              link: `/code?problemId=${problem.serial}`, // Assuming a dynamic route for each problem
-              solved: false, // Update with actual solved status if available
-            })),
-          }));
+              solved: solvedCount, // Update with actual solved count if available
+              problems: topic.problems.map((problem: Problem & { isSolved?: boolean }) => ({
+                id: problem.serial,
+                name: problem.title,
+                difficulty: problem.difficulty,
+                link: `/code?problemId=${problem.serial}`, // Assuming a dynamic route for each problem
+                solved: problem.isSolved || false, // Update with actual solved status if available
+              })),
+          }});
 
           setDropdownSections(transformedData);
           // Auto-expand first section if available
