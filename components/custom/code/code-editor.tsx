@@ -87,7 +87,7 @@ const CodeEditor = () => {
       const token = localStorage.getItem("token");
       const problemId = Number(pId);
       const response = await axios.post(
-        "/api/dsa/submit",
+        "/api/code/submit",
         { code, language, problemId },
         {
           headers: {

@@ -24,7 +24,7 @@ export async function GET(req: NextRequest) {
 
         if (isUser) {
             const userInfo = await user.findOne({ _id: new mongoose.Types.ObjectId((isUser as any).id) });
-            console.log("Decoded JWT:", isUser);
+            
             return NextResponse.json({
                 details: userInfo
             }, {

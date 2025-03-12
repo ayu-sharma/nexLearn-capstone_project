@@ -7,6 +7,8 @@ import { verify } from "jsonwebtoken";
 import { JWT_SECRET } from "@/helpers/constants";
 import connectToDatabase from "@/lib/mongo";
 import user from "@/models/user";
+import mongoose from "mongoose";
+import Submission from "@/models/submission";
 
 type Problem = {
     id: number;
@@ -54,21 +56,13 @@ export async function POST(req: NextRequest, res: NextResponse) {
 
         const { code, language, problemId } = parsedBody.data;
         const token = authHeader.split(' ')[1];
-        const userPayload = verify(token, JWT_SECRET);
+        const isUser = verify(token, JWT_SECRET);
+
         let userId;
 
-        if (userPayload) {
-            const userDetails = await db.user.update({
-                where: {
-                    id: (userPayload as any).id
-                },
-                data: {
-                    attemptedDSA: {
-                        push: problemId
-                    }
-                }
-            });
-            userId = userDetails.id;
+        if (isUser) {
+            const userInfo = await user.findOne({ _id: new mongoose.Types.ObjectId((isUser as any).id) });
+            userId = userInfo._id;
         }
 
         if (!userId) {
@@ -137,35 +131,28 @@ export async function POST(req: NextRequest, res: NextResponse) {
         const isCorrect = !!(problem.solution[language] && normalizeCode(code) === normalizeCode(problem.solution[language]));
         const score = isCorrect ? problem.testCases.length : Math.floor(Math.random() * problem.testCases.length);
 
-        const checkSubmissions = await db.dSASubmission.findFirst({
-            where: {
-                userId,
-                problemId
-            }
-        });
+        const checkSubmissions = await Submission.findOne({ userId: userId, problemId: problemId });
 
         let submit;
         if (!checkSubmissions) {
-            submit = await db.dSASubmission.create({
-                data: {
-                    problemId: problemId,
-                    userId: userId,
-                    isCorrect: isCorrect,
-                    isSolved: true
-                }
+            submit = new Submission({
+                problemId: problemId,
+                userId: userId,
+                isCorrect: isCorrect,
+                isSolved: true
             });
         } else {
-            submit = await db.dSASubmission.update({
-                where: {
-                    id: checkSubmissions.id
-                },
-                data: {
+            submit = await Submission.findOneAndUpdate(
+                { _id: checkSubmissions._id },
+                {
                     isCorrect,
                     isSolved: true
-                }
-            });
+                },
+                { new: true }
+            );
         }
 
+        await submit.save();
         return NextResponse.json({
             passed: score,
             total: problem.testCases.length,
