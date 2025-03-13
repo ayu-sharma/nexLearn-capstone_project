@@ -44,6 +44,50 @@
                 { "input": "[\"abc\", \"cba\"]", "expectedOutput": "true" },
                 { "input": "[\"hello\", \"world\"]", "expectedOutput": "false" }
             ]
-        }
+        },
+        {
+            "id": 3,
+            "title": "Two Sum",
+            "boilerplate": {
+                "java": "class Solution {\n\tpublic int[] twoSum(int[] nums, int target) {\n\t\t// Your code here\n\t}\n}",
+                "cpp": "class Solution {\npublic:\n\tvector<int> twoSum(vector<int>& nums, int target) {\n\t\t// Your code here\n\t}\n};",
+                "python": "class Solution:\n\tdef twoSum(self, nums: List[int], target: int) -> List[int]:\n\t\t# Your code here",
+                "javascript": "class Solution {\n\ttwoSum(nums, target) {\n\t\t// Your code here\n\t}\n}"
+            },
+            "solution": {
+                "java": "import java.util.HashMap;\n\nclass Solution {\n\tpublic int[] twoSum(int[] nums, int target) {\n\t\tHashMap<Integer, Integer> map = new HashMap<>();\n\t\tfor (int i = 0; i < nums.length; i++) {\n\t\t\tint complement = target - nums[i];\n\t\t\tif (map.containsKey(complement)) {\n\t\t\t\treturn new int[]{map.get(complement), i};\n\t\t\t}\n\t\t\tmap.put(nums[i], i);\n\t\t}\n\t\treturn new int[]{};\n\t}\n}",
+                "cpp": "#include <vector>\n#include <unordered_map>\nusing namespace std;\n\nclass Solution {\npublic:\n\tvector<int> twoSum(vector<int>& nums, int target) {\n\t\tunordered_map<int, int> map;\n\t\tfor (int i = 0; i < nums.size(); i++) {\n\t\t\tint complement = target - nums[i];\n\t\t\tif (map.find(complement) != map.end()) {\n\t\t\t\treturn {map[complement], i};\n\t\t\t}\n\t\t\tmap[nums[i]] = i;\n\t\t}\n\t\treturn {};\n\t}\n};",
+                "python": "class Solution:\n\tdef twoSum(self, nums: List[int], target: int) -> List[int]:\n\t\tseen = {}\n\t\tfor i, num in enumerate(nums):\n\t\t\tcomplement = target - num\n\t\t\tif complement in seen:\n\t\t\t\treturn [seen[complement], i]\n\t\t\tseen[num] = i\n\t\treturn []",
+                "javascript": "class Solution {\n\ttwoSum(nums, target) {\n\t\tconst map = new Map();\n\t\tfor (let i = 0; i < nums.length; i++) {\n\t\t\tconst complement = target - nums[i];\n\t\t\tif (map.has(complement)) {\n\t\t\t\treturn [map.get(complement), i];\n\t\t\t}\n\t\t\tmap.set(nums[i], i);\n\t\t}\n\t\treturn [];\n\t}\n}"
+            },
+            "testCases": [
+                { "input": "[[2, 7, 11, 15], 9]", "expectedOutput": "[0, 1]" },
+                { "input": "[[3, 2, 4], 6]", "expectedOutput": "[1, 2]" },
+                { "input": "[[3, 3], 6]", "expectedOutput": "[0, 1]" },
+                { "input": "[[1, 2, 3, 4, 5], 8]", "expectedOutput": "[2, 4]" }
+            ]
+        },
+        {
+            "id": 4,
+            "title": "Group Anagrams",
+            "boilerplate": {
+                "java": "import java.util.*;\n\nclass Solution {\n    public List<List<String>> groupAnagrams(String[] strs) {\n        // Your code here\n    }\n}",
+                "cpp": "#include <vector>\n#include <string>\n#include <unordered_map>\nusing namespace std;\n\nclass Solution {\npublic:\n    vector<vector<string>> groupAnagrams(vector<string>& strs) {\n        // Your code here\n    }\n};",
+                "python": "from collections import defaultdict\nfrom typing import List\n\nclass Solution:\n    def groupAnagrams(self, strs: List[str]) -> List[List[str]]:\n        # Your code here",
+                "javascript": "class Solution {\n    groupAnagrams(strs) {\n        // Your code here\n    }\n}"
+            },
+            "solution": {
+                "java": "import java.util.*;\n\nclass Solution {\n    public List<List<String>> groupAnagrams(String[] strs) {\n        Map<String, List<String>> map = new HashMap<>();\n        for (String str : strs) {\n            char[] charArray = str.toCharArray();\n            Arrays.sort(charArray);\n            String sortedStr = new String(charArray);\n            map.computeIfAbsent(sortedStr, k -> new ArrayList<>()).add(str);\n        }\n        return new ArrayList<>(map.values());\n    }\n}",
+                "cpp": "#include <vector>\n#include <string>\n#include <unordered_map>\n#include <algorithm>\nusing namespace std;\n\nclass Solution {\npublic:\n    vector<vector<string>> groupAnagrams(vector<string>& strs) {\n        unordered_map<string, vector<string>> map;\n        for (string& str : strs) {\n            string sortedStr = str;\n            sort(sortedStr.begin(), sortedStr.end());\n            map[sortedStr].push_back(str);\n        }\n        vector<vector<string>> result;\n        for (auto& pair : map) {\n            result.push_back(pair.second);\n        }\n        return result;\n    }\n};",
+                "python": "from collections import defaultdict\nfrom typing import List\n\nclass Solution:\n    def groupAnagrams(self, strs: List[str]) -> List[List[str]]:\n        anagrams = defaultdict(list)\n        for word in strs:\n            sorted_word = ''.join(sorted(word))\n            anagrams[sorted_word].append(word)\n        return list(anagrams.values())",
+                "javascript": "class Solution {\n    groupAnagrams(strs) {\n        const map = new Map();\n        for (let str of strs) {\n            const sortedStr = str.split('').sort().join('');\n            if (!map.has(sortedStr)) {\n                map.set(sortedStr, []);\n            }\n            map.get(sortedStr).push(str);\n        }\n        return Array.from(map.values());\n    }\n}"
+            },
+            "testCases": [
+                { "input": "[\"eat\", \"tea\", \"tan\", \"ate\", \"nat\", \"bat\"]", "expectedOutput": "[[\"eat\", \"tea\", \"ate\"], [\"tan\", \"nat\"], [\"bat\"]]" },
+                { "input": "[\"\"]", "expectedOutput": "[[\"\"]]" },
+                { "input": "[\"a\"]", "expectedOutput": "[[\"a\"]]" },
+                { "input": "[\"abc\", \"bca\", \"cab\", \"xyz\", \"zyx\"]", "expectedOutput": "[[\"abc\", \"bca\", \"cab\"], [\"xyz\", \"zyx\"]]" }
+            ]
+        }             
     ]
   }
