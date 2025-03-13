@@ -10,6 +10,7 @@ export interface IUser extends Document {
     email: string;
     password: string;
     goal: Goal;
+    enrolledCourses: mongoose.Types.ObjectId[];
     createdAt: Date;
     updatedAt: Date;
 }
@@ -20,6 +21,7 @@ const UserSchema = new Schema<IUser>(
       email: { type: String, required: true, unique: true },
       password: { type: String, required: true },
       goal: { type: String, enum: Object.values(Goal), default: Goal.PLACEMENT },
+      enrolledCourses: [{ type: mongoose.Types.ObjectId, ref: "Enrollment" }]
     },
     { timestamps: true }
 );

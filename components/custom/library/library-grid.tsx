@@ -64,12 +64,12 @@ const LibraryGrid = ({
     <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
       {filteredCourses.map((course) => (
         <CourseCard
-          key={course.id}
-          id={course.id}
+          key={course._id}
+          id={course._id}
           title={course.title}
           description={course.description}
           type={course.type}
-          onClick={() => onCourseSelect(course.id)}
+          onClick={() => onCourseSelect(course._id)}
         />
       ))}
     </div>

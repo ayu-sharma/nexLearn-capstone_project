@@ -21,12 +21,12 @@ const CourseGrid = ({ onCourseSelect }: CourseGridProps) => {
             setLoading(true);
             setError(null);
             try {
-                const response = await axios.get(`http://localhost:3000/api/user/courses/enrolled`, {
+                const response = await axios.get(`http://localhost:3000/api/user/my-courses`, {
                     headers: {
                         Authorization: `Bearer ${token}`
                     }
                 });
-                const enrolledCourses = response.data.enrolledCourses || [];
+                const enrolledCourses = response.data.courses || [];
 
                 setCourses(enrolledCourses);
                 if (enrolledCourses.length === 0) {
@@ -105,36 +105,58 @@ const SkeletonCard = () => {
     type,
     onClick,
   }: CourseCardProps) => {
-    const renderLogo = () => {
-      switch (type) {
+    const getTypeColor = () => {
+      switch (type.toUpperCase()) {
         case "CODING":
-          return <Code className="mr-2" />;
+          return "bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400";
         case "APTITUDE":
-          return <DraftingCompass className="mr-2" />;
+          return "bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400";
         case "LANGUAGE":
-          return <BookA className="mr-2" />;
+          return "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400";
+        default:
+          return "bg-[#7981FF]/20 text-[#7981FF]";
+      }
+    };
+
+    const renderLogo = () => {
+      switch (type.toUpperCase()) {
+        case "CODING":
+          return <Code className="h-5 w-5 text-blue-600 dark:text-blue-400" />;
+        case "APTITUDE":
+          return <DraftingCompass className="h-5 w-5 text-amber-600 dark:text-amber-400" />;
+        case "LANGUAGE":
+          return <BookA className="h-5 w-5 text-green-600 dark:text-green-400" />;
+        default:
+          return <Code className="h-5 w-5 text-[#7981FF]" />;
       }
     };
     return (
       <div
-        onClick={onClick}
-        className="group transition cursor-pointer relative shadow-sm p-6 border rounded-md flex flex-col justify-between gap-y-4 hover:border-neutral-400"
-      >
-        <div className="flex flex-col gap-y-4">
-          <div className="flex items-center">
-            {renderLogo()}
-            <h1 className="text-2xl font-medium">{title}</h1>
+            onClick={onClick}
+            className="group bg-white dark:bg-gray-800 transition-all duration-300 cursor-pointer rounded-xl shadow-sm hover:shadow-md border border-gray-200 dark:border-gray-700 overflow-hidden flex flex-col justify-between"
+          >
+            <div className="p-6">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="p-2 rounded-lg bg-gray-100 dark:bg-gray-700">
+                  {renderLogo()}
+                </div>
+                <h3 className="text-xl font-semibold text-gray-800 dark:text-white truncate">
+                  {title}
+                </h3>
+              </div>
+              <p className="text-gray-600 dark:text-gray-300 line-clamp-3 mb-6 text-sm h-14">
+                {description}
+              </p>
+              <div className="flex items-center justify-between">
+                <span className={`px-3 py-1 rounded-full text-xs font-medium ${getTypeColor()}`}>
+                  {type}
+                </span>
+                <span className="text-[#7981FF] group-hover:translate-x-1 transform transition-transform duration-300">
+                  <ArrowRight className="h-5 w-5" />
+                </span>
+              </div>
+            </div>
+            <div className="h-1 w-full bg-gradient-to-r from-[#7981FF] to-[#6A74FF] transform scale-x-0 group-hover:scale-x-100 origin-left transition-transform duration-300"></div>
           </div>
-          <p className="font-light">{description}</p>
-        </div>
-        <div className="flex w-1/3">
-          <p className="text-sm font-medium bg-[#7981FF]/20 text-[#7981FF] px-4 py-1 rounded">
-            {type}
-          </p>
-        </div>
-        <div className="absolute bottom-6 right-6 hidden group-hover:flex transition ease-in-out">
-          <ArrowRight />
-        </div>
-      </div>
     );
   };

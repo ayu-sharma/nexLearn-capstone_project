@@ -18,20 +18,19 @@ const Library = ({ onSelectCourse }: LibraryProps) => {
     try {
       const token = localStorage.getItem("token");
       const cId = courseId;
-      const response = await axios.post('http://localhost:3000/api/user/courses/enrolled', {
-        courseId: cId
+      const response = await axios.post('http://localhost:3000/api/user/enroll', {
+        course: cId
       }, {
         headers: {
           Authorization: `Bearer ${token}`
         },
       });
-      if (response.status === 200) {
-        onSelectCourse(courseId);
-        toast.success('Enrolled in course');
-      }
+      onSelectCourse(courseId);
+      console.log(response.data);
+      toast.success('Enrolled in course');
     } catch (error) {
       console.error('Error while updating last viewed course: ' + error);
-      toast.error("Already enrolled");
+      toast.error("Could not enroll");
     } finally {
       localStorage.setItem("cId", courseId);
       // router push courses
