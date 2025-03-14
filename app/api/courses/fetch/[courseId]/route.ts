@@ -17,7 +17,7 @@ export async function GET(req: NextRequest,
             });
         }
 
-        const myCourse = await Course.findById(courseId);
+        const myCourse = await Course.find({_id: courseId}).populate('modules');
 
         return NextResponse.json({
             myCourse
