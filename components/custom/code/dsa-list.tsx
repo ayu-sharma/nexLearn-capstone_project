@@ -102,10 +102,10 @@ const DSAList = () => {
             total: topic.problems.length,
             solved: solvedCount,
             problems: topic.problems.map((problem: Problem & { isSolved?: boolean }) => ({
-              id: problem.serial,
+              id: problem._id,
               name: problem.title,
               difficulty: problem.difficulty,
-              link: `/code?problemId=${problem._id}`,
+              link: `/code?problemId=${problem.serial}`,
               solved: problem.isSolved || false,
             })),
           };
