@@ -21,18 +21,29 @@ const materialSchema = new Schema<IMaterial>({
 });
 
 materialSchema.pre<IMaterial>("save", function (next) {
-  if (this.type === "VIDEO" && !this.videoUrl) {
-    return next(new Error("videoUrl is required for VIDEO type materials."));
+  if (this.type === "VIDEO") {
+    if (!this.videoUrl) return next(new Error("videoUrl is required for VIDEO type materials."));
+    if (this.textContent) return next(new Error("textContent is not allowed for VIDEO type materials."));
+    if (this.assessment && this.assessment.length > 0) return next(new Error("assessment is not allowed for VIDEO type materials."));
   }
-  if (this.type === "READING" && !this.textContent) {
-    return next(new Error("textContent is required for READING type materials."));
+
+  if (this.type === "READING") {
+    if (!this.textContent) return next(new Error("textContent is required for READING type materials."));
+    if (this.videoUrl) return next(new Error("videoUrl is not allowed for READING type materials."));
+    if (this.assessment && this.assessment.length > 0) return next(new Error("assessment is not allowed for READING type materials."));
   }
-  if (this.type === "ASSESSMENT" && (!this.assessment || this.assessment.length === 0)) {
-    return next(new Error("At least one assessment question is required for ASSESSMENT type materials."));
+
+  if (this.type === "ASSESSMENT") {
+    if (!this.assessment || this.assessment.length === 0) {
+      return next(new Error("At least one assessment question is required for ASSESSMENT type materials."));
+    }
+    if (this.videoUrl) return next(new Error("videoUrl is not allowed for ASSESSMENT type materials."));
+    if (this.textContent) return next(new Error("textContent is not allowed for ASSESSMENT type materials."));
   }
+
   next();
 });
 
-const Material: Model<IMaterial> = mongoose.model<IMaterial>("Material", materialSchema);
+const Material: Model<IMaterial> = mongoose.models.Material || mongoose.model<IMaterial>("Material", materialSchema);
 
 export default Material;

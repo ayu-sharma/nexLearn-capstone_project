@@ -17,7 +17,11 @@ export async function GET(req: NextRequest,
             });
         }
 
-        const myCourse = await Course.find({_id: courseId}).populate('modules');
+        const myCourse = await Course.find({_id: courseId})
+        .populate({
+            path: "modules",
+            populate: { path: "materials" }
+        });
 
         return NextResponse.json({
             myCourse

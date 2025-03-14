@@ -32,7 +32,7 @@ interface Material {
   title: string;
   type: string;
   videoUrl: string | null;
-  content: string | null;
+  textContent: string | null;
   moduleId: string;
   questions: Assessment[];
 }
@@ -73,6 +73,7 @@ export default function courses() {
         try {
           const response = await axios.get(`http://localhost:3000/api/courses/fetch/${courseId}`);
           const courseDetails = response.data.myCourse[0];
+          console.log(courseDetails);
           setCourse(courseDetails);
         } catch (error) {
           console.error("Failed to fetch course:", error);
@@ -125,8 +126,8 @@ export default function courses() {
           {currentMaterial?.type === "VIDEO" && currentMaterial.videoUrl && (
             <VideoPlayer videoUrl={currentMaterial.videoUrl}/>
           )}
-          {currentMaterial?.type === "READING" && currentMaterial.content && (
-            <ReadingContent content={currentMaterial.content}/>
+          {currentMaterial?.type === "READING" && currentMaterial.textContent && (
+            <ReadingContent content={currentMaterial.textContent}/>
           )}
           {currentMaterial?.type === "ASSESSMENT" && (
             <AssessmentStart materialId={currentMaterial.id} title={currentMaterial.title} questions={currentMaterial.questions[0].questions.length}/>
