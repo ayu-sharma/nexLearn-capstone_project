@@ -58,12 +58,12 @@ const CourseGrid = ({ onCourseSelect }: CourseGridProps) => {
                 <SkeletonCard key={index} />
             )) : courses.map((course) => (
                 <CourseCard
-                  key={course.course.id}
-                  id={course.course.id}
+                  key={course.course._id}
+                  id={course.course._id}
                   title={course.course.title}
                   description={course.course.description}
                   type={course.course.type}
-                  onClick={() => onCourseSelect(course.course.id)}
+                  onClick={() => onCourseSelect(course.course._id)}
                 />
               ))}
         </div>
