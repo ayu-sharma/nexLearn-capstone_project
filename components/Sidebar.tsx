@@ -98,6 +98,31 @@ const Sidebar = ({ selectedGroup, onSelectGroup, isOpen, toggleMenu }: SidebarPr
       )
     },
     {
+      name: "Notifications",
+      icon: (active: boolean) => (
+        <svg
+        className={`w-5 h-5 ${
+          active ? "text-[#7981FF]" : "text-[#F2F2F2] dark:text-[#121417]"
+        }`}
+        aria-hidden="true"
+        xmlns="http://www.w3.org/2000/svg"
+        width="24"
+        height="24"
+        fill="none"
+        viewBox="0 0 24 24"
+      >
+        <path
+          stroke="currentColor"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth="2"
+          d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2Zm6-6V10a6 6 0 0 0-12 0v6l-2 2v1h16v-1l-2-2Z"
+        />
+      </svg>
+      
+      )
+    },
+    {
       name: "Code",
       icon: (active: boolean) => <Code className={`w-5 h-5 ${active ? "text-[#7981FF]" : "text-[#F2F2F2] dark:text-[#121417]"}`} />
     },

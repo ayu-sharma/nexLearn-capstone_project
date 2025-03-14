@@ -27,8 +27,8 @@ const Dashboard: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-gray-100">
-      {/* Header */}
-      <header className="bg-white shadow-sm p-4">
+      {/* Header - Make it fixed/sticky */}
+      <header className="bg-white shadow-sm p-4 sticky top-0 z-10">
         <div className="container mx-auto flex justify-between items-center">
           <h1 className="text-xl font-bold text-gray-800">
             Learning Dashboard
@@ -48,14 +48,18 @@ const Dashboard: React.FC = () => {
         </div>
       </header>
 
-      {/* Recommendations Component */}
-      <Recommendations 
-        isOpen={isRecommendationsOpen} 
-        onClose={() => setIsRecommendationsOpen(false)} 
-      />
+      {/* Recommendations Component - Position it fixed relative to viewport */}
+      <div className="fixed top-16 right-4 z-20">
+        {isRecommendationsOpen && (
+          <Recommendations 
+            isOpen={isRecommendationsOpen} 
+            onClose={() => setIsRecommendationsOpen(false)} 
+          />
+        )}
+      </div>
 
-      {/* Navigation Tabs */}
-      <div className="bg-white shadow-sm mb-6">
+      {/* Navigation Tabs - Also make sticky, right below header */}
+      <div className="bg-white shadow-sm mb-6 sticky top-16 z-10">
         <div className="container mx-auto">
           <div className="flex overflow-x-auto scrollbar-hide">
             <button

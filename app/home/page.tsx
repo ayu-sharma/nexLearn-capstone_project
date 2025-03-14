@@ -65,7 +65,7 @@ const HomePage = () => {
         return <CodePage />;
       case "Practice":
         return <PracticeSection />;
-      case "Messages":
+      case "Notifications":
         return <NotificationSection />;
       case "Settings":
         return <SettingsSection />;
