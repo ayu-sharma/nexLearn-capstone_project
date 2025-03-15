@@ -1,5 +1,7 @@
 import connectToDatabase from "@/lib/mongo";
 import Course from "@/models/course";
+require("@/models/module");
+require("@/models/material");
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(req: NextRequest,
