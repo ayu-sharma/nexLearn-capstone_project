@@ -7,13 +7,14 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 import axios from "axios";
 
 interface Questions {
-  id: string;
   text: string;
-  optionA: string;
-  optionB: string;
-  optionC: string;
-  optionD: string;
-  correctAnswer: "A" | "B" | "C" | "D";
+  options: {
+    a: string;
+    b: string;
+    c: string;
+    d: string;
+  }
+  correctAnswer: "a" | "b" | "c" | "d";
 }
 
 interface QuestionbarProps {
@@ -23,7 +24,7 @@ interface QuestionbarProps {
 export default function Questionbar({ onQuizComplete }: QuestionbarProps) {
   const [questions, setQuestions] = useState<Questions[]>([]);
   const [isActiveQuestion, setIsActiveQuestion] = useState(0);
-  const [userAnswers, setUserAnswers] = useState<{ [key: string]: string }>({});
+  const [userAnswers, setUserAnswers] = useState<{ [key: number]: string }>({});
   const [score, setScore] = useState(0);
   const [currentPageStart, setCurrentPageStart] = useState(0);
   
@@ -37,8 +38,8 @@ export default function Questionbar({ onQuizComplete }: QuestionbarProps) {
     if (id) {
       const fetchQuestions = async () => {
         try {
-          const response = await axios.get(`http://localhost:3000/api/assessment/${id}`);
-          const allQ = response.data.allQuestions;
+          const response = await axios.get(`http://localhost:3000/api/mcq/${id}`);
+          const allQ = response.data.questions;
           setQuestions(allQ || []);
         } catch (error) {
           console.error("Failed to fetch questions:", error);
@@ -53,7 +54,6 @@ export default function Questionbar({ onQuizComplete }: QuestionbarProps) {
   // Handle responsive button count
   useEffect(() => {
     const handleResize = () => {
-      // For smaller screens, show fewer pagination buttons
       if (window.innerWidth < 640) {
         setButtonsPerPage(3);
       } else if (window.innerWidth < 768) {
@@ -63,25 +63,20 @@ export default function Questionbar({ onQuizComplete }: QuestionbarProps) {
       }
     };
 
-    // Set initial value
     handleResize();
-    
-    // Add event listener
     window.addEventListener('resize', handleResize);
     
-    // Clean up
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
   const handleAnswerSelect = (selectedAnswer: string) => {
     const currentQuestion = questions[isActiveQuestion];
   
-    // Map correctAnswer ('A', 'B', 'C', 'D') to the corresponding option
-    const correctOption = currentQuestion[`option${currentQuestion.correctAnswer}` as keyof Questions];
+    const correctOption = currentQuestion.options[currentQuestion.correctAnswer];
   
     setUserAnswers((prev) => ({
       ...prev,
-      [currentQuestion.id]: selectedAnswer,
+      [isActiveQuestion]: selectedAnswer,
     }));
   
     // Update score only if selected answer matches the correct option
@@ -94,7 +89,6 @@ export default function Questionbar({ onQuizComplete }: QuestionbarProps) {
     const nextQuestionIndex = (isActiveQuestion + 1) % questions.length;
     setIsActiveQuestion(nextQuestionIndex);
     
-    // Update pagination if moving to a question outside current page
     if (nextQuestionIndex >= currentPageStart + buttonsPerPage) {
       setCurrentPageStart(Math.floor(nextQuestionIndex / buttonsPerPage) * buttonsPerPage);
     }
@@ -104,7 +98,6 @@ export default function Questionbar({ onQuizComplete }: QuestionbarProps) {
     const prevQuestionIndex = (isActiveQuestion - 1 + questions.length) % questions.length;
     setIsActiveQuestion(prevQuestionIndex);
     
-    // Update pagination if moving to a question outside current page
     if (prevQuestionIndex < currentPageStart) {
       setCurrentPageStart(Math.floor(prevQuestionIndex / buttonsPerPage) * buttonsPerPage);
     }
@@ -129,7 +122,6 @@ export default function Questionbar({ onQuizComplete }: QuestionbarProps) {
   };
 
   useEffect(() => {
-    // Notify parent component once all questions are answered
     if (Object.keys(userAnswers).length === questions.length) {
       onQuizComplete(score, questions.length);
     }
@@ -169,18 +161,17 @@ export default function Questionbar({ onQuizComplete }: QuestionbarProps) {
               {questions[isActiveQuestion].text}
             </p>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 pt-4">
-              {["optionA", "optionB", "optionC", "optionD"].map((optionKey) => (
+              {Object.entries(questions[isActiveQuestion].options).map(([key, value]) => (
                 <div
-                  key={optionKey}
-                  onClick={() => handleAnswerSelect(questions[isActiveQuestion][optionKey as keyof Questions])}
+                  key={key}
+                  onClick={() => handleAnswerSelect(value)}
                   className={`py-2 px-4 sm:px-12 border rounded-xl text-sm cursor-pointer ${
-                    userAnswers[questions[isActiveQuestion].id] ===
-                    questions[isActiveQuestion][optionKey as keyof Questions]
+                    userAnswers[isActiveQuestion] === value
                       ? "bg-black dark:bg-white dark:text-black text-white"
                       : "hover:bg-black hover:text-white"
                   }`}
                 >
-                  {questions[isActiveQuestion][optionKey as keyof Questions]}
+                  {value}
                 </div>
               ))}
             </div>

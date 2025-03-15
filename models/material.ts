@@ -2,14 +2,38 @@ import mongoose, { Schema, Document, Model, Types } from "mongoose";
 
 export type MaterialType = "READING" | "VIDEO" | "ASSESSMENT";
 
+type CorrectAnswer = "a" | "b" | "c" | "d";
+
+interface IQuestion extends Document {
+  text: string;
+  options: {
+    a: string;
+    b: string;
+    c: string;
+    d: string;
+  },
+  correctAnswer: CorrectAnswer;
+}
+
 interface IMaterial extends Document {
   module: Types.ObjectId;
   title: string;
   type: MaterialType;
   videoUrl?: string;
   textContent?: string;
-  assessment?: Types.ObjectId[];
+  assessment?: IQuestion[];
 }
+
+const questionSchema = new Schema({
+    text: { type: String, required: true },
+    options: {
+      a: { type: String, required: true },
+      b: { type: String, required: true },
+      c: { type: String, required: true },
+      d: { type: String, required: true }
+    },
+    correctAnswer: { type: String, enum: ["a", "b", "c", "d"], required: true }
+});
 
 const materialSchema = new Schema<IMaterial>({
   module: { type: Schema.Types.ObjectId, ref: "Module", required: true },
@@ -17,7 +41,7 @@ const materialSchema = new Schema<IMaterial>({
   type: { type: String, enum: ["READING", "VIDEO", "ASSESSMENT"], required: true },
   videoUrl: { type: String, required: false }, 
   textContent: { type: String, required: false },
-  assessment: [{ type: mongoose.Types.ObjectId, ref: "Question" }]
+  assessment: [questionSchema]
 });
 
 materialSchema.pre<IMaterial>("save", function (next) {

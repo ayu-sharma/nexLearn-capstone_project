@@ -11,30 +11,27 @@ import ReadingContent from "@/components/custom/course/reading-content";
 import AssessmentStart from "@/components/custom/course/assessment-start";
 import { Button } from "@/components/ui/button";
 
-interface Questions {
-  id: string;
+interface Question {
+  _id: string;
   text: string;
-  optionA: string;
-  optionB: string;
-  optionC: string;
-  optionD: string;
+  options: {
+    a: string;
+    b: string;
+    c: string;
+    d: string;
+  }
   correctAnswer: string;
 }
 
-interface Assessment {
-  id: string;
-  materialId: string;
-  questions: Questions[];
-}
 
 interface Material {
-  id: string;
+  _id: string;
   title: string;
   type: string;
   videoUrl: string | null;
   textContent: string | null;
   moduleId: string;
-  questions: Assessment[];
+  assessment: Question[] | [];
 }
 
 interface Module {
@@ -97,12 +94,12 @@ export default function courses() {
   const handleNextMaterial = () => {
     if (!course || !currentMaterial) return;
 
-    const currentModuleIndex = course.modules.findIndex((module) => module.materials.some((material) => material.id === currentMaterial.id));
+    const currentModuleIndex = course.modules.findIndex((module) => module.materials.some((material) => material._id === currentMaterial._id));
 
     if (currentModuleIndex === -1) return;
 
     const currentModule = course.modules[currentModuleIndex];
-    const currentMaterialIndex = currentModule.materials.findIndex((material) => material.id === currentMaterial.id);
+    const currentMaterialIndex = currentModule.materials.findIndex((material) => material._id === currentMaterial._id);
 
     if (currentMaterialIndex === -1) return;
 
@@ -130,7 +127,7 @@ export default function courses() {
             <ReadingContent content={currentMaterial.textContent}/>
           )}
           {currentMaterial?.type === "ASSESSMENT" && (
-            <AssessmentStart materialId={currentMaterial.id} title={currentMaterial.title} questions={currentMaterial.questions[0].questions.length}/>
+            <AssessmentStart materialId={currentMaterial._id} title={currentMaterial.title} questions={currentMaterial.assessment.length}/>
           )}
           <div className="mt-5">
             {currentMaterial && (
