@@ -8,7 +8,7 @@ interface ReadingContentProps {
   title?: string;
 }
 
-const ReadingContent = ({ content, title = 'Study Notes' }: ReadingContentProps) => {
+const ReadingContent = ({ content, title = 'NexLearnStudyNotes/' }: ReadingContentProps) => {
   const contentRef = useRef<HTMLDivElement>(null);
   const [copied, setCopied] = React.useState(false);
   
@@ -101,7 +101,7 @@ const ReadingContent = ({ content, title = 'Study Notes' }: ReadingContentProps)
       
       <div className="w-full mt-6 flex justify-between items-center text-slate-500 text-sm px-2">
         <span>Last updated: {new Date().toLocaleDateString()}</span>
-        <span>© {new Date().getFullYear()} NexLearn/</span>
+        <span>© {new Date().getFullYear()} NexLearn/Module name</span>
       </div>
     </div>
   );
