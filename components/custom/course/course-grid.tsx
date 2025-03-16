@@ -27,7 +27,6 @@ const CourseGrid = ({ onCourseSelect }: CourseGridProps) => {
                     }
                 });
                 const enrolledCourses = response.data.courses || [];
-
                 setCourses(enrolledCourses);
                 if (enrolledCourses.length === 0) {
                     setError("No courses found.");
@@ -58,6 +57,7 @@ const CourseGrid = ({ onCourseSelect }: CourseGridProps) => {
                 <SkeletonCard key={index} />
             )) : courses.map((course) => (
                 <CourseCard
+                  percentage={course.completionPercentage}
                   key={course.course._id}
                   id={course.course._id}
                   title={course.course.title}
@@ -93,6 +93,7 @@ const SkeletonCard = () => {
   interface CourseCardProps {
     id: string;
     title: string;
+    percentage: string;
     description: string;
     type: string;
     onClick: () => void;
@@ -102,6 +103,7 @@ const SkeletonCard = () => {
     id,
     title,
     description,
+    percentage,
     type,
     onClick,
   }: CourseCardProps) => {
@@ -146,6 +148,9 @@ const SkeletonCard = () => {
               </div>
               <p className="text-gray-600 dark:text-gray-300 line-clamp-3 mb-6 text-sm h-14">
                 {description}
+              </p>
+              <p className="text-gray-600 dark:text-gray-300">
+                {percentage}% completed
               </p>
               <div className="flex items-center justify-between">
                 <span className={`px-3 py-1 rounded-full text-xs font-medium ${getTypeColor()}`}>
