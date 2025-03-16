@@ -1,7 +1,7 @@
 "use client"
 
 import React, { useEffect, useState } from "react";
-import { ChevronDown, ChevronLeft, ChevronRight, ChevronUp, Clock, Star, Video } from "lucide-react";
+import { CheckCircle, ChevronDown, ChevronLeft, ChevronRight, ChevronUp, Clock, Star, Video } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
 import CourseNav from "@/components/custom/course/course-nav";
 import axios from "axios";
@@ -10,6 +10,7 @@ import VideoPlayer from "@/components/custom/course/video-player";
 import ReadingContent from "@/components/custom/course/reading-content";
 import AssessmentStart from "@/components/custom/course/assessment-start";
 import { Button } from "@/components/ui/button";
+import { headers } from "next/headers";
 
 interface Question {
   _id: string;
@@ -56,6 +57,7 @@ export default function courses() {
   const [course, setCourse] = useState<Course | null>(null);
   const [openModuleIndex, setOpenModuleIndex] = useState<number | null>(null);
   const [currentMaterial, setCurrentMaterial] = useState<Material | null>(null);
+  const [completedMaterials, setCompletedMaterials] = useState<string[]>([]);
   const searchParams = useSearchParams();
 
   const toggleModule = (index: number) => {
@@ -64,7 +66,7 @@ export default function courses() {
 
   useEffect(() => {
     const courseId = searchParams.get("cId");
-
+    const token = localStorage.getItem("token");
     if (courseId) {
       const fetchCourse = async () => {
         try {
@@ -72,6 +74,15 @@ export default function courses() {
           const courseDetails = response.data.myCourse[0];
           console.log(courseDetails);
           setCourse(courseDetails);
+
+          const completedRes = await axios.get(`http://localhost:3000/api/courses/completed/${courseId}`,
+            {headers: {
+              Authorization: `Bearer ${token}`
+            }}
+          );
+          console.log(completedRes);
+
+          setCompletedMaterials(completedRes.data.completedMaterials);
         } catch (error) {
           console.error("Failed to fetch course:", error);
         }
@@ -114,6 +125,26 @@ export default function courses() {
       }
     }
   }
+
+  const handleMarkAsCompleted = async () => {
+    if (!currentMaterial || !course) return;
+    const token = localStorage.getItem("token");
+    const courseId = searchParams.get("cId");
+    try {
+      await axios.post(`/api/courses/toggle`, {
+        courseId: courseId,
+        materialId: currentMaterial._id
+      }, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+
+      setCompletedMaterials((prev) => [...prev, currentMaterial._id]);
+    } catch (error) {
+      console.error("Failed to mark as completed:", error);
+    }
+  };
   return (
     <>
       <CourseNav />
@@ -131,12 +162,14 @@ export default function courses() {
           )}
           <div className="mt-5">
             {currentMaterial && (
-              <Button variant={'outline'}
-                onClick={handleNextMaterial}
-                className=""
-              >
-                Next 
+              <div className="mt-5 flex gap-4">
+              <Button variant="outline" onClick={handleNextMaterial}>
+                Next
               </Button>
+              <Button variant="default" onClick={handleMarkAsCompleted}>
+                Mark as Completed
+              </Button>
+            </div>
             )}
           </div>
         </div>
@@ -165,6 +198,9 @@ export default function courses() {
                       onClick={() => handleMaterialClick(material)}
                       className="w-full text-left text-sm text-[#7981FF]  hover:underline"
                     >
+                      {completedMaterials.includes(material._id) && (
+                        <CheckCircle className="text-green-500 w-4 h-4" />
+                      )}
                       {material.title}
                     </button>
                   ))}

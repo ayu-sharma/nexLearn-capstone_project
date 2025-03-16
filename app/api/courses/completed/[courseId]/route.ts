@@ -6,12 +6,13 @@ import user from "@/models/user";
 import mongoose from "mongoose";
 import Enrollment from "@/models/enrollment";
 
-export async function POST(req: NextRequest) {
+export async function GET(req: NextRequest,
+    { params }: { params: { courseId: string } }
+) {
     try {
         await connectToDatabase();
 
-        const { course } = await req.json();
-
+        const  { courseId } = params;
         const authHeader = req.headers.get('authorization') || '';
         if (!authHeader || !authHeader.startsWith('Bearer ')) {
             return NextResponse.json({
@@ -24,13 +25,13 @@ export async function POST(req: NextRequest) {
         const token = authHeader.split(' ')[1];
         const isUser = verify(token, JWT_SECRET);
 
-        let userId;
+        let idUser;
         if (isUser) {
             const userInfo = await user.findOne({ _id: new mongoose.Types.ObjectId((isUser as any).id) });
-            userId = userInfo._id;
+            idUser = userInfo._id;
         }
 
-        if (!userId) {
+        if (!idUser) {
             return NextResponse.json({
                 error: "User id not found",
             }, {
@@ -38,38 +39,24 @@ export async function POST(req: NextRequest) {
             });;
         }
 
-        const existingEnrollment = await Enrollment.findOne({
-            course: course,
-            userId: userId
+        const enrolled = await Enrollment.findOne({
+            userId: idUser,
+            course: courseId
         });
 
-        if (existingEnrollment) {
-            return NextResponse.json({
-                message: "Already Enrolled!",
-            }, {
-                status: 400
-            });
-        }
-
-        const newEnrolment = new Enrollment({
-            course,
-            userId,
-            completedMaterials: []
-        });
-
-        await newEnrolment.save();
+        const completed = enrolled.completedMaterials;
 
         return NextResponse.json({
-            message: "New Course Enrolled!",
+            completedMaterials: completed.map((c: { materialId: mongoose.Types.ObjectId }) => c.materialId)
         }, {
-            status: 201
+            status: 200
         });
     } catch (error) {
-        console.error("Enrollment failed:", error);
-        return NextResponse.json({
-            error: error
-        }, {
-            status: 500
+        console.error("Error fetching enrollments:", error);
+        return NextResponse.json({ 
+            error: "Internal Server Error" 
+        }, { 
+            status: 500 
         });
     }
 }
