@@ -255,10 +255,10 @@ export default function Courses() {
 
   return (
     <>
-      <div className="flex flex-col md:flex-row w-full h-[calc(100vh-4rem)] overflow-hidden">
+      <div className="flex flex-col md:flex-row w-full h-full overflow-hidden">
         {/* Sidebar toggle button - visible on all screens */}
         <button 
-          className="fixed bottom-4 right-4 z-50 bg-primary text-white p-2 rounded-full shadow-lg flex items-center justify-center"
+          className="fixed bottom-4 md:hidden right-4 z-50 bg-primary text-white p-2 rounded-full shadow-lg flex items-center justify-center"
           onClick={toggleSidebar}
           aria-label={sidebarOpen ? "Close sidebar" : "Open sidebar"}
         >
@@ -267,10 +267,15 @@ export default function Courses() {
 
         {/* Sidebar - responsive with overlay on small screens */}
         <div 
-          className={`${
-            sidebarOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'
-          } fixed md:relative z-40 md:z-auto w-full max-w-xs md:max-w-none md:w-1/4 lg:w-1/5 h-full overflow-y-auto flex-shrink-0 border-r dark:border-neutral-700 border-neutral-200 transition-transform duration-300 bg-background md:bg-transparent shadow-lg md:shadow-none`}
-        >
+  className={`
+    ${sidebarOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'}
+    fixed z-40 h-screen  flex-shrink-0 border-r dark:border-neutral-700 border-neutral-200 
+    transition-transform duration-300 bg-background shadow-lg
+    md:sticky md:top-0 md:shadow-none md:w-1/4 md:bg-transparent
+    lg:w-1/5
+    w-full
+  `}
+>
           <div className="p-4 sticky top-0 bg-background z-10 border-b dark:border-neutral-700 flex items-center justify-between">
             <div className="flex-1">
               <div className="flex items-center gap-2 mb-2">
@@ -347,7 +352,7 @@ export default function Courses() {
         {/* Overlay for mobile to close sidebar when clicking outside */}
         {sidebarOpen && windowWidth < 768 && (
           <div 
-            className="fixed inset-0 bg-black bg-opacity-50 z-30"
+            className="fixed inset-0 bg-black bg-opacity-50 z-60"
             onClick={() => setSidebarOpen(false)}
             aria-hidden="true"
           />

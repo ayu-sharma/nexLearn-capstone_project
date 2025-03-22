@@ -5,10 +5,10 @@ import { jsPDF } from 'jspdf';
 
 interface ReadingContentProps {
   content: string;
-  title?: string;
+  filename?: string;
 }
 
-const ReadingContent = ({ content, title = 'NexLearnStudyNotes/' }: ReadingContentProps) => {
+const ReadingContent = ({ content, filename = 'NexLearnStudyNotes' }: ReadingContentProps) => {
   const contentRef = useRef<HTMLDivElement>(null);
   const [copied, setCopied] = React.useState(false);
   
@@ -17,7 +17,7 @@ const ReadingContent = ({ content, title = 'NexLearnStudyNotes/' }: ReadingConte
     
     try {
       const canvas = await html2canvas(contentRef.current, {
-        backgroundColor: '#f8fafc',
+        backgroundColor: '#ffffff',
         scale: 2,
         logging: false,
         useCORS: true
@@ -39,7 +39,7 @@ const ReadingContent = ({ content, title = 'NexLearnStudyNotes/' }: ReadingConte
       const imgX = (pdfWidth - imgWidth * ratio) / 2;
       
       pdf.addImage(imgData, 'PNG', imgX, 20, imgWidth * ratio, imgHeight * ratio);
-      pdf.save(`${title.replace(/\s+/g, '_')}.pdf`);
+      pdf.save(`${filename.replace(/\s+/g, '_')}.pdf`);
     } catch (error) {
       console.error('Failed to generate PDF:', error);
       alert('Failed to download PDF. Please try again.');
@@ -61,47 +61,51 @@ const ReadingContent = ({ content, title = 'NexLearnStudyNotes/' }: ReadingConte
   };
   
   return (
-    <div className="flex flex-col items-center w-full max-w-4xl mx-auto">
-      <div className="w-full bg-slate-100 p-4 rounded-t-lg border-b border-slate-300 flex justify-between items-center">
-        <h2 className="text-xl font-semibold text-slate-800">{title}</h2>
-        <div className="flex gap-2">
+    <div className="flex flex-col w-full max-w-7xl mx-auto px-4 sm:px-6 my-6">
+      {/* Content card with floating buttons */}
+      <div className="relative w-full bg-white rounded-2xl shadow-lg border border-gray-100">
+        {/* Floating action buttons */}
+        <div className="absolute -top-3 right-4 flex gap-2 z-10">
           <button
             onClick={handleCopyContent}
-            className="flex items-center gap-1 bg-slate-200 hover:bg-slate-300 text-slate-700 py-1 px-3 rounded-md transition-colors duration-200"
+            className="flex items-center justify-center h-10 w-10 sm:w-auto sm:px-4 bg-gray-900 hover:bg-gray-800 text-white rounded-full shadow-md transition-all duration-200"
             title="Copy to clipboard"
           >
-            {copied ? <Check size={16} className="text-green-600" /> : <Copy size={16} />}
-            <span>{copied ? 'Copied!' : 'Copy'}</span>
+            {copied ? <Check size={18} /> : <Copy size={18} />}
+            <span className="hidden sm:inline ml-1">{copied ? 'Copied!' : 'Copy'}</span>
           </button>
           <button
             onClick={handleDownloadPDF}
-            className="flex items-center gap-1 bg-blue-600 hover:bg-blue-700 text-white py-1 px-3 rounded-md transition-colors duration-200"
+            className="flex items-center justify-center h-10 w-10 sm:w-auto sm:px-4 bg-indigo-600 hover:bg-indigo-700 text-white rounded-full shadow-md transition-all duration-200"
             title="Download as PDF"
           >
-            <Download size={16} />
-            <span>PDF</span>
+            <Download size={18} />
+            <span className="hidden sm:inline ml-1">PDF</span>
           </button>
         </div>
-      </div>
-      
-      <div 
-        ref={contentRef}
-        className="w-full bg-white border border-slate-300 rounded-b-lg p-6 shadow-sm"
-      >
-        <div className="prose prose-slate max-w-none">
-          {content.split('\n').map((paragraph, idx) => (
-            paragraph.trim() ? (
-              <p key={idx} className="mb-4 text-slate-700 leading-relaxed selection:bg-blue-100">
-                {paragraph}
-              </p>
-            ) : <br key={idx} />
-          ))}
+        
+        {/* Content area */}
+        <div 
+          ref={contentRef}
+          className="w-full p-6 sm:p-8 pt-8"
+        >
+          {/* Reading material content */}
+          <div className="prose prose-sm sm:prose lg:prose-lg prose-slate max-w-none">
+            {content.split('\n').map((paragraph, idx) => (
+              paragraph.trim() ? (
+                <p key={idx} className="mb-4 text-gray-800 leading-relaxed selection:bg-indigo-100 selection:text-indigo-900">
+                  {paragraph}
+                </p>
+              ) : <br key={idx} />
+            ))}
+          </div>
         </div>
-      </div>
-      
-      <div className="w-full mt-6 flex justify-between items-center text-slate-500 text-sm px-2">
-        <span>Last updated: {new Date().toLocaleDateString()}</span>
-        <span>© {new Date().getFullYear()} NexLearn/Module name</span>
+        
+        {/* Footer line */}
+        <div className="border-t border-gray-100 w-full p-4 sm:p-6 flex flex-col sm:flex-row sm:justify-between items-start sm:items-center text-gray-400 text-xs">
+          <span>Last updated: {new Date().toLocaleDateString()}</span>
+          <span>© {new Date().getFullYear()} NexLearn/Module name</span>
+        </div>
       </div>
     </div>
   );

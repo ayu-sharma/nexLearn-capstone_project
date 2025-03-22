@@ -49,7 +49,7 @@ const AssessmentStart = ({ materialId, questions, title, estimatedTime }: Assess
       <div className="absolute bottom-6 right-6 w-full flex justify-end">
         <Button 
           onClick={handleStart}
-          className="bg-indigo-600 hover:bg-indigo-700 text-white font-medium px-6 py-2 rounded-lg transition-colors"
+          className="bg-blue-600 hover:bg-indigo-700 text-white font-medium px-6 py-2 rounded-lg transition-colors"
         >
           Start Assessment
         </Button>
