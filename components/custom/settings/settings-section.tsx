@@ -82,7 +82,7 @@ const SettingsSection: React.FC = () => {
   };
 
   return (
-    <div className="inset-0 h-[35rem] bg-white dark:bg-gray-900 overflow-none rounded-lg">
+    <div className="inset-0 h-[30rem] bg-white dark:bg-gray-900 overflow-none rounded-lg">
       <div className="flex flex-col md:flex-row h-full">
         {/* Sidebar */}
         <div className="md:w-64 bg-gray-100 dark:bg-gray-800 p-4 md:p-6 flex flex-col">

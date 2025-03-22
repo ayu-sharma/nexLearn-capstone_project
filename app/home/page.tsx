@@ -100,7 +100,7 @@ const HomePage = () => {
   
   {/* Main Content */}
   <div className="px-4 xl:px-6 xl:pl-[14rem] xl:pt-[5rem] xl:py-8 flex flex-col w-full py-20">
-    <div className="w-full max-w-7xl mx-auto">
+    <div className="w-full max-w-7xl mx-auto z-5">
       {renderComponent()}
     </div>
   </div>
