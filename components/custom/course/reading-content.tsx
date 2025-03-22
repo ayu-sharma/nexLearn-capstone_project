@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import { Download, Copy, Check } from 'lucide-react';
 import html2canvas from 'html2canvas';
 import { jsPDF } from 'jspdf';
@@ -8,11 +8,14 @@ interface ReadingContentProps {
   filename?: string;
 }
 
-const ReadingContent = ({ content, filename = 'NexLearnStudyNotes' }: ReadingContentProps) => {
+const ReadingContent: React.FC<ReadingContentProps> = ({ 
+  content, 
+  filename = 'NexLearnStudyNotes' 
+}) => {
   const contentRef = useRef<HTMLDivElement>(null);
-  const [copied, setCopied] = React.useState(false);
+  const [copied, setCopied] = useState<boolean>(false);
   
-  const handleDownloadPDF = async () => {
+  const handleDownloadPDF = async (): Promise<void> => {
     if (!contentRef.current) return;
     
     try {
@@ -46,7 +49,7 @@ const ReadingContent = ({ content, filename = 'NexLearnStudyNotes' }: ReadingCon
     }
   };
   
-  const handleCopyContent = () => {
+  const handleCopyContent = (): void => {
     if (!contentRef.current) return;
     
     navigator.clipboard.writeText(content)
@@ -54,7 +57,7 @@ const ReadingContent = ({ content, filename = 'NexLearnStudyNotes' }: ReadingCon
         setCopied(true);
         setTimeout(() => setCopied(false), 2000);
       })
-      .catch(err => {
+      .catch((err: Error) => {
         console.error('Failed to copy text:', err);
         alert('Failed to copy text. Please try again.');
       });
