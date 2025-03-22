@@ -132,6 +132,12 @@ const SkeletonCard = () => {
           return <Code className="h-5 w-5 text-[#7981FF]" />;
       }
     };
+
+    const getProgressColor = () => {
+      if (Number(percentage) < 30) return "bg-red-500";
+      if (Number(percentage) < 70) return "bg-amber-500";
+      return "bg-green-500";
+    };
     return (
       <div
             onClick={onClick}
@@ -149,9 +155,15 @@ const SkeletonCard = () => {
               <p className="text-gray-600 dark:text-gray-300 line-clamp-3 mb-6 text-sm h-14">
                 {description}
               </p>
-              <p className="text-gray-600 dark:text-gray-300">
-                {percentage}% completed
-              </p>
+              <div className="mb-4">
+            <p className="text-xs text-gray-500 dark:text-gray-400 mb-1">{percentage}% Completed</p>
+            <div className="w-full h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
+              <div
+                className={`h-full ${getProgressColor()} transition-all duration-500`}
+                style={{ width: `${percentage}%` }}
+              ></div>
+            </div>
+          </div>
               <div className="flex items-center justify-between">
                 <span className={`px-3 py-1 rounded-full text-xs font-medium ${getTypeColor()}`}>
                   {type}

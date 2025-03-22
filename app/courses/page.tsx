@@ -386,7 +386,7 @@ export default function Courses() {
                 )}
                 {currentMaterial.type === "READING" && currentMaterial.textContent && (
                   <div className="prose dark:prose-invert max-w-none prose-img:mx-auto prose-img:rounded-xl prose-img:max-w-full">
-                    <ReadingContent content={currentMaterial.textContent} />
+                    <ReadingContent title={currentMaterial.title} content={currentMaterial.textContent} />
                   </div>
                 )}
                 {currentMaterial.type === "ASSESSMENT" && (
