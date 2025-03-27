@@ -101,25 +101,24 @@ const Sidebar = ({ selectedGroup, onSelectGroup, isOpen, toggleMenu }: SidebarPr
       name: "Notifications",
       icon: (active: boolean) => (
         <svg
-        className={`w-5 h-5 ${
-          active ? "text-[#7981FF]" : "text-[#F2F2F2] dark:text-[#121417]"
-        }`}
-        aria-hidden="true"
-        xmlns="http://www.w3.org/2000/svg"
-        width="24"
-        height="24"
-        fill="none"
-        viewBox="0 0 24 24"
-      >
-        <path
-          stroke="currentColor"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth="2"
-          d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2Zm6-6V10a6 6 0 0 0-12 0v6l-2 2v1h16v-1l-2-2Z"
-        />
-      </svg>
-      
+          className={`w-5 h-5 ${
+            active ? "text-[#7981FF]" : "text-[#F2F2F2] dark:text-[#121417]"
+          }`}
+          aria-hidden="true"
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          fill="none"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke="currentColor"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth="2"
+            d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2Zm6-6V10a6 6 0 0 0-12 0v6l-2 2v1h16v-1l-2-2Z"
+          />
+        </svg>
       )
     },
     {
@@ -159,7 +158,7 @@ const Sidebar = ({ selectedGroup, onSelectGroup, isOpen, toggleMenu }: SidebarPr
           isActive 
             ? "bg-opacity-10 bg-[#7981FF] text-[#7981FF]" 
             : isMobile 
-              ? "text-[#121417] hover:bg-black/5" 
+              ? "text-white hover:bg-white/10" 
               : "text-[#F2F2F2] dark:text-[#121417] hover:bg-white/10 dark:hover:bg-black/10"
         }`}
         onClick={() => {
@@ -256,11 +255,11 @@ const Sidebar = ({ selectedGroup, onSelectGroup, isOpen, toggleMenu }: SidebarPr
 
       {/* Mobile Sidebar */}
       <div
-        className={`fixed top-0 left-0 h-full w-64 bg-white shadow-2xl p-6 transition-transform duration-300 ease-in-out z-50 xl:hidden ${
+        className={`fixed top-0 left-0 h-full w-64 bg-[#121417] shadow-2xl p-6 transition-transform duration-300 ease-in-out z-50 xl:hidden ${
           isOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >
-        <div className="flex flex-col justify-between h-full font-medium text-sm">
+        <div className="flex flex-col justify-between h-full font-medium text-sm text-white">
           <div className="flex flex-col">
             <div className="flex justify-between items-center mb-6">
               <Image
@@ -271,21 +270,21 @@ const Sidebar = ({ selectedGroup, onSelectGroup, isOpen, toggleMenu }: SidebarPr
               />
               <button 
                 onClick={toggleMenu}
-                className="p-1 rounded-full hover:bg-gray-100 transition-all"
+                className="p-1 rounded-full hover:bg-white/10 transition-all"
                 aria-label="Close menu"
               >
-                <X size={20} className="text-[#121417]" />
+                <X size={20} className="text-white" />
               </button>
             </div>
             <div className="flex flex-col gap-y-2 mt-4">
               {menuItems.map(item => renderMenuItem(item, true))}
             </div>
           </div>
-          <div className="flex flex-col gap-y-2 mt-6 border-t pt-6">
-          <RightNav />
-            <div className="flex items-center gap-x-2 p-2 rounded-md hover:bg-gray-100 cursor-pointer transition">
+          <div className="flex flex-col gap-y-2 mt-6 border-t border-white/20 pt-6">
+            <RightNav />
+            <div className="flex items-center gap-x-2 p-2 rounded-md hover:bg-white/10 cursor-pointer transition">
               <svg
-                className="w-5 h-5 text-[#121417]"
+                className="w-5 h-5 text-white"
                 aria-hidden="true"
                 xmlns="http://www.w3.org/2000/svg"
                 width="24"
@@ -299,14 +298,14 @@ const Sidebar = ({ selectedGroup, onSelectGroup, isOpen, toggleMenu }: SidebarPr
                   clipRule="evenodd"
                 />
               </svg>
-              <p className="text-[#121417]">Help</p>
+              <p>Help</p>
             </div>
             <div
               onClick={handleLogout}
-              className="flex items-center gap-x-2 p-2 rounded-md hover:bg-gray-100 cursor-pointer transition"
+              className="flex items-center gap-x-2 p-2 rounded-md hover:bg-white/10 cursor-pointer transition"
             >
               <svg
-                className="w-5 h-5 text-[#121417]"
+                className="w-5 h-5 text-white"
                 aria-hidden="true"
                 xmlns="http://www.w3.org/2000/svg"
                 width="24"
@@ -322,7 +321,7 @@ const Sidebar = ({ selectedGroup, onSelectGroup, isOpen, toggleMenu }: SidebarPr
                   d="M20 12H8m12 0-4 4m4-4-4-4M9 4H7a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h2"
                 />
               </svg>
-              <p className="text-[#121417]">Logout</p>
+              <p>Logout</p>
             </div>
           </div>
         </div>

@@ -41,11 +41,34 @@ const ReadingContent: React.FC<ReadingContentProps> = ({
       const ratio = Math.min(pdfWidth / imgWidth, pdfHeight / imgHeight);
       const imgX = (pdfWidth - imgWidth * ratio) / 2;
       
+      // Add image first
       pdf.addImage(imgData, 'PNG', imgX, 20, imgWidth * ratio, imgHeight * ratio);
+      
+      // Add filename as watermark background
+      pdf.setTextColor(200); // Light gray color
+      
+      // Large watermark text
+      pdf.setTextColor(0, 0, 0, 0.2);
+      pdf.setFontSize(20);
+      pdf.text(`NexLearn/${filename}`, pdfWidth / 2, pdfHeight / 2, {
+        align: 'center',
+        maxWidth: 100,
+        angle: 45,
+      });
+      
+      // Smaller additional text
+      pdf.setTextColor(0, 0, 0, 0.2);
+      pdf.setFontSize(10);
+      pdf.text('Confidential Document - Internal Use Only', pdfWidth / 2, pdfHeight / 2 + 50, {
+        align: 'center',
+        maxWidth: 100,
+        angle: 45
+      });
+      
       pdf.save(`${filename.replace(/\s+/g, '_')}.pdf`);
     } catch (error) {
       console.error('Failed to generate PDF:', error);
-      alert('Failed to download PDF. Please try again.');
+      alert(`Failed to download PDF: ${error instanceof Error ? error.message : 'Unknown error'}`);
     }
   };
   
@@ -65,9 +88,7 @@ const ReadingContent: React.FC<ReadingContentProps> = ({
   
   return (
     <div className="flex flex-col w-full max-w-7xl mx-auto px-4 sm:px-6 my-6">
-      {/* Content card with floating buttons */}
       <div className="relative w-full bg-white rounded-2xl shadow-lg border border-gray-100">
-        {/* Floating action buttons */}
         <div className="absolute -top-3 right-4 flex gap-2 z-10">
           <button
             onClick={handleCopyContent}
@@ -87,12 +108,10 @@ const ReadingContent: React.FC<ReadingContentProps> = ({
           </button>
         </div>
         
-        {/* Content area */}
         <div 
           ref={contentRef}
           className="w-full p-6 sm:p-8 pt-8"
         >
-          {/* Reading material content */}
           <div className="prose prose-sm sm:prose lg:prose-lg prose-slate max-w-none">
             {content.split('\n').map((paragraph, idx) => (
               paragraph.trim() ? (
@@ -104,10 +123,9 @@ const ReadingContent: React.FC<ReadingContentProps> = ({
           </div>
         </div>
         
-        {/* Footer line */}
         <div className="border-t border-gray-100 w-full p-4 sm:p-6 flex flex-col sm:flex-row sm:justify-between items-start sm:items-center text-gray-400 text-xs">
           <span>Last updated: {new Date().toLocaleDateString()}</span>
-          <span>© {new Date().getFullYear()} NexLearn/Module name</span>
+          <span>© {new Date().getFullYear()} NexLearn/{filename}</span>
         </div>
       </div>
     </div>
