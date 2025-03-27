@@ -92,7 +92,7 @@ const Recommendations: React.FC<RecommendationsProps> = ({
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: -20, scale: 0.95 }}
             transition={{ duration: 0.2 }}
-            className="fixed top-20 right-4 sm:right-8 w-full max-w-md bg-white rounded-lg shadow-lg z-50 overflow-hidden h-[20rem] md:h-[30rem]"
+            className="fixed top-20 right-4 sm:right-8 w-full max-w-md bg-white rounded-lg shadow-lg z-[100] overflow-hidden h-[20rem] md:h-[30rem]"
           >
             <div className="flex justify-between items-center border-b p-4">
               <h2 className="text-lg font-semibold text-gray-800">Recommendations</h2>

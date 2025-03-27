@@ -11,8 +11,6 @@ interface NotificationSettings {
   sms: boolean;
 }
 
-type ThemeOption = "light" | "dark" | "system";
-type LanguageOption = "english" | "spanish" | "french" | "german" | "japanese";
 type FontSizeOption = "small" | "medium" | "large";
 
 const SettingsSection: React.FC = () => {
@@ -22,8 +20,6 @@ const SettingsSection: React.FC = () => {
     sms: true,
   });
 
-  const [theme, setTheme] = useState<ThemeOption>("light");
-  const [language, setLanguage] = useState<LanguageOption>("english");
   const [fontSize, setFontSize] = useState<FontSizeOption>("medium");
   const [activeSection, setActiveSection] = useState<string>("notifications");
 
@@ -32,16 +28,6 @@ const SettingsSection: React.FC = () => {
       ...prev,
       [type]: !prev[type],
     }));
-  };
-
-  const handleThemeChange = (e: React.ChangeEvent<HTMLSelectElement>): void => {
-    setTheme(e.target.value as ThemeOption);
-  };
-
-  const handleLanguageChange = (
-    e: React.ChangeEvent<HTMLSelectElement>
-  ): void => {
-    setLanguage(e.target.value as LanguageOption);
   };
 
   const handleFontSizeChange = (
@@ -62,11 +48,7 @@ const SettingsSection: React.FC = () => {
       case "appearance":
         return (
           <Appearance 
-            theme={theme}
-            language={language}
             fontSize={fontSize}
-            handleThemeChange={handleThemeChange}
-            handleLanguageChange={handleLanguageChange}
             handleFontSizeChange={handleFontSizeChange}
           />
         );
