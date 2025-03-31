@@ -1,4 +1,6 @@
-import React, { useState } from "react";
+"use client"
+
+import React, { useEffect, useState } from "react";
 import { Activity, Users, Code, BookOpen, CheckSquare } from "lucide-react";
 
 import GoalGrid from "./goal-grid";
@@ -6,8 +8,8 @@ import ActivityGrid from "./activity-grid";
 import DSAGrid from "./dsa-progress";
 import MCQGrid from "./mcq-stats";
 import AccuracyGrid from "./accuracy-grid";
-import DashboardHeatMap from "./heatmap";
 import Recommendations from "@/components/Recomendation";
+import axios from "axios";
 
 interface ActivityData {
   // Define your activity data type here if needed
@@ -16,10 +18,33 @@ interface ActivityData {
 const Dashboard: React.FC = () => {
   const [activeTab, setActiveTab] = useState<"overview" | "dsa" | "mcq">("overview");
   const [isRecommendationsOpen, setIsRecommendationsOpen] = useState<boolean>(false);
-
+  const [totalSolved, setTotalSolved] = useState(0);
+  const [loading, setLoading] = useState(true);
   // Sample data for demonstration
   const activityData: number[] = [65, 40, 80, 35, 60, 75, 50];
   const goalProgress: number = 68;
+
+  useEffect(() => {
+    const fetchUserDSAStats = async () => {
+      setLoading(true);
+      const token = localStorage.getItem("token");
+      try {
+        const response = await axios.get("http://localhost:3000/api/user/stats", {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        });
+        const solved = response.data;
+        setTotalSolved(solved.totalSolved);
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchUserDSAStats();
+  }, []);
 
   const toggleRecommendations = () => {
     setIsRecommendationsOpen(prev => !prev);
@@ -109,7 +134,7 @@ const Dashboard: React.FC = () => {
                 </div>
                 <div>
                   <p className="text-gray-500 text-sm">DSA Problems</p>
-                  <p className="text-2xl font-bold">124/350</p>
+                  <p className="text-2xl font-bold">{totalSolved}/150</p>
                 </div>
               </div>
 

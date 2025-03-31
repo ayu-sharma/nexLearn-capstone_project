@@ -88,6 +88,72 @@
                 { "input": "[\"a\"]", "expectedOutput": "[[\"a\"]]" },
                 { "input": "[\"abc\", \"bca\", \"cab\", \"xyz\", \"zyx\"]", "expectedOutput": "[[\"abc\", \"bca\", \"cab\"], [\"xyz\", \"zyx\"]]" }
             ]
-        }             
+        },
+        {
+            "id": 5,
+            "title": "K Frequent Elements",
+            "boilerplate": {
+                "java": "import java.util.*;\n\nclass Solution {\n    public int[] topKFrequent(int[] nums, int k) {\n        // Your code here\n    }\n}",
+                "cpp": "#include <vector>\n#include <unordered_map>\n#include <queue>\nusing namespace std;\n\nclass Solution {\npublic:\n    vector<int> topKFrequent(vector<int>& nums, int k) {\n        // Your code here\n    }\n};",
+                "python": "from collections import Counter\nfrom typing import List\n\nclass Solution:\n    def topKFrequent(self, nums: List[int], k: int) -> List[int]:\n        # Your code here",
+                "javascript": "class Solution {\n    topKFrequent(nums, k) {\n        // Your code here\n    }\n}"
+            },
+            "solution": {
+                "java": "import java.util.*;\n\nclass Solution {\n    public int[] topKFrequent(int[] nums, int k) {\n        Map<Integer, Integer> countMap = new HashMap<>();\n        for (int num : nums) {\n            countMap.put(num, countMap.getOrDefault(num, 0) + 1);\n        }\n        PriorityQueue<Integer> minHeap = new PriorityQueue<>(Comparator.comparingInt(countMap::get));\n        for (int num : countMap.keySet()) {\n            minHeap.add(num);\n            if (minHeap.size() > k) {\n                minHeap.poll();\n            }\n        }\n        int[] result = new int[k];\n        for (int i = k - 1; i >= 0; i--) {\n            result[i] = minHeap.poll();\n        }\n        return result;\n    }\n}",
+                "cpp": "#include <vector>\n#include <unordered_map>\n#include <queue>\nusing namespace std;\n\nclass Solution {\npublic:\n    vector<int> topKFrequent(vector<int>& nums, int k) {\n        unordered_map<int, int> countMap;\n        for (int num : nums) {\n            countMap[num]++;\n        }\n        priority_queue<pair<int, int>, vector<pair<int, int>>, greater<>> minHeap;\n        for (auto& [num, freq] : countMap) {\n            minHeap.push({freq, num});\n            if (minHeap.size() > k) {\n                minHeap.pop();\n            }\n        }\n        vector<int> result;\n        while (!minHeap.empty()) {\n            result.push_back(minHeap.top().second);\n            minHeap.pop();\n        }\n        return result;\n    }\n};",
+                "python": "from collections import Counter\nimport heapq\nfrom typing import List\n\nclass Solution:\n    def topKFrequent(self, nums: List[int], k: int) -> List[int]:\n        count = Counter(nums)\n        return heapq.nlargest(k, count.keys(), key=count.get)",
+                "javascript": "class Solution {\n    topKFrequent(nums, k) {\n        const countMap = new Map();\n        for (let num of nums) {\n            countMap.set(num, (countMap.get(num) || 0) + 1);\n        }\n        return [...countMap.entries()]\n            .sort((a, b) => b[1] - a[1])\n            .slice(0, k)\n            .map(entry => entry[0]);\n    }\n}"
+            },
+            "testCases": [
+                { "input": "[1,1,1,2,2,3], 2", "expectedOutput": "[1,2]" },
+                { "input": "[1], 1", "expectedOutput": "[1]" },
+                { "input": "[4,4,4,4,5,5,5,6,6,7,7,7,7], 3", "expectedOutput": "[4,7,5]" },
+                { "input": "[3,0,1,0], 1", "expectedOutput": "[0]" }
+            ]
+        },
+        {
+            "id": 6,
+            "title": "Encode and Decode Strings",
+            "boilerplate": {
+                "java": "import java.util.*;\n\nclass Solution {\n    public String encode(List<String> strs) {\n        // Your code here\n    }\n\n    public List<String> decode(String str) {\n        // Your code here\n    }\n}",
+                "cpp": "#include <vector>\n#include <string>\nusing namespace std;\n\nclass Solution {\npublic:\n    string encode(vector<string>& strs) {\n        // Your code here\n    }\n\n    vector<string> decode(string s) {\n        // Your code here\n    }\n};",
+                "python": "from typing import List\n\nclass Solution:\n    def encode(self, strs: List[str]) -> str:\n        # Your code here\n\n    def decode(self, s: str) -> List[str]:\n        # Your code here",
+                "javascript": "class Solution {\n    encode(strs) {\n        // Your code here\n    }\n    \n    decode(str) {\n        // Your code here\n    }\n}"
+            },
+            "solution": {
+                "java": "import java.util.*;\n\nclass Solution {\n    public String encode(List<String> strs) {\n        StringBuilder sb = new StringBuilder();\n        for (String str : strs) {\n            sb.append(str.length()).append('#').append(str);\n        }\n        return sb.toString();\n    }\n\n    public List<String> decode(String str) {\n        List<String> res = new ArrayList<>();\n        int i = 0;\n        while (i < str.length()) {\n            int j = str.indexOf('#', i);\n            int length = Integer.parseInt(str.substring(i, j));\n            i = j + 1 + length;\n            res.add(str.substring(j + 1, i));\n        }\n        return res;\n    }\n}",
+                "cpp": "#include <vector>\n#include <string>\nusing namespace std;\n\nclass Solution {\npublic:\n    string encode(vector<string>& strs) {\n        string result;\n        for (const string& str : strs) {\n            result += to_string(str.size()) + '#' + str;\n        }\n        return result;\n    }\n\n    vector<string> decode(string s) {\n        vector<string> res;\n        int i = 0;\n        while (i < s.size()) {\n            int j = s.find('#', i);\n            int length = stoi(s.substr(i, j - i));\n            i = j + 1 + length;\n            res.push_back(s.substr(j + 1, length));\n        }\n        return res;\n    }\n};",
+                "python": "from typing import List\n\nclass Solution:\n    def encode(self, strs: List[str]) -> str:\n        return ''.join(f'{len(s)}#{s}' for s in strs)\n    \n    def decode(self, s: str) -> List[str]:\n        res, i = [], 0\n        while i < len(s):\n            j = s.find('#', i)\n            length = int(s[i:j])\n            i = j + 1 + length\n            res.append(s[j + 1:i])\n        return res",
+                "javascript": "class Solution {\n    encode(strs) {\n        return strs.map(str => str.length + '#' + str).join('');\n    }\n\n    decode(str) {\n        let res = [], i = 0;\n        while (i < str.length) {\n            let j = str.indexOf('#', i);\n            let length = parseInt(str.substring(i, j), 10);\n            i = j + 1 + length;\n            res.push(str.substring(j + 1, i));\n        }\n        return res;\n    }\n}"
+            },
+            "testCases": [
+                { "input": "[\"hello\", \"world\"]", "expectedOutput": "[\"hello\", \"world\"]" },
+                { "input": "[\"abc\", \"\", \"defg\"]", "expectedOutput": "[\"abc\", \"\", \"defg\"]" },
+                { "input": "[\"\"]", "expectedOutput": "[\"\"]" },
+                { "input": "[\"#\", \"##\", \"###\"]", "expectedOutput": "[\"#\", \"##\", \"###\"]" }
+            ]
+        },
+        {
+            "id": 7,
+            "title": "Product of Array Except Self",
+            "boilerplate": {
+                "java": "class Solution {\n    public int[] productExceptSelf(int[] nums) {\n        // Your code here\n    }\n}",
+                "cpp": "#include <vector>\nusing namespace std;\n\nclass Solution {\npublic:\n    vector<int> productExceptSelf(vector<int>& nums) {\n        // Your code here\n    }\n};",
+                "python": "from typing import List\n\nclass Solution:\n    def productExceptSelf(self, nums: List[int]) -> List[int]:\n        # Your code here",
+                "javascript": "class Solution {\n    /**\n     * @param {number[]} nums\n     * @return {number[]}\n     */\n    productExceptSelf(nums) {\n        // Your code here\n    }\n}"
+            },
+            "solution": {
+                "java": "class Solution {\n    public int[] productExceptSelf(int[] nums) {\n        int n = nums.length;\n        int[] res = new int[n];\n        int left = 1, right = 1;\n        \n        for (int i = 0; i < n; i++) {\n            res[i] = left;\n            left *= nums[i];\n        }\n        \n        for (int i = n - 1; i >= 0; i--) {\n            res[i] *= right;\n            right *= nums[i];\n        }\n        \n        return res;\n    }\n}",
+                "cpp": "#include <vector>\nusing namespace std;\n\nclass Solution {\npublic:\n    vector<int> productExceptSelf(vector<int>& nums) {\n        int n = nums.size();\n        vector<int> res(n, 1);\n        int left = 1, right = 1;\n        \n        for (int i = 0; i < n; i++) {\n            res[i] *= left;\n            left *= nums[i];\n        }\n        \n        for (int i = n - 1; i >= 0; i--) {\n            res[i] *= right;\n            right *= nums[i];\n        }\n        \n        return res;\n    }\n};",
+                "python": "from typing import List\n\nclass Solution:\n    def productExceptSelf(self, nums: List[int]) -> List[int]:\n        n = len(nums)\n        res = [1] * n\n        left, right = 1, 1\n        \n        for i in range(n):\n            res[i] *= left\n            left *= nums[i]\n        \n        for i in range(n - 1, -1, -1):\n            res[i] *= right\n            right *= nums[i]\n        \n        return res",
+                "javascript": "class Solution {\n    /**\n     * @param {number[]} nums\n     * @return {number[]}\n     */\n    productExceptSelf(nums) {\n        const n = nums.length;\n        const res = new Array(n).fill(1);\n        let left = 1, right = 1;\n        \n        for (let i = 0; i < n; i++) {\n            res[i] *= left;\n            left *= nums[i];\n        }\n        \n        for (let i = n - 1; i >= 0; i--) {\n            res[i] *= right;\n            right *= nums[i];\n        }\n        \n        return res;\n    }\n}"
+            },
+            "testCases": [
+                { "input": "[1,2,3,4]", "expectedOutput": "[24,12,8,6]" },
+                { "input": "[0,0]", "expectedOutput": "[0,0]" },
+                { "input": "[4,5,1,8,2]", "expectedOutput": "[80,64,320,40,160]" },
+                { "input": "[10,3,5,6,2]", "expectedOutput": "[180,600,360,300,900]" }
+            ]
+        }                 
     ]
   }

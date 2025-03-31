@@ -23,7 +23,7 @@ const GoalGrid: React.FC<GoalGridProps> = ({ goalProgress }) => {
         <div className="flex justify-between mt-4">
           <div>
             <h3 className="text-sm font-medium text-gray-500">DSA Problems</h3>
-            <p className="text-lg font-semibold">124/350</p>
+            <p className="text-lg font-semibold">124/150</p>
           </div>
           <div>
             <h3 className="text-sm font-medium text-gray-500">Weekly Hours</h3>

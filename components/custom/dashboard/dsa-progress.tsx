@@ -1,7 +1,10 @@
-import React from "react";
+"use client"
+
+import React, { useEffect, useState } from "react";
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
 import { Code, Check, Clock, Star } from "lucide-react";
+import axios from "axios";
 
 // Define types for DSA Data
 interface Category {
@@ -39,9 +42,34 @@ interface DSAData {
 }
 
 const DSAGrid: React.FC = () => {
+  const [loading, setLoading] = useState(true);
+  const [totalSolved, setTotalSolved] = useState(0);
+
+  useEffect(() => {
+    const fetchUserDSAStats = async () => {
+      setLoading(true);
+      const token = localStorage.getItem("token");
+      try {
+        const response = await axios.get("http://localhost:3000/api/user/stats", {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        });
+        const solved = response.data;
+        setTotalSolved(solved.totalSolved);
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchUserDSAStats();
+  }, []);
+
   const dsaData: DSAData = {
-    totalProblems: 350,
-    solvedProblems: 124,
+    totalProblems: 150,
+    solvedProblems: totalSolved,
     categories: [
       { name: "Arrays", solved: 28, total: 65, percentage: 43 },
       { name: "Linked Lists", solved: 18, total: 42, percentage: 43 },

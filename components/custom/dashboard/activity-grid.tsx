@@ -23,7 +23,11 @@ interface StudySession {
   notes?: string;
 }
 
-const StudyActivityTracker: React.FC = () => {
+interface ActivityGrid {
+  activityData: number[];
+}
+
+const StudyActivityTracker = ({ activityData }: ActivityGrid) => {
   // State for study sessions
   const [sessions, setSessions] = useState<StudySession[]>(() => {
     // Load from local storage on initial render
