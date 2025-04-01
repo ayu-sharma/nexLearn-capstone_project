@@ -16,27 +16,20 @@ export default function Assessment() {
   const [timeElapsed, setTimeElapsed] = useState(0);
   const searchParams = useSearchParams();
   const [isLoading, setIsLoading] = useState(true);
-  const [isTimerRunning, setIsTimerRunning] = useState(true);
-  // Fixed: Properly typing the timer ref
+  const [isAssessmentComplete, setIsAssessmentComplete] = useState(false); // Track assessment completion
   const timerRef = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
-    if (isTimerRunning) {
-      timerRef.current = setInterval(() => {
-        setTimeElapsed((prev) => prev + 1);
-      }, 1000);
-    } else if (timerRef.current) {
-      clearInterval(timerRef.current);
-      timerRef.current = null;
-    }
+    if (isAssessmentComplete) return; // If assessment is complete, stop the timer
 
-    return () => {
-      if (timerRef.current) {
-        clearInterval(timerRef.current);
-        timerRef.current = null;
-      }
-    }; 
-  }, [isTimerRunning]);
+    const timer = setInterval(() => {
+      setTimeElapsed((prev) => prev + 1);
+    }, 1000);
+
+    timerRef.current = timer;
+
+    return () => clearInterval(timer); // Cleanup on unmount or when assessment is complete
+  }, [isAssessmentComplete]);
 
   const handleQuizComplete = (finalScore: number, total: number) => {
     setScore(finalScore);
@@ -44,12 +37,13 @@ export default function Assessment() {
   };
 
   const handleSubmit = async () => {
-    // Stop the timer immediately
-    setIsTimerRunning(false);
-    
     setIsLoading(true);
     const materialId = searchParams.get("materialId");
     const token = localStorage.getItem("token");
+    
+    // Stop the timer once assessment is completed
+    setIsAssessmentComplete(true);
+
     try {
       const response = await axios.post("http://localhost:3000/api/score", {
         material: materialId,
@@ -74,13 +68,6 @@ export default function Assessment() {
     setIsModalOpen(false);
     router.back();
   };
-
-  // Ensure timer is stopped when navigating away
-  useEffect(() => {
-    return () => {
-      setIsTimerRunning(false);
-    };
-  }, []);
 
   const formatTime = (seconds: number) => {
     const hrs = Math.floor(seconds / 3600);
