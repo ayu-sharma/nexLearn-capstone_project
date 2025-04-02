@@ -1,4 +1,6 @@
-import React from "react";
+"use client";
+
+import React, { useEffect, useState } from "react";
 import { BookOpen, Clock, Target, Award } from "lucide-react";
 import {
   BarChart,
@@ -13,6 +15,7 @@ import {
   Pie,
   Cell,
 } from "recharts";
+import axios from "axios";
 
 interface SubjectPerformance {
   name: string;
@@ -77,13 +80,44 @@ const mcqData = {
 };
 
 const MCQGrid: React.FC = () => {
+  const [accuracy, setAccuracy] = useState("0");
+  const [totalMcq, setTotalMcq] = useState(0);
+  const [totalCorrect, setTotalCorrect] = useState(0);
+  const [average, setAverage] = useState("0");
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+      const fetchUserDSAStats = async () => {
+        setLoading(true);
+        const token = localStorage.getItem("token");
+        try {
+          const response = await axios.get("http://localhost:3000/api/user/stats", {
+            headers: {
+              Authorization: `Bearer ${token}`
+            }
+          });
+          const solved = response.data;
+          console.log(solved);
+          setAccuracy(solved.accuracy);
+          setTotalMcq(solved.totalMCQs);
+          setTotalCorrect(solved.totalScore);
+          setAverage(solved.avgTimePerQuestion);
+        } catch (error) {
+          console.error(error);
+        } finally {
+          setLoading(false);
+        }
+      };
+  
+      fetchUserDSAStats();
+    }, []);
   return (
     <div className="space-y-6">
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <SummaryCard icon={<BookOpen />} title="MCQ Score" value={`${mcqData.accuracy}%`} color="green" />
-        <SummaryCard icon={<Target />} title="Questions Attempted" value={`${mcqData.answeredQuestions}/${mcqData.totalQuestions}`} color="blue" />
-        <SummaryCard icon={<Clock />} title="Average Time" value={mcqData.averageTime} color="purple" />
-        <SummaryCard icon={<Award />} title="Correct Answers" value={mcqData.correctAnswers} color="yellow" />
+        <SummaryCard icon={<BookOpen />} title="MCQ Score" value={`${accuracy}%`} color="green" />
+        <SummaryCard icon={<Target />} title="Questions Attempted" value={`${totalMcq}`} color="blue" />
+        <SummaryCard icon={<Clock />} title="Average Time" value={`${average} seconds`} color="purple" />
+        <SummaryCard icon={<Award />} title="Correct Answers" value={totalCorrect} color="yellow" />
       </div>
     </div>
   );

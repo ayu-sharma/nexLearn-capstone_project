@@ -165,7 +165,7 @@ export default function Questionbar({ onQuizComplete }: QuestionbarProps) {
 
   const getOptionVariant = (optionValue: string) => {
     if (userAnswers[isActiveQuestion] === optionValue) {
-      return "bg-blue-600 dark:bg-blue-500 text-blue-600 border-blue-600 dark:border-blue-500";
+      return "bg-blue-600 dark:bg-blue-500 text-black border-blue-600 dark:border-blue-500";
     }
     return "bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700 hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-all duration-300";
   };

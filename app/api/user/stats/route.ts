@@ -5,6 +5,7 @@ import connectToDatabase from "@/lib/mongo";
 import user from "@/models/user";
 import mongoose from "mongoose";
 import Submission from "@/models/submission";
+import Score from "@/models/score";
 
 export async function GET(req: NextRequest) {
     try {
@@ -66,11 +67,30 @@ export async function GET(req: NextRequest) {
             if (_id === "HARD") hardSolved = count;
         });
 
+        const scores = await Score.find({ user: userId });
+
+        let totalMCQs = 0;
+        let totalScore = 0;
+        let totalTimeTaken = 0;
+
+        scores.forEach(({ total, score, timeTaken }) => {
+            totalMCQs += total;
+            totalScore += score;
+            totalTimeTaken += timeTaken;
+        });
+
+        const avgTimePerQuestion = totalMCQs > 0 ? totalTimeTaken / totalMCQs : 0;
+        const accuracy = totalMCQs > 0 ? (totalScore / totalMCQs) * 100 : 0;
+
         return NextResponse.json({
             totalSolved,
             easySolved,
             mediumSolved,
-            hardSolved
+            hardSolved,
+            totalMCQs,
+            totalScore,
+            avgTimePerQuestion: avgTimePerQuestion.toFixed(2),
+            accuracy: accuracy.toFixed(2)
         }, { status: 200 });
     } catch (error) {
         console.error("Server error:", error);

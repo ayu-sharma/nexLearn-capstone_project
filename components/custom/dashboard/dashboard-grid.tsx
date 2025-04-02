@@ -19,6 +19,9 @@ const Dashboard: React.FC = () => {
   const [activeTab, setActiveTab] = useState<"overview" | "dsa" | "mcq">("overview");
   const [isRecommendationsOpen, setIsRecommendationsOpen] = useState<boolean>(false);
   const [totalSolved, setTotalSolved] = useState(0);
+  const [accuracy, setAccuracy] = useState("0");
+  const [totalMcq, setTotalMcq] = useState(0);
+  const [totalCorrect, setTotalCorrect] = useState(0);
   const [loading, setLoading] = useState(true);
   // Sample data for demonstration
   const activityData: number[] = [65, 40, 80, 35, 60, 75, 50];
@@ -35,7 +38,11 @@ const Dashboard: React.FC = () => {
           }
         });
         const solved = response.data;
+        console.log(solved);
         setTotalSolved(solved.totalSolved);
+        setAccuracy(solved.accuracy);
+        setTotalMcq(solved.totalMCQs);
+        setTotalCorrect(solved.totalScore);
       } catch (error) {
         console.error(error);
       } finally {
@@ -144,7 +151,7 @@ const Dashboard: React.FC = () => {
                 </div>
                 <div>
                   <p className="text-gray-500 text-sm">MCQ Score</p>
-                  <p className="text-2xl font-bold">85%</p>
+                  <p className="text-2xl font-bold">{((totalCorrect / totalMcq) * 100).toFixed(2)}%</p>
                 </div>
               </div>
 
@@ -154,7 +161,7 @@ const Dashboard: React.FC = () => {
                 </div>
                 <div>
                   <p className="text-gray-500 text-sm">Accuracy</p>
-                  <p className="text-2xl font-bold">78.3%</p>
+                  <p className="text-2xl font-bold">{accuracy}%</p>
                 </div>
               </div>
 
