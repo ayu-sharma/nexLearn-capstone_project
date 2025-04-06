@@ -43,6 +43,7 @@ const Dashboard: React.FC = () => {
         setAccuracy(solved.accuracy);
         setTotalMcq(solved.totalMCQs);
         setTotalCorrect(solved.totalScore);
+        setMcqScore(((totalCorrect / totalMcq) * 100) || 0);
       } catch (error) {
         console.error(error);
       } finally {
@@ -57,6 +58,7 @@ const Dashboard: React.FC = () => {
     setIsRecommendationsOpen(prev => !prev);
   };
 
+  const [mcqScore, setMcqScore] = useState(0);
   return (
     <div className="min-h-screen bg-gray-100">
       {/* Header - Make it fixed/sticky */}
@@ -151,7 +153,7 @@ const Dashboard: React.FC = () => {
                 </div>
                 <div>
                   <p className="text-gray-500 text-sm">MCQ Score</p>
-                  <p className="text-2xl font-bold">{((totalCorrect / totalMcq) * 100).toFixed(2)}%</p>
+                  <p className="text-2xl font-bold">{mcqScore.toFixed(2)}%</p>
                 </div>
               </div>
 

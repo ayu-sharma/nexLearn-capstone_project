@@ -65,8 +65,8 @@ const HomePage = () => {
         return <CodePage />;
       case "Practice":
         return <PracticeSection />;
-      case "Notifications":
-        return <NotificationSection />;
+      // case "Notifications":
+      //   return <NotificationSection />;
       case "Settings":
         return <SettingsSection />;
       default:
